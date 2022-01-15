@@ -1,16 +1,27 @@
-from dataclasses import dataclass
+import typing
 from django.db import models
 
+from .constants import CLASS_STANDING_CHOICES, POSITION_CHOICES
+
+
 # Create your models here.
-@dataclass
 class Player(models.Model):
-    first_name: str
-    last_name: str
-    player_number: int
-    class_standing: str
-    major: str
-    position: str
-    hometown: str
-    height_feet: int
-    height_inches: int
-    weight_pounds: int
+    first_name = models.CharField(max_length=30, default="")
+    last_name = models.CharField(max_length=30, default="")
+    player_number = models.IntegerField(null = True)
+    class_standing = models.CharField(max_length=2, choices=CLASS_STANDING_CHOICES, default="FR")
+    major = models.CharField(max_length=100)
+    position = models.CharField(max_length=4, choices=POSITION_CHOICES, default="ATT")
+    hometown = models.CharField(max_length=50)
+    height_feet = models.IntegerField(null=True)
+    height_inches = models.IntegerField(null=True)
+    weight_pounds = models.IntegerField(null=True)
+
+
+class Roster(models.Model):
+    team_name: str
+    school: str
+    coach: str
+    player_list: typing.List[Player]
+    win_count: int
+    loss_count: int
