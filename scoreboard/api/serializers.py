@@ -1,5 +1,6 @@
-from .models import Player
+from .models import Player, Roster
 from rest_framework import serializers
+
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,4 +17,18 @@ class PlayerSerializer(serializers.ModelSerializer):
             "height_feet",
             "height_inches",
             "weight_pounds"
+        )
+
+
+class RosterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Roster
+        fields = (
+            "id",
+            "team_name",
+            "school",
+            "coach",
+            "player_list",
+            "win_count",
+            "loss_count"
         )

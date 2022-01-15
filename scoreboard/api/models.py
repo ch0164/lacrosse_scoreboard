@@ -1,4 +1,3 @@
-import typing
 from django.db import models
 
 from .constants import CLASS_STANDING_CHOICES, POSITION_CHOICES
@@ -19,9 +18,9 @@ class Player(models.Model):
 
 
 class Roster(models.Model):
-    team_name: str
-    school: str
-    coach: str
-    player_list: typing.List[Player]
-    win_count: int
-    loss_count: int
+    team_name = models.CharField(max_length=50, default="")
+    school = models.CharField(max_length=100, default="")
+    coach = models.CharField(max_length=50, default="")
+    player_list = models.ManyToManyField(Player, verbose_name="List of Players")
+    win_count = models.IntegerField(default=0)
+    loss_count = models.IntegerField(default=0)

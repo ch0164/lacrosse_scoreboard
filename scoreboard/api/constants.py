@@ -5,7 +5,6 @@ CLASS_STANDING_CHOICES = (
     ("SR", "Senior")
 )
 
-
 POSITION_CHOICES = (
     # Four main lacrosse positions.
     ("ATT", "Attacker"),

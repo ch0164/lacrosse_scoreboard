@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import RosterView
+from .views import PlayerView, RosterView
 
 urlpatterns = [
-    path('', RosterView.as_view()),
+    path('', PlayerView.as_view()),
+    path('roster', RosterView.as_view())
 ]

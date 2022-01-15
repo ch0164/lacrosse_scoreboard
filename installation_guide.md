@@ -4,9 +4,6 @@ https://www.python.org/downloads/
 
 `pip install django djangorestframework`
 
-`pip install djangorestframework-dataclasses`
-
-
 **Install Node.js**
 
 https://nodejs.org/en/download/
