@@ -1,8 +1,9 @@
-**Install Python 3.10, Django, and dataclasses library**
+**Install Python 3.10, Django**
 
 https://www.python.org/downloads/
 
 `pip install django djangorestframework`
+`pip install django-crispy-forms`
 
 **Install Node.js**
 

@@ -1,20 +1,10 @@
-from pyexpat import model
-from tkinter import CASCADE
 from django.db import models
+from django.contrib.auth.models import User
 
 from .constants import CLASS_STANDING_CHOICES, POSITION_CHOICES
 
 
 # Create your models here.
-class User(models.Model):
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=50, default="", unique=True)
-    password = models.CharField(max_length=50, default="")
-
-    def __str__(self):
-        return f"Username: {self.username}\nEmail: {self.email}\nPassword: {self.password}"
-
-
 class Coach(models.Model):
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
@@ -40,8 +30,7 @@ class Player(models.Model):
 class Roster(models.Model):
     team_name = models.CharField(max_length=50, default="")
     school = models.CharField(max_length=100, default="")
-    #coach = models.OneToOneField(Coach, on_delete=models.CASCADE)
-    coach = models.CharField(max_length=100, default="")
+    #coach = models.ForeignKey(User, on_delete=models.CASCADE, related_name="roster", null=True)
     player_list = models.ManyToManyField(Player, verbose_name="List of Players")
     win_count = models.IntegerField(default=0)
     loss_count = models.IntegerField(default=0)

@@ -2,6 +2,11 @@
 
 {% block title %}Roster{% endblock %}
 
-{% block content %}
-Create a roster here.
-{% endblock %}
+{% if user.is_authenticated %}
+    {% block content %}
+    Create a roster here.
+    {% endblock %}
+{% else %}
+    <p>You must login as a verified coach before continuing.</p>
+    <p>Are you a coach? Login <a href="/login/">here</a>.</p>
+{% endif %}

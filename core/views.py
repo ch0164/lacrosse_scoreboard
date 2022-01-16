@@ -1,10 +1,8 @@
 from rest_framework import generics
-from .models import Player, Roster, User
+from .models import Player, Roster
 from .serializers import PlayerSerializer, RosterSerializer
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
-from .forms import UserForm
-
 
 # Create your views here.
 def index(request: HttpRequest, id) -> HttpResponse:
@@ -28,23 +26,6 @@ def EditScorebookView(request: HttpRequest) -> HttpResponse:
 
 def LoginView(request: HttpRequest) -> HttpResponse:
     return render(request, "login.html")
-
-def RegisterView(request: HttpRequest) -> HttpResponse:
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            user = User(email=email, username=username, password=password)
-            user.save()
-
-            return HttpResponseRedirect(f"/{user.id}")
-    else:
-        form = UserForm()
-        
-    return render(request, "register.html", {"form": form})
 
 
 class CreatePlayerView(generics.CreateAPIView):
