@@ -7,9 +7,12 @@ from .constants import CLASS_STANDING_CHOICES, POSITION_CHOICES
 
 # Create your models here.
 class User(models.Model):
-    email = models.EmailField()
-    username = models.CharField(max_length=50, default="")
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=50, default="", unique=True)
     password = models.CharField(max_length=50, default="")
+
+    def __str__(self):
+        return f"Username: {self.username}\nEmail: {self.email}\nPassword: {self.password}"
 
 
 class Coach(models.Model):

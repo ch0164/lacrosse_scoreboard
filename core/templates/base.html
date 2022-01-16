@@ -1,0 +1,66 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href={% static 'style.css' %}>
+    <style type="text/css">
+        .sidenav {
+            height: 100%;
+            width: 170px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: :hidden;
+            padding-top: 20px
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 0px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        .sidenav a: hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 160px;
+            padding: 0px 10px;
+        }
+
+    </style>
+
+    <title>Scorebook | {% block title %}{% endblock title %}</title>
+
+    {% block scripts %}
+    {% endblock scripts %}
+</head>
+
+<body>
+    <div class="sidenav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login/">Login</a></li>
+            <li><a href="/register/">Register</a></li>
+            <li><a href="/scorebook/">New Scorebook</a></li>
+            <li><a href="/published-scorebooks/">View Published Scorebooks</a></li>
+            <li><a href="/roster/">Add Roster</a></li>
+        </ul>
+    </div>
+
+    <div id="content", name="content", class="main">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+</body>
+</html>
