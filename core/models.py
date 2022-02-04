@@ -1,18 +1,20 @@
-from email.policy import default
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
-import django_tables2 as tables
 
 from .constants import CLASS_STANDING_CHOICES, POSITION_CHOICES
 
 
 # Create your models here.
 class Coach(models.Model):
+    id = models.AutoField(primary_key=True)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
 
 
 class Roster(models.Model):
+    id = models.AutoField(primary_key=True)
     team_name = models.CharField(max_length=50, default="")
     school = models.CharField(max_length=100, default="")
     # TODO: How many rosters should a team have?
@@ -26,6 +28,7 @@ class Roster(models.Model):
 
 
 class Player(models.Model):
+    id = models.AutoField(primary_key=True)
     player_number = models.IntegerField("Player Number", null = True)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")

@@ -22,5 +22,4 @@ urlpatterns = [
     path('register/', reg.register, name='register'),
     path('', include('core.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('__debug__/', include('debug_toolbar.urls'))
 ]
