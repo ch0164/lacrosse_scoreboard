@@ -20,6 +20,10 @@ def RosterView(request: HttpRequest) -> HttpResponse:
     players = Player.objects.all()
     return render(request, "roster.html", {"players": players})
 
+def RosterView(request: HttpRequest) -> HttpResponse:
+    players = Player.objects.all()
+    return render(request, "roster.html", {"players": players})
+
 def EditRoster(request: HttpRequest) -> JsonResponse:
     id = request.GET.get("id")
     type = request.GET.get("type")
@@ -50,6 +54,13 @@ def EditRoster(request: HttpRequest) -> JsonResponse:
     player.save()
     return JsonResponse({"success": "Updated"})
 
+def EditPlayer(request: HttpRequest, player_id: int) -> HttpResponse:
+    player = Player.objects.get(id=player_id)
+    if player is not None:
+        return render(request, "edit_player.html", {"player": player})
+    else:
+        return HttpResponse("Player Not Found")
+        
 
 def ScorebookView(request: HttpRequest) -> HttpResponse:
     return render(request, "scorebook.html")

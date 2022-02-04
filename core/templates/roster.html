@@ -37,8 +37,11 @@
                                 <td class="editable" data-id="{{ player.id }}" data-type="height_inches">{{ player.height_inches }}</td>
                                 <td class="editable" data-id="{{ player.id }}" data-type="major">{{ player.major }}</td>
                                 <td class="editable" data-id="{{ player.id }}" data-type="hometown">{{ player.hometown }}</td>
-                                <td><a href="/update_player/{{player.id}}" class="btn btn-success">Update</a><br>
-                                    <a href="/delete_player/{{player.id}}" class="btn btn-danger">Delete</a></td>
+                                <td>
+                                    <a href="/edit_player/{{player.id}}" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-pencil"></span>
+                                    <a href="/delete_player/{{player.id}}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-minus"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </table>
