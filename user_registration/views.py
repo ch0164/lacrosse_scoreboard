@@ -5,8 +5,6 @@ from .forms import UserRegistrationForm
 from core.models import Roster
 
 
-
-
 # Create your views here.
 def register(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":

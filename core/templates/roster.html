@@ -1,10 +1,12 @@
 {% extends "base.html" %}
+{% load render_table from django_tables2 %}
 
 {% block title %}Roster{% endblock %}
 
 {% if user.is_authenticated %}
     {% block content %}
     Create a roster here.
+    {% render_table table %}
     {% endblock %}
 {% else %}
     <p>You must login as a verified coach before continuing.</p>

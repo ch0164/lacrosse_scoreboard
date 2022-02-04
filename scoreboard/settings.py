@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'debug_toolbar',
     'rest_framework',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 #AUTH_USER_MODEL = 'user_registration.User'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+MEDIA_URL = "/media/"
