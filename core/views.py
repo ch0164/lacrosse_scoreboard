@@ -1,10 +1,9 @@
 from rest_framework import generics
-from .models import Player, Roster, User
+from .models import Player, Roster
 from .serializers import PlayerSerializer, RosterSerializer
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .forms import UserForm
-
 
 # Create your views here.
 def index(request: HttpRequest, id) -> HttpResponse:
@@ -18,7 +17,50 @@ def PublishedScorebooksView(request: HttpRequest) -> HttpResponse:
     return render(request, "published_scorebooks.html")
 
 def RosterView(request: HttpRequest) -> HttpResponse:
-    return render(request, "roster.html")
+    players = Player.objects.all()
+    return render(request, "roster.html", {"players": players})
+
+def RosterView(request: HttpRequest) -> HttpResponse:
+    players = Player.objects.all()
+    return render(request, "roster.html", {"players": players})
+
+def EditRoster(request: HttpRequest) -> JsonResponse:
+    id = request.GET.get("id")
+    type = request.GET.get("type")
+    value = request.GET.get("value")
+
+    player = Player.objects.get(id=id)
+    if type == "player_number":
+       player.player_number = value
+    elif type == "name":
+       first_name, last_name = tuple(value.split())
+       player.first_name = first_name
+       player.last_name = last_name
+    elif type == "position":
+        player.position = value
+    elif type == "class_standing":
+        player.class_standing = value
+    elif type == "weight_pounds":
+        player.weight_pounds = value
+    elif type == "height_feet":
+        player.height_feet = value
+    elif type == "height_inches":
+        player.height_inches = value
+    elif type == "major":
+        player.major = value
+    elif type == "hometown":
+        player.hometown = value
+
+    player.save()
+    return JsonResponse({"success": "Updated"})
+
+def EditPlayer(request: HttpRequest, player_id: int) -> HttpResponse:
+    player = Player.objects.get(id=player_id)
+    if player is not None:
+        return render(request, "edit_player.html", {"player": player})
+    else:
+        return HttpResponse("Player Not Found")
+        
 
 def ScorebookView(request: HttpRequest) -> HttpResponse:
     return render(request, "scorebook.html")
@@ -28,23 +70,6 @@ def EditScorebookView(request: HttpRequest) -> HttpResponse:
 
 def LoginView(request: HttpRequest) -> HttpResponse:
     return render(request, "login.html")
-
-def RegisterView(request: HttpRequest) -> HttpResponse:
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password"]
-            user = User(email=email, username=username, password=password)
-            user.save()
-
-            return HttpResponseRedirect(f"/{user.id}")
-    else:
-        form = UserForm()
-        
-    return render(request, "register.html", {"form": form})
 
 
 class CreatePlayerView(generics.CreateAPIView):

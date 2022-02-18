@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, HomeView, PublishedScorebooksView, RosterView, LoginView, RegisterView, \
+from .views import index, EditRoster, EditPlayer, HomeView, PublishedScorebooksView, RosterView, LoginView, \
     EditScorebookView, ScorebookView, CreatePlayerView, CreateRosterView, ListPlayerView, ListRosterView
 
 urlpatterns = [
@@ -9,8 +9,8 @@ urlpatterns = [
     path('scorebook/', ScorebookView),
     path('edit-scorebook/', EditScorebookView),
     path('roster/', RosterView),
-    path('login/', LoginView),
-    path('register/', RegisterView),
+    path('save-roster/', EditRoster),
+    path('edit_player/<int:player_id>', EditPlayer, name="edit_player"),
     path('create-player/', CreatePlayerView.as_view()),
     path('create-roster/', CreateRosterView.as_view()),
     path('list-player/', ListPlayerView.as_view()),

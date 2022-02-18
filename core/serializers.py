@@ -17,16 +17,16 @@ class PlayerSerializer(serializers.ModelSerializer):
         model = Player
         fields = (
             "id",
+            "player_number",
             "first_name",
             "last_name",
-            "player_number",
-            "class_standing",
-            "major",
             "position",
-            "hometown",
+            "class_standing",
+            "weight_pounds"
             "height_feet",
             "height_inches",
-            "weight_pounds"
+            "major",
+            "hometown",
         )
 
 
