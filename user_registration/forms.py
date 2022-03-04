@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField()
     is_coach = forms.BooleanField(required=False, label="Are you a lacrosse coach?")
+    is_scorekeeper = forms.BooleanField(required=False, label="Are you a lacrosse scorekeeper?")
 
     class Meta:
         model = User
@@ -14,6 +15,7 @@ class UserRegistrationForm(UserCreationForm):
             "first_name",
             "last_name",
             "is_coach",
+            "is_scorekeeper",
             "email",
             "username",
             "password1",

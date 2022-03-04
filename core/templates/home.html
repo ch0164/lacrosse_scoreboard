@@ -16,6 +16,23 @@
 {% block content %}
 Welcome to the home page.
 
+
+{% if user.is_authenticated == False %}
+<h2>Welcome, Guest</h2>
+<a href="/login/" class="btn btn-success btn-lg">
+  <span class="glyphicon glyphicon-log-in">  Login</span></a>
+{% else %}
+<h2>Welcome, {{ user.get_username }} {{ user.is_authenticated }}</h2>
+<a href="/logout/" class="btn btn-danger btn-lg">
+  <span class="glyphicon glyphicon-log-out">Logout</span></a>
+{% endif %}
+
+{% if user.is_coach == False %}
+<h2>You are not a coach</h2>
+{% elif user.is_coach == True %}
+<h2>You are a coach!</h2>
+{% endif %}
+
     <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
         <table class="tg" style="text-align: center;">
             <tr>
