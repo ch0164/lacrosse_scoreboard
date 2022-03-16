@@ -5,19 +5,25 @@
 {% block custom_css %}
 <style type="text/css">
     .tg  {border-collapse:collapse;border-spacing:0;}
-    .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+    .tg td{border-color:black;border-style:solid;border-width:1.5px;font-family:Arial, sans-serif;font-size:14px;
       overflow:hidden;padding:10px 5px;word-break:normal;}
-    .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+    .tg th{border-color:black;border-style:solid;border-width:1.5px;font-family:Arial, sans-serif;font-size:14px;
       font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
     .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 </style>
 {% endblock custom_css %}
 
 {% block content %}
-Welcome to the home page.
+<h1>HOME PAGE</h1>
 
 {% if user.is_authenticated == False %}
-<h2>Welcome, Guest</h2>
+<html>
+   <body>
+      <div style = "position:relative; left:1500px; top:-45px; font-size:20px;">
+        Welcome, Guest
+    </div>
+   </body>
+</html>
 <a href="/login/" class="btn btn-success btn-lg">
   <span class="glyphicon glyphicon-log-in">  Login</span></a>
 {% else %}
