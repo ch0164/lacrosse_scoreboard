@@ -10,30 +10,34 @@ REFERENCE --------------------> https://mdbootstrap.com/docs/b4/jquery/tables/ed
   <head>
     <title>Title of the document</title>
     <style>
-      .tableFixHead {
-        overflow-y: auto;
-        height: 106px;
-      }
-      .tableFixHead thead th {
-        position: sticky;
-        top: 0;
-      }
-      table {
+      .fixed_header {
+        width: 1500px;
+        table-layout: fixed;
         border-collapse: collapse;
+      }
+      .fixed_header tbody {
+        display: block;
         width: 100%;
+        overflow: auto;
+        height: 100px;
       }
-      th,
-      td {
-        padding: 8px 16px;
-        border: 1px solid #ccc;
+      .fixed_header thead tr {
+        display: block;
       }
-      th {
-        background: #eee;
+      .fixed_header thead {
+        background: black;
+        color: #fff;
+      }
+      .fixed_header th,
+      .fixed_header td {
+        padding: 5px;
+        text-align: left;
+        width: 200px;
       }
     </style>
   </head>
   <body>
-    <table class="tableFixHead">
+    <table class="fixed_header">
       <thead>
         <tr>
           <th class="text-center">POSITION</th>
@@ -47,6 +51,136 @@ REFERENCE --------------------> https://mdbootstrap.com/docs/b4/jquery/tables/ed
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half">
+            <span class="table-up">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
+              </span>
+            <span class="table-down">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
+              </span>
+          </td>
+          <td>
+            <span class="table-remove">
+                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
+              </button>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half">
+            <span class="table-up">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
+              </span>
+            <span class="table-down">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
+              </span>
+          </td>
+          <td>
+            <span class="table-remove">
+                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
+              </button>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half">
+            <span class="table-up">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
+              </span>
+            <span class="table-down">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
+              </span>
+          </td>
+          <td>
+            <span class="table-remove">
+                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
+              </button>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half">
+            <span class="table-up">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
+              </span>
+            <span class="table-down">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
+              </span>
+          </td>
+          <td>
+            <span class="table-remove">
+                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
+              </button>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half" contenteditable="true">-</td>
+          <td class="pt-3-half">
+            <span class="table-up">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
+              </span>
+            <span class="table-down">
+              <a href="#!" class="indigo-text">
+                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
+              </span>
+          </td>
+          <td>
+            <span class="table-remove">
+                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
+              </button>
+            </span>
+          </td>
+        </tr>
         <tr>
           <td class="pt-3-half" contenteditable="true">-</td>
           <td class="pt-3-half" contenteditable="true">-</td>
