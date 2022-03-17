@@ -1,15 +1,13 @@
-from rest_framework import generics
-from .models import Player, Roster
+from .models import Player, Roster, Coach
 from .serializers import PlayerSerializer, RosterSerializer
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-# Create your views here.
-def index(request: HttpRequest, id) -> HttpResponse:
-    user = User.objects.get(id=id)
-    return HttpResponse(f"<h1>{user}</h1>")
+from core.forms import PlayerEntryForm
 
+# Create your views here.
+# CRUD: Create, Retrieve, Update, Delete
 def HomeView(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html")
 
@@ -21,8 +19,37 @@ def RosterView(request: HttpRequest) -> HttpResponse:
     return render(request, "roster.html", {"players": players})
 
 def RosterView(request: HttpRequest) -> HttpResponse:
-    players = Player.objects.all()
-    return render(request, "roster.html", {"players": players})
+    # NOTE: Temporarily commented out (as well as contents of roster.html).
+    #players = Player.objects.all()
+    #return render(request, "roster.html", {"players": players})
+
+    # TODO: Add players to the current coach's roster (not a temp one).
+    # TODO: Coach needs to create a roster first.
+    if Roster.objects.all() is None:
+        temp_roster = Roster(team_name="UAH")
+        temp_roster.save()
+
+    if request.method == "GET":
+        form = PlayerEntryForm(request.GET)
+        if form.is_valid():
+            temp_roster = Roster.objects.all()[0]  # UAH Roster
+            player = Player(
+                player_number=request.GET.get("player_number"),
+                first_name=request.GET.get("first_name"),
+                last_name=request.GET.get("last_name"),
+                position=request.GET.get("position"),
+                class_standing=request.GET.get("class_standing"),
+                weight_pounds=request.GET.get("weight_pounds"),
+                height_feet=request.GET.get("height_feet"),
+                height_inches=request.GET.get("height_inches"),
+                major=request.GET.get("major"),
+                hometown=request.GET.get("hometown"),
+                team=temp_roster,
+            )
+            player.save()
+
+    form = PlayerEntryForm()
+    return render(request, "roster.html", {"form": form})
 
 def EditRoster(request: HttpRequest) -> JsonResponse:
     id = request.GET.get("id")
@@ -60,7 +87,6 @@ def EditPlayer(request: HttpRequest, player_id: int) -> HttpResponse:
         return render(request, "edit_player.html", {"player": player})
     else:
         return HttpResponse("Player Not Found")
-        
 
 def ScorebookView(request: HttpRequest) -> HttpResponse:
     return render(request, "scorebook.html")
@@ -71,22 +97,3 @@ def EditScorebookView(request: HttpRequest) -> HttpResponse:
 def LoginView(request: HttpRequest) -> HttpResponse:
     return render(request, "login.html")
 
-
-class CreatePlayerView(generics.CreateAPIView):
-    queryset = Player.objects.all()
-    serializer_class = PlayerSerializer
-
-
-class ListPlayerView(generics.ListAPIView):
-    queryset = Player.objects.all()
-    serializer_class = PlayerSerializer
-
-
-class CreateRosterView(generics.CreateAPIView):
-    queryset = Roster.objects.all()
-    serializer_class = RosterSerializer
-
-
-class ListRosterView(generics.ListAPIView):
-    queryset = Roster.objects.all()
-    serializer_class = RosterSerializer

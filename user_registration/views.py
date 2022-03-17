@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from core.models import Roster
 from .forms import UserRegistrationForm
 from django.contrib.auth import authenticate, login
 
@@ -13,6 +14,7 @@ def register(request: HttpRequest) -> HttpResponse:
             new_user = authenticate(username=form.cleaned_data["username"],
                                     password=form.cleaned_data["password1"])
             login(request, new_user)
+
             return HttpResponseRedirect("/")
     else:
         form = UserRegistrationForm()
