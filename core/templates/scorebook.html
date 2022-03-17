@@ -4,4 +4,63 @@
 
 {% block content %}
 Record the game with the scorebook below.
+REFERENCE --------------------> https://mdbootstrap.com/docs/b4/jquery/tables/editable/
+<div class="scorebook">
+  <h3 class="scorebook-header text-center font-weight-bold text-uppercase py-4">
+    Editable table
+  </h3>
+  <div class="card-body">
+    <div id="table" class="table-editable">
+      <span class="table-add float-right mb-3 mr-2"
+        ><a href="#!" class="text-success"
+          ><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a
+      ></span>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <thead>
+          <tr>
+            <th class="text-center">POSITION</th>
+            <th class="text-center">PLAYER NUMBER</th>
+            <th class="text-center">NAME</th>
+            <th class="text-center">QUARTERS</th>
+            <th class="text-center">SHOTS</th>
+            <th class="text-center">GOALS</th>
+            <th class="text-center">ASSISTS</th>
+            <th class="text-center">GROUND BALLS</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half" contenteditable="true">-</td>
+            <td class="pt-3-half">
+              <span class="table-up"
+                ><a href="#!" class="indigo-text"
+                  ><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a
+              ></span>
+              <span class="table-down"
+                ><a href="#!" class="indigo-text"
+                  ><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a
+              ></span>
+            </td>
+            <td>
+              <span class="table-remove"
+                ><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">
+                  Remove
+                </button></span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
