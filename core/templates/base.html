@@ -12,11 +12,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!--link rel="stylesheet" href={% static 'style.css' %}-->
     <style type="text/css">
-        .sidenav {
+        .topnav {
             height: 100%;
             width: 170px;
             position: fixed;
-            z-index: 1;
+            <z-index: 1;
             top: 0;
             left: 0;
             background-color: #111;
@@ -24,7 +24,7 @@
             padding-top: 20px
         }
 
-        .sidenav a {
+        .topnav a {
             padding: 6px 8px 6px 0px;
             text-decoration: none;
             font-size: 25px;
@@ -32,7 +32,7 @@
             display: block;
         }
 
-        .sidenav a: hover {
+        .topnav a: hover {
             color: #f1f1f1;
         }
 
@@ -48,8 +48,33 @@
     {% block custom_css %}{% endblock custom_css %}
 </head>
 
+<!-- <style>
+.btn-group button {
+  background-color: #111; /* Black background */
+  color: white; /* White text */
+  padding: 0px 10px; /* Some padding */
+}
+
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #f1f1f1;
+}
+</style>
 <body>
-    <div class="sidenav">
+
+<h1>Button Group</h1>
+
+<div class="btn-group">
+  <button>Home</button>
+  <button>Scorebook</button>
+  <button>Roster</button>
+</div>
+
+</body> -->
+
+<body>
+    <div class="topnav">
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/login/">Login</a></li>
