@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from .constants import CLASS_STANDING_CHOICES, POSITION_CHOICES
-
+from scoreboard.settings import AUTH_USER_MODEL
 
 # Create your models here.
 class Roster(models.Model):
@@ -20,7 +20,7 @@ class Roster(models.Model):
 
 class Coach(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
+    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE, default=None)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
     roster = models.OneToOneField(Roster, related_name="roster", null=True, blank=True, on_delete=models.CASCADE, default=None)
