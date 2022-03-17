@@ -8,93 +8,111 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <!--link rel="stylesheet" href={% static 'style.css' %}-->
-    <style type="text/css">
-        .topnav {
-            height: 100%;
-            width: 170px;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x:hidden;
-            padding-top: 20px
-        }
+    <!-- AJAX/jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-        .topnav a {
-            padding: 6px 8px 6px 0px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #818181;
-            display: block;
-        }
+    <!-- Define custom CSS for every page on the website. -->
+    <style>
+        #nav {
+        list-style: none;
+        font-weight: bold;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+        background-color: #000000;
+        height:40px;
+    }
 
-        .topnav a:hover {
-            color: #f1f1f1;
-        }
+    #nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
 
-        .main {
-            margin-left: 160px;
-            padding: 0px 10px;
-        }
+    #nav li {
+        margin: 0;
+        display: none
+    }
 
+    #nav li a {
+        padding: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        color: #FFFFFF;
+        background-color: #000000;
+        float: left
+    }
+
+    .wrapper ul li {
+        position: absolute;
+        top: -90px;
+        left: -45px;
+        background: #fff;
+        width: 115px;
+        padding: 10px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 3px;
+        color: #044b85;
+        font-weight: bold;
+        display: none;
+    }
+
+    .wrapper ul li a:hover .tooltip{
+        display: block;
+    }
+
+    #nav li a:hover .tooltip{
+        color: #FFFFFF;
+        background-color: #0275d8;
+    }
     </style>
 
+    <!-- Below is where the title of the HTML file will go and any custom CSS will go. -->
     <title>Scorebook | {% block title %}{% endblock title %}</title>
-
     {% block custom_css %}{% endblock custom_css %}
 </head>
 
-<!-- <style>
-.btn-group button {
-  background-color: #111; /* Black background */
-  color: white; /* White text */
-  padding: 0px 10px; /* Some padding */
-}
-
-
-/* Add a background color on hover */
-.btn-group button:hover {
-  background-color: #f1f1f1;
-}
-</style>
-<body>
-
-<h1>Button Group</h1>
-
-<div class="btn-group">
-  <button>Home</button>
-  <button>Scorebook</button>
-  <button>Roster</button>
+<div id="nav">
+    <ul>
+        <li>
+            <a href="/">
+            <span class="glyphicon glyphicon-home" ></span>
+            <div class="tooltip">Home</div>
+            </a>
+        </li>
+        <li>
+            <a href="/scorebook/">
+            <span class="glyphicon glyphicon-book" ></span>
+            <div class="tooltip">Scorebook</div>
+            </a>
+        </li>
+        <li>
+            <a href="/roster/">
+            <span class="glyphicon glyphicon-list-alt" ></span>
+            <div class="tooltip">Roster</div>
+            </a>
+        </li>
+        <li>
+            <a href="/register/">
+            <span class="glyphicon glyphicon-user" ></span>
+            <div class="tooltip">Account</div>
+            </a>
+        </li>
+    </ul>
 </div>
+<style>
 
-</body> -->
+</style>
 
 <body>
-    <div class="topnav">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/login/">Login</a></li>
-            <li><a href="/register/">Register</a></li>
-            <li><a href="/scorebook/">New Scorebook</a></li>
-            <li><a href="/published-scorebooks/">View Published Scorebooks</a></li>
-            <li><a href="/roster/">View Roster</a></li>
-        </ul>
-    </div>
-
-    <div id="content", name="content", class="main">
+    <!-- Below is where content from derived HTML files will go. -->
     {% block content %}
     {% endblock %}
-    </div>
-
-    <!-- JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!--script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script-->
-    {% block custom_js %}{% endblock custom_js %}
+    {% block custom_js %}
+    {% endblock %}
 </body>
 </html>
