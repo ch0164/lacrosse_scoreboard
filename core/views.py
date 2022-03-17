@@ -18,6 +18,7 @@ def RosterView(request: HttpRequest) -> HttpResponse:
     players = Player.objects.all()
     return render(request, "roster.html", {"players": players})
 
+@login_required
 def RosterView(request: HttpRequest) -> HttpResponse:
     # NOTE: Temporarily commented out (as well as contents of roster.html).
     #players = Player.objects.all()
@@ -25,14 +26,17 @@ def RosterView(request: HttpRequest) -> HttpResponse:
 
     # TODO: Add players to the current coach's roster (not a temp one).
     # TODO: Coach needs to create a roster first.
-    if Roster.objects.all() is None:
+    # Since usernames are unique, find the coach's data from the QuerySet.
+    coach = Coach.objects.filter(user=request.user)[0]
+    if coach.roster is None:
         temp_roster = Roster(team_name="UAH")
         temp_roster.save()
+        coach.roster = temp_roster
 
+    # When the coach enters the player data, handle it here.
     if request.method == "GET":
         form = PlayerEntryForm(request.GET)
         if form.is_valid():
-            temp_roster = Roster.objects.all()[0]  # UAH Roster
             player = Player(
                 player_number=request.GET.get("player_number"),
                 first_name=request.GET.get("first_name"),
@@ -44,9 +48,12 @@ def RosterView(request: HttpRequest) -> HttpResponse:
                 height_inches=request.GET.get("height_inches"),
                 major=request.GET.get("major"),
                 hometown=request.GET.get("hometown"),
-                team=temp_roster,
+                team=coach.roster,
             )
             player.save()
+
+            print(player)
+            print(player.team)
 
     form = PlayerEntryForm()
     return render(request, "roster.html", {"form": form})
