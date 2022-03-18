@@ -19,3 +19,11 @@ POSITION_CHOICES = (
     ("LSM", "Long-Stick Midfielder"),
     ("SSDM", "Short-Stick Defensive Midfielder")
 )
+
+QUARTERS = (
+    ("", ""),
+    ("I", "First"),
+    ("II", "Second"),
+    ("III", "Third"),
+    ("IV", "Fourth")
+)

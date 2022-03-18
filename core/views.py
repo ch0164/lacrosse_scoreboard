@@ -51,8 +51,10 @@ def RosterView(request: HttpRequest) -> HttpResponse:
                 team=coach.roster,
             )
             player.save()
+            coach.roster.save()
+            coach.save()
 
-            print(player)
+            print(coach.roster.player_set.all())
             print(player.team)
 
     form = PlayerEntryForm()
