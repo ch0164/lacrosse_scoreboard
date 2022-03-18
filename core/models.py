@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -24,7 +26,7 @@ class Coach(models.Model):
     roster = models.OneToOneField(Roster, related_name="roster", null=True, blank=True, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return f"{self.roster} -- Coach: {self.last_name}, {self.first_name}\n"
+        return f"{self.last_name}, {self.first_name} -- {self.roster.team_name}"
 
 class Player(models.Model):
     id = models.AutoField(primary_key=True)
@@ -41,7 +43,7 @@ class Player(models.Model):
     team = models.ForeignKey(Roster, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return f"{self.last_name}, {self.first_name} (#{self.player_number}) "
+        return f"{self.last_name}, {self.first_name} (#{self.player_number})"
 
 
 class Scorekeeper(models.Model):
@@ -51,7 +53,7 @@ class Scorekeeper(models.Model):
     last_name = models.CharField("Last Name", max_length=30, default="")
 
     def __str__(self):
-        return f"Scorekeeper: {self.last_name}, {self.first_name}\n"
+        return f"{self.last_name}, {self.first_name}"
 
 
 class RunningScore(models.Model):
@@ -83,10 +85,10 @@ class Scorebook(models.Model):
     id = models.AutoField(primary_key=True)
     home_coach = models.OneToOneField(Coach, related_name="home_coach", on_delete=models.CASCADE, default=None)
     visiting_coach = models.OneToOneField(Coach, related_name="visiting_coach", on_delete=models.CASCADE, default=None)
-    scorekeeper = models.OneToOneField(Scorekeeper, related_name="scorekeeper", on_delete=models.CASCADE, default=None)
-    running_score = models.OneToOneField(RunningScore, on_delete=models.CASCADE, default=None)
-    time_remaining = None
-    is_published = models.BooleanField(default=False)
+    scorekeeper = models.OneToOneField(Scorekeeper, related_name="scorekeeper", on_delete=models.CASCADE, null=True, blank=True, default=None)
+    running_score = models.OneToOneField(RunningScore, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    time_remaining = models.DateTimeField(default=dt.now(tz=None))
+    is_published = models.BooleanField()
 
     def __str__(self):
         return f"Home Team: {self.home_coach}\n" \
@@ -105,8 +107,8 @@ class PlayerStatistics(models.Model):
     goals = models.IntegerField(null=True)
     assists = models.IntegerField(null=True)
     ground_balls = models.IntegerField(null=True)
-   # home_statistics = models.ForeignKey(Scorebook, related_name="home_penalties", on_delete=models.CASCADE, default=None)
-   # visiting_statistics = models.ForeignKey(Scorebook, related_name="visiting_penalties", on_delete=models.CASCADE, default=None)
+    home_statistics = models.ForeignKey(Scorebook, related_name="home_penalties", on_delete=models.CASCADE, default=None)
+    visiting_statistics = models.ForeignKey(Scorebook, related_name="visiting_penalties", on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return f"{self.player}"
