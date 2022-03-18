@@ -2,214 +2,186 @@
 
 {% block title %}Scorebook{% endblock %}
 
-{% block content %}
-Record the game with the scorebook below.
-REFERENCE --------------------> https://mdbootstrap.com/docs/b4/jquery/tables/editable/
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Title of the document</title>
+{% block custom_css %}
     <style>
-      .fixed_header {
-        width: 1500px;
-        table-layout: fixed;
-        border-collapse: collapse;
-      }
-      .fixed_header tbody {
-        display: block;
-        width: 100%;
-        overflow: auto;
-        height: 100px;
-      }
-      .fixed_header thead tr {
-        display: block;
-      }
-      .fixed_header thead {
-        background: black;
-        color: #fff;
-      }
-      .fixed_header th,
-      .fixed_header td {
-        padding: 5px;
-        text-align: left;
-        width: 200px;
-      }
-    </style>
-  </head>
-  <body>
-    <table class="fixed_header">
-      <thead>
-        <tr>
-          <th class="text-center">POSITION</th>
-          <th class="text-center">PLAYER NUMBER</th>
-          <th class="text-center">NAME</th>
-          <th class="text-center">QUARTERS</th>
-          <th class="text-center">SHOTS</th>
-          <th class="text-center">GOALS</th>
-          <th class="text-center">ASSISTS</th>
-          <th class="text-center">GROUND BALLS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-</html>
+        * {
+            font-size: 12px;
+            font-family: 'Helvetica', Arial, Sans-Serif,serif;
+            box-sizing: border-box;
+        }
+
+        table, th, td {
+            border-collapse:collapse;
+            border: solid 1px #ccc;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        th {
+            background: #0f4871;
+            color: #fff;
+        }
+
+        tr:nth-child(2n) {
+            background: #f1f1f1;
+        }
+        td:hover {
+            color: #fff;
+            background: #CA293E;
+        }
+        td:focus {
+            background: #f44;
+        }
+
+        .editing {
+            border: 2px dotted #c9c9c9;
+        }
+
+        #edit {
+            display: none;
+        }
+</style>
+{% endblock %}
+
+<!-- Hello -->
+{% block content %}
+    <body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Col 1</th>
+                    <th>Col 2</th>
+                    <th>Col 3</th>
+                    <th>Col 4</th>
+                    <th>Col 5</th>
+                    <th>Col 6</th>
+                    <th>Col 7</th>
+                    <th>Col 8</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td tabindex="1">1</td>
+                    <td tabindex="2">2</td>
+                    <td tabindex="3">3</td>
+                    <td tabindex="4">4</td>
+                    <td tabindex="5">5</td>
+                    <td tabindex="6">6</td>
+                    <td tabindex="7">7</td>
+                    <td tabindex="8">8</td>
+                </tr>
+                <tr>
+                    <td tabindex="10">10</td>
+                    <td tabindex="11">11</td>
+                    <td tabindex="12">12</td>
+                    <td tabindex="13">13</td>
+                    <td tabindex="14">14</td>
+                    <td tabindex="15">15</td>
+                    <td tabindex="16">16</td>
+                    <td tabindex="17">17</td>
+                </tr>
+                <tr>
+                    <td tabindex="10">10</td>
+                    <td tabindex="11">11</td>
+                    <td tabindex="12">12</td>
+                    <td tabindex="13">13</td>
+                    <td tabindex="14">14</td>
+                    <td tabindex="15">15</td>
+                    <td tabindex="16">16</td>
+                    <td tabindex="17">17</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="edit">
+            <form>
+                <input type="text" id="text" value="To edit..." />
+                <input type="submit" value="Save" />
+            </form>
+        </div>
+    </body>
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+        var currCell = $('td').first();
+        var editing = false;
+
+        // User clicks on a cell
+        $('td').click(function() {
+            currCell = $(this);
+            edit();
+        });
+
+        // Show edit box
+        function edit() {
+            editing = true;
+            currCell.toggleClass("editing");
+            $('#edit').show();
+            $('#edit #text').val(currCell.html());
+            $('#edit #text').select();
+        }
+
+        // User saves edits
+        $('#edit form').submit(function(e) {
+            editing = false;
+            e.preventDefault();
+            // Ajax to update value in database
+            $.get('#', '', function() {
+                $('#edit').hide();
+                currCell.toggleClass("editing");
+                currCell.html($('#edit #text').val());
+                currCell.focus();
+            });
+        });
+
+        // User navigates table using keyboard
+        $('table').keydown(function (e) {
+            var c = "";
+            if (e.which == 39) {
+                // Right Arrow
+                c = currCell.next();
+            } else if (e.which == 37) {
+                // Left Arrow
+                c = currCell.prev();
+            } else if (e.which == 38) {
+                // Up Arrow
+                c = currCell.closest('tr').prev().find('td:eq(' +
+                  currCell.index() + ')');
+            } else if (e.which == 40) {
+                // Down Arrow
+                c = currCell.closest('tr').next().find('td:eq(' +
+                  currCell.index() + ')');
+            } else if (!editing && (e.which == 13 || e.which == 32)) {
+                // Enter or Spacebar - edit cell
+                e.preventDefault();
+                edit();
+            } else if (!editing && (e.which == 9 && !e.shiftKey)) {
+                // Tab
+                e.preventDefault();
+                c = currCell.next();
+            } else if (!editing && (e.which == 9 && e.shiftKey)) {
+                // Shift + Tab
+                e.preventDefault();
+                c = currCell.prev();
+            }
+
+            // If we didn't hit a boundary, update the current cell
+            if (c.length > 0) {
+                currCell = c;
+                currCell.focus();
+            }
+        });
+
+        // User can cancel edit by pressing escape
+        $('#edit').keydown(function (e) {
+            if (editing && e.which == 27) {
+                editing = false;
+                $('#edit').hide();
+                currCell.toggleClass("editing");
+                currCell.focus();
+            }
+        });
+    </script>
 {% endblock %}
 
