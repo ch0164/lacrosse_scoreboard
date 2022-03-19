@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}Roster{% endblock %}
+{% load crispy_forms_tags %}
 
 {% block content %}
+    <h1>Create Roster</h1>
 <form action="" method="GET">
-    {% for field in form %}
-        {{ field.errors }}
-        {{ field.label_tag }} {{ field }}
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %}
-    {% endfor %}
+    {{ form|crispy }}
     <input type="submit" value="Submit">
 </form>
 {% endblock %}

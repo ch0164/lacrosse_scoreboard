@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from core.models import Roster, Coach
-from .forms import UserRegistrationForm
 from django.contrib.auth import authenticate, login
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 
+from core.models import Coach
+from user_registration.forms import UserRegistrationForm
 
 # Create your views here.
 def register(request: HttpRequest) -> HttpResponse:
@@ -12,7 +12,6 @@ def register(request: HttpRequest) -> HttpResponse:
 
         if form.is_valid():
             form.save()
-
 
             # Log the user in and redirect them to the home page.
             new_user = authenticate(username=form.cleaned_data["username"],

@@ -1,28 +1,35 @@
-from .models import Player, Roster, Coach
-from .serializers import PlayerSerializer, RosterSerializer
-from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.shortcuts import render
 
 from core.forms import PlayerEntryForm
+from core.models import *
 
-# Create your views here.
-# CRUD: Create, Retrieve, Update, Delete
-def HomeView(request: HttpRequest) -> HttpResponse:
+
+def home(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html")
 
-def PublishedScorebooksView(request: HttpRequest) -> HttpResponse:
-    return render(request, "published_scorebooks.html")
 
-def RosterView(request: HttpRequest) -> HttpResponse:
-    players = Player.objects.all()
-    return render(request, "roster.html", {"players": players})
+def login(request: HttpRequest) -> HttpResponse:
+    return render(request, "login.html")
+
+
+# Registration view is defined in user_registration/views.py.
+
+def view_scorebook(request: HttpRequest) -> HttpResponse:
+    return render(request, "published_scorebook.html")
+
 
 @login_required
-def RosterView(request: HttpRequest) -> HttpResponse:
+def edit_scorebook(request: HttpRequest) -> HttpResponse:
+    return render(request, "scorebook.html")
+
+
+@login_required
+def view_roster(request: HttpRequest) -> HttpResponse:
     # NOTE: Temporarily commented out (as well as contents of roster.html).
-    #players = Player.objects.all()
-    #return render(request, "roster.html", {"players": players})
+    # players = Player.objects.all()
+    # return render(request, "roster.html", {"players": players})
 
     # TODO: Add players to the current coach's roster (not a temp one).
     # TODO: Coach needs to create a roster first.
@@ -60,18 +67,20 @@ def RosterView(request: HttpRequest) -> HttpResponse:
     form = PlayerEntryForm()
     return render(request, "roster.html", {"form": form})
 
-def EditRoster(request: HttpRequest) -> JsonResponse:
+
+@login_required
+def edit_roster(request: HttpRequest) -> JsonResponse:
     id = request.GET.get("id")
     type = request.GET.get("type")
     value = request.GET.get("value")
 
     player = Player.objects.get(id=id)
     if type == "player_number":
-       player.player_number = value
+        player.player_number = value
     elif type == "name":
-       first_name, last_name = tuple(value.split())
-       player.first_name = first_name
-       player.last_name = last_name
+        first_name, last_name = tuple(value.split())
+        player.first_name = first_name
+        player.last_name = last_name
     elif type == "position":
         player.position = value
     elif type == "class_standing":
@@ -90,19 +99,11 @@ def EditRoster(request: HttpRequest) -> JsonResponse:
     player.save()
     return JsonResponse({"success": "Updated"})
 
-def EditPlayer(request: HttpRequest, player_id: int) -> HttpResponse:
+
+@login_required
+def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
     player = Player.objects.get(id=player_id)
     if player is not None:
         return render(request, "edit_player.html", {"player": player})
     else:
         return HttpResponse("Player Not Found")
-
-def ScorebookView(request: HttpRequest) -> HttpResponse:
-    return render(request, "scorebook.html")
-
-def EditScorebookView(request: HttpRequest) -> HttpResponse:
-    return render(request, "edit_scorebook.html")
-
-def LoginView(request: HttpRequest) -> HttpResponse:
-    return render(request, "login.html")
-
