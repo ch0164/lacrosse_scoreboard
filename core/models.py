@@ -116,6 +116,8 @@ class Scorebook(models.Model):
     id = models.AutoField(primary_key=True)
     time_remaining = models.DateTimeField(default=datetime.time(1, 0, 0))
     is_published = models.BooleanField(default=False)
+    home_score = models.IntegerField(default=0)
+    visiting_score = models.IntegerField(default=0)
     # Relationships
     home_coach = models.OneToOneField(Coach,
                                       related_name="home_coach",
@@ -138,8 +140,8 @@ class Scorebook(models.Model):
                                          default=None)
 
     def __str__(self):
-        return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach}\n" \
-               f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach}"
+        return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
+               f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
 
 
 class PlayerStatistics(models.Model):
