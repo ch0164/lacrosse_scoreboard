@@ -14,3 +14,8 @@ class PlayerEntryForm(forms.Form):
     major = forms.CharField(max_length=100)
     hometown = forms.CharField(max_length=100)
 
+
+class RosterEntryForm(forms.Form):
+    school = forms.CharField(max_length=100)
+    team_name = forms.CharField(max_length=50)
+

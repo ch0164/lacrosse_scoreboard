@@ -6,7 +6,7 @@ urlpatterns = [
     path('published-scorebooks/', views.view_scorebook),
     path('scorebook/', views.view_scorebook),
     path('edit-scorebook/', views.edit_scorebook),
+    path('edit-player/<int:player_id>/', views.edit_player, name="edit_player"),
     path('roster/', views.view_roster),
-    path('save-roster/', views.edit_roster),
-    path('edit_player/<int:player_id>', views.edit_player, name="edit_player"),
+    path('delete-player/<int:player_id>', views.delete_player, name="delete_player"),
 ]
