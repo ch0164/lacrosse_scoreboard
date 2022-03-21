@@ -2,56 +2,75 @@
 
 {% block title %}Roster{% endblock %}
 
-{% if user.is_authenticated %}
-    {% block content %}
-    Create a roster here.
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                    <div class="form-group bg_blue">
-                        All Players
-                    </div>
-                    <div class="table">
-                    <table class="table">
-                        <tr>
-                            <th>Player #</th>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Class</th>
-                            <th>Weight (lbs)</th>
-                            <th>Height (ft)</th>
-                            <th>Height (in)</th>
-                            <th>Major</th>
-                            <th>Hometown</th>
-                            <th>Action</th>
-                        </tr>
-                        {% for player in players %}
-                            <tr>
-                                <td class="editable" data-id="{{ player.id }}" data-type="player_number">{{ player.player_number }}</td>>
-                                <td class="editable" data-id="{{ player.id }}" data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="position">{{ player.position }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="class_standing">{{ player.class_standing }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="weight_pounds">{{ player.weight_pounds }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="height_feet">{{ player.height_feet }}</td>
-                                <!--<td><img src="/media/{{ player.profile_image }}" style="width:250px;height:100px"></td>-->
-                                <td class="editable" data-id="{{ player.id }}" data-type="height_inches">{{ player.height_inches }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="major">{{ player.major }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="hometown">{{ player.hometown }}</td>
-                                <td>
-                                    <a href="/edit_player/{{player.id}}" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-pencil"></span>
-                                    <a href="/delete_player/{{player.id}}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-minus"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                    </div>
-            </div>
-    {% endblock %}
-{% else %}
-    <p>You must login as a verified coach before continuing.</p>
-    <p>Are you a coach? Login <a href="/login/">here</a>.</p>
-{% endif %}
+{% block content %}
+<form action="" method="GET">
+    {% for field in form %}
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    {% endfor %}
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
+{#{% if user.is_authenticated %}#}
+{#    {% block content %}#}
+{#    Create a roster here.#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-lg-12">#}
+{#                <div class="form-group bg_blue">#}
+{#                    All Players#}
+{#                </div>#}
+{#                <div class="table">#}
+{#                    <table class="table">#}
+{#                        <tr>#}
+{#                            <th>Player #</th>#}
+{#                            <th>Name</th>#}
+{#                            <th>Position</th>#}
+{#                            <th>Class</th>#}
+{#                            <th>Weight (lbs)</th>#}
+{#                            <th>Height (ft)</th>#}
+{#                            <th>Height (in)</th>#}
+{#                            <th>Major</th>#}
+{#                            <th>Hometown</th>#}
+{#                            <th>Action</th>#}
+{#                        </tr>#}
+{#                        {% for player in players %}#}
+{#                            <tr>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="player_number">{{ player.player_number }}</td>>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="name">{{ player.first_name }} {{ player.last_name }}</td>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="position">{{ player.position }}</td>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="class_standing">{{ player.class_standing }}</td>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="weight_pounds">{{ player.weight_pounds }}</td>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="height_feet">{{ player.height_feet }}</td>#}
+{#                                <!--<td><img src="/media/{{ player.profile_image }}" style="width:250px;height:100px"></td>-->#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="height_inches">{{ player.height_inches }}</td>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="major">{{ player.major }}</td>#}
+{#                                <td class="editable" data-id="{{ player.id }}" data-type="hometown">{{ player.hometown }}</td>#}
+{#                                <td>#}
+{#                                    <a href="/edit_player/{{player.id}}" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-pencil"></span> </a>#}
+{#                                    <a href="/delete_player/{{player.id}}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-minus"></span></a>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{#                    </table>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#        <button type="button" class="btn btn-primary btn-sm">#}
+{#          <span class="glyphicon glyphicon-plus"></span> Add Player#}
+{#        </button>#}
+{#        <button type="button" class="btn btn-danger btn-sm">#}
+{#          <span class="glyphicon glyphicon-minus"></span> Remove Player#}
+{#        </button>#}
+{#    {% endblock %}#}
+{#{% else %}#}
+{#    <p>You must login as a verified coach before continuing.</p>#}
+{#    <p>Are you a coach? Login <a href="/login/">here</a>.</p>#}
+{#{% endif %}#}
 
 {% block custom_js %}
     <script>
@@ -76,7 +95,7 @@
             }); {% endcomment %}
             $(document).on("keypress", ".input-data", function(e){
                 var key = e.which;
-                if (key == 13) {
+                if (key === 13) {
                     var value = $(this).val();
                     var td = $(this).parent("td");
                     $(this).remove();
