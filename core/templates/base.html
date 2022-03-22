@@ -68,6 +68,29 @@
         color: #FFFFFF;
         background-color: #0275d8;
     }
+
+    .bg_blue{
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow :3px 3px 3px grey;
+        background: #0275d8;
+        color: #fff;
+    }
+    .custom-block{
+        padding: 15px;
+        border: 3px solid #0275d8;
+    }
+
+    {#input[type=button],#}
+    {#input[type=submit] {#}
+    {#    background-color: #0275d8;#}
+    {#    border: none;#}
+    {#    color: #fff;#}
+    {#    padding: 15px 30px;#}
+    {#    text-decoration: none;#}
+    {#    margin: 4px 2px;#}
+    {#    cursor: pointer;#}
+    {#  }#}
     </style>
 
     <!-- Below is where the title of the HTML file will go and any custom CSS will go. -->
@@ -85,7 +108,7 @@
         </li>
         {% if user.is_coach or user.is_scorekeeper %}
         <li>
-            <a href="/scorebook/"> Scorebook
+            <a href="/edit-scorebook/"> Scorebook
             <span class="glyphicon glyphicon-book" ></span>
             <div class="tooltip">Scorebook</div>
             </a>

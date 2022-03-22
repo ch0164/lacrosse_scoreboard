@@ -1,215 +1,118 @@
 {% extends "base.html" %}
-
 {% block title %}Scorebook{% endblock %}
-
+{% block custom_css %}
+<style type="text/css">
+    .tg {
+      border-collapse:collapse;
+      border-spacing:0;
+      table-layout: fixed;
+    }
+    .tg td {
+      border-color:black; 
+      width: 400px; 
+      border-style:solid;
+      border-width:1.5px;
+      font-family:Arial, sans-serif;font-size:12px;
+      overflow:hidden;
+      padding:10px 5px;
+      word-break:normal;
+    }
+    .tg th {
+      border-color:black;
+      border-style:solid;
+      border-width:1.5px;
+      font-family:Arial, sans-serif;font-size:10px;
+      font-weight:normal;
+      overflow:hidden;
+      padding:10px 5px;
+      word-break:normal;
+    }
+    .tg .tg-0pky {
+      border-color:inherit;
+      text-align:left;
+      vertical-align:top
+    }
+</style>
+{% endblock custom_css %}
 {% block content %}
-Record the game with the scorebook below.
-REFERENCE --------------------> https://mdbootstrap.com/docs/b4/jquery/tables/editable/
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Title of the document</title>
-    <style>
-      .fixed_header {
-        width: 1500px;
-        table-layout: fixed;
-        border-collapse: collapse;
-      }
-      .fixed_header tbody {
-        display: block;
-        width: 100%;
-        overflow: auto;
-        height: 100px;
-      }
-      .fixed_header thead tr {
-        display: block;
-      }
-      .fixed_header thead {
-        background: black;
-        color: #fff;
-      }
-      .fixed_header th,
-      .fixed_header td {
-        padding: 5px;
-        text-align: left;
-        width: 200px;
-      }
-    </style>
-  </head>
-  <body>
-    <table class="fixed_header">
-      <thead>
-        <tr>
-          <th class="text-center">POSITION</th>
-          <th class="text-center">PLAYER NUMBER</th>
-          <th class="text-center">NAME</th>
-          <th class="text-center">QUARTERS</th>
-          <th class="text-center">SHOTS</th>
-          <th class="text-center">GOALS</th>
-          <th class="text-center">ASSISTS</th>
-          <th class="text-center">GROUND BALLS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half" contenteditable="true">-</td>
-          <td class="pt-3-half">
-            <span class="table-up">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a>
-              </span>
-            <span class="table-down">
-              <a href="#!" class="indigo-text">
-                <i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a>
-              </span>
-          </td>
-          <td>
-            <span class="table-remove">
-                <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">Remove
-              </button>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-</html>
-{% endblock %}
+<h1>HOME PAGE</h1>
 
+<div style="display:flex; flex-direction: row; position:relative; left:550px; top: -50px; align-items: center">
+  <table class="tg" style="text-align: center;">
+      <tr>
+          <td><p style="font-weight: bold;">RUNNING SCORES</p>
+              <table class="tg">
+                  <thead>
+                    <table style="width: 1000px; height: 0px;">
+                    <body>
+                    <tr>
+                      <th scope="row">TEAM Y</th>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                      <th scope="row">TEAM Y</th>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
+                  </table>
+                  </body>
+                  </thead>
+                </table>
+            </td>
+        </tr>
+  </table>
+</div>
+
+<div style="display:flex; flex-direction: row; position:relative; left:500; top: 100px; align-items: center">
+  <table class="tg" style="text-align: center;">
+      <tr>
+          <td><p style="font-weight: bold;">GAME SCORING</p>
+              <table class="tg">
+                  <thead>
+                    <tr>
+                      <th class="tg-0pky">NO.</th>
+                      <th class="tg-0pky">NAME</th>
+                      <th class="tg-0pky">G</th>
+                      <th class="tg-0pky">A</th>
+                      <th class="tg-0pky">P</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </td>
+        </tr>
+  </table>
+</div>
+{% endblock %}

@@ -1,19 +1,12 @@
 from django.urls import path
-from .views import EditRoster, EditPlayer, HomeView, PublishedScorebooksView, RosterView, \
-    EditScorebookView, ScorebookView
+import core.views as views
 
 urlpatterns = [
-    path('', HomeView),
-    #path("<int:id>", index, name="index"),
-    path('published-scorebooks/', PublishedScorebooksView),
-    path('scorebook/', ScorebookView),
-    path('edit-scorebook/', EditScorebookView),
-    path('roster/', RosterView),
-    path('save-roster/', EditRoster),
-    path('edit_player/<int:player_id>', EditPlayer, name="edit_player"),
-    # path('create-player/', CreatePlayerView.as_view()),
-    # path('create-roster/', CreateRosterView.as_view()),
-    # path('list-player/', ListPlayerView.as_view()),
-    # path('list-roster/', ListRosterView.as_view()),
-
+    path('', views.home),
+    path('published-scorebooks/', views.view_scorebook),
+    path('scorebook/', views.view_scorebook),
+    path('edit-scorebook/', views.edit_scorebook),
+    path('edit-player/<int:player_id>/', views.edit_player, name="edit_player"),
+    path('roster/', views.view_roster),
+    path('delete-player/<int:player_id>', views.delete_player, name="delete_player"),
 ]

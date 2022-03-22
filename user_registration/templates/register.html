@@ -4,15 +4,17 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div id="content" name="content" class="register">
-    <div class="bg-white col-md-8 col-sm-8">
-        <h1 class="mt-2">Register your account below.</h1>
-        <hr class="ml-auto mr-auto mt-auto mb-auto">
-        <form method="POST" class="form-group" action="/register/">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-success">Register</button>
-        </form>
+<div class="container">
+    <div id="content" name="content" class="register">
+        <div class="custom-block col-md-8 col-sm-8">
+            <h1 class="bg_blue">Register your account below.</h1>
+            <hr class="ml-auto mr-auto mt-auto mb-auto">
+            <form method="POST" class="form-group" action="/register/">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success">Register</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
