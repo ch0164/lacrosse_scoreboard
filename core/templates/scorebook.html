@@ -5,6 +5,7 @@
     .tg {
       border-collapse:collapse;
       border-spacing:0;
+      overflow-y: auto;
     }
     .tg td {
       border-color:black; 
@@ -29,20 +30,20 @@
     .tg .tg-0pky {
       border-color:inherit;
       text-align:left;
-      vertical-align:top
+      vertical-align:top;
     }
 </style>
 {% endblock custom_css %}
 {% block content %}
 <h1>HOME PAGE</h1>
 
-<div style="position: fixed; bottom:100; right: 1300px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:100; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
           <td><p style="font-weight: bold;">RUNNING SCORES</p>
               <table class="tg">
                   <thead>
-                    <table style="width: 1000px; height: 0px;">
+                    <table style="width: 1500px; height: 0px;">
                     <body>
                     <tr>
                       <th scope="row">TEAM Y</th>
@@ -56,9 +57,13 @@
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
                     <tr>
                       <th scope="row">TEAM Y</th>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
@@ -79,12 +84,13 @@
   </table>
 </div>
 
-<div style="position: fixed; bottom:100; right: 200px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:450px; right: 700px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
           <td><p style="font-weight: bold;">GAME SCORING</p>
               <table class="tg">
                   <thead>
+                    <table style=" height: 100px; width: 400px;">
                     <tr>
                       <th class="tg-0pky">NO.</th>
                       <th class="tg-0pky">NAME</th>
@@ -114,12 +120,13 @@
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom:500px; right: 1300px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:500px; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">HOME ROSTER</p>
               <table class="tg">
                   <thead>
+                    <table style="width: 600px;">
                     <tr>
                       <th class="tg-0pky">NO.</th>
                       <th class="tg-0pky">NAME</th>
@@ -176,18 +183,20 @@
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
+                  </table>
                   </tbody>
                 </table>
             </td>
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom:200px; right: 1300px; width: 300px; align-items: center">
+<div style="height: 100px; overflow: auto; position: fixed; bottom:200px; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">VISITING ROSTER</p>
               <table class="tg">
                   <thead>
+                    <table style="height: 500px; width: 600px;">
                     <tr>
                       <th class="tg-0pky">NO.</th>
                       <th class="tg-0pky">NAME</th>
@@ -244,6 +253,45 @@
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
+                  </table>
+                  </tbody>
+                </table>
+            </td>
+        </tr>
+  </table>
+</div>
+<div style="position: fixed; bottom: 620px; right: 700px; width: 300px; align-items: center">
+  <table class="tg" style="text-align: center;">
+      <tr>
+        <td><p style="font-weight: bold;">PENALTIES & FOULS</p>
+              <table class="tg">
+                  <thead>
+                    <table style="height: 100px; width: 600px;">
+                    <tr>
+                      <th class="tg-0pky">PERSONAL OR TECHNICAL</th>
+                      <th class="tg-0pky">PLAYER NO.</th>
+                      <th class="tg-0pky">INFRACTION</th>
+                      <th class="tg-0pky">QUARTER</th>
+                      <th class="tg-0pky">TIME</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
+                    <tbody>
+                      <tr>
+                        <td class="tg-0pky" contenteditable="true"></td>
+                        <td class="tg-0pky" contenteditable="true"></td>
+                        <td class="tg-0pky" contenteditable="true"></td>
+                        <td class="tg-0pky" contenteditable="true"></td>
+                        <td class="tg-0pky" contenteditable="true"></td>
+                      </tr>
+                    </table>
                   </tbody>
                 </table>
             </td>
