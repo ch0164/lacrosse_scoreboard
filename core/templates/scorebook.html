@@ -35,7 +35,20 @@
 </style>
 {% endblock custom_css %}
 {% block content %}
-<h1>HOME PAGE</h1>
+
+<h1 style="font-size:25px; font-family: Arial,sans-serif; font-weight: bold;">SCOREBOOK</h1>
+
+<style>
+  label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+  }
+input, label {
+    margin: .4rem 0;
+}
+</style>
+  <label for="name">Coach or Scorekeeper:</label>
+  <input type="text"required minlength="1" maxlength="100">
 
 <div style="position: fixed; bottom:100; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
