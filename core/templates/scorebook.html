@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Scorebook{% endblock %}
+button website: https://www.w3schools.com/tags/tag_button.asp
 {% block custom_css %}
 <style type="text/css">
     .tg {
       border-collapse:collapse;
       border-spacing:0;
-      overflow-y: auto;
+      cursor:cell
     }
     .tg td {
-      border-color:black; 
-      width: 400px; 
+      border-color:rgb(0, 0, 0); 
       border-style:solid;
       border-width:1.5px;
       font-family:Arial, sans-serif;font-size:12px;
@@ -18,7 +18,6 @@
       word-break:normal;
     }
     .tg th {
-      border-color:black;
       border-style:solid;
       border-width:1.5px;
       font-family:Arial, sans-serif;font-size:10px;
@@ -32,11 +31,26 @@
       text-align:left;
       vertical-align:top;
     }
+.button {
+  border: none;
+  color: white;
+  padding: 15px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor:pointer;
+  vertical-align: right;
+}
+
+.button1 {background-color: #4CAF50;} /* Green */
+.button2 {background-color: #008CBA;} /* Blue */
 </style>
 {% endblock custom_css %}
 {% block content %}
 
-<h1 style="font-size:25px; font-family: Arial,sans-serif; font-weight: bold;">SCOREBOOK</h1>
+<h1 style="font-size:60px; font-family: Arial,sans-serif; font-weight: bold; text-align: center;">SCOREBOOK</h1>
 
 <style>
   label {
@@ -50,7 +64,7 @@ input, label {
   <label for="name">Coach or Scorekeeper:</label>
   <input type="text"required minlength="1" maxlength="100">
 
-<div style="position: fixed; bottom:100; right: 1600px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:100; right: 1600px; width: 300px; align-items: center;">
   <table class="tg" style="text-align: center;">
       <tr>
           <td><p style="font-weight: bold;">RUNNING SCORES</p>
@@ -59,7 +73,7 @@ input, label {
                     <table style="width: 1500px; height: 0px;">
                     <body>
                     <tr>
-                      <th scope="row">TEAM Y</th>
+                      <td class="tg-0pky" contenteditable="true">HOME TEAM</td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
@@ -74,7 +88,7 @@ input, label {
                       <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
                     <tr>
-                      <th scope="row">TEAM Y</th>
+                      <td class="tg-0pky" contenteditable="true">VISITING TEAM</td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
@@ -97,7 +111,7 @@ input, label {
   </table>
 </div>
 
-<div style="position: fixed; bottom:400px; right: 700px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:405px; right: 950px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
           <td><p style="font-weight: bold;">GAME SCORING</p>
@@ -133,7 +147,7 @@ input, label {
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom:460px; right: 1600px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">HOME ROSTER</p>
@@ -197,13 +211,14 @@ input, label {
                       <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
                   </table>
+                  <button class="button button1">Import Roster</button>
                   </tbody>
                 </table>
             </td>
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom:200px; right: 1600px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:100px; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">VISITING ROSTER</p>
@@ -258,13 +273,14 @@ input, label {
                       <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
                   </table>
+                  <button class="button button1">Import Roster</button>
                   </tbody>
                 </table>
             </td>
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom: 580px; right: 700px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:575px; right: 950px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">PENALTIES & FOULS</p>
