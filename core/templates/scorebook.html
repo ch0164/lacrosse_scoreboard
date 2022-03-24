@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Scorebook{% endblock %}
 button website: https://www.w3schools.com/tags/tag_button.asp
+coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
 {% block custom_css %}
 <style type="text/css">
     .tg {
@@ -43,6 +44,12 @@ button website: https://www.w3schools.com/tags/tag_button.asp
   cursor:pointer;
   vertical-align: right;
 }
+.checkboxelement {
+    display: flex;
+    justify-content:center;
+    width: 60%;
+    margin: .5rem;
+}
 
 .button1 {background-color: #4CAF50;} /* Green */
 .button2 {background-color: #008CBA;} /* Blue */
@@ -52,17 +59,15 @@ button website: https://www.w3schools.com/tags/tag_button.asp
 
 <h1 style="font-size:60px; font-family: Arial,sans-serif; font-weight: bold; text-align: center;">SCOREBOOK</h1>
 
-<style>
-  label {
-    display: block;
-    font: 1rem 'Fira Sans', sans-serif;
-  }
-input, label {
-    margin: .4rem 0;
-}
-</style>
-  <label for="name">Coach or Scorekeeper:</label>
-  <input type="text"required minlength="1" maxlength="100">
+<div class="checkboxelement">
+  <label for="cheese">Do you like cheese?</label>
+  <input type="checkbox" name="cheese" id="cheese">
+</div>
+
+<div class="checkboxelement">
+  <label for="peas">Do you like peas?</label>
+  <input type="checkbox" name="peas" id="peas">
+</div>
 
 <div style="position: fixed; bottom:100; right: 1600px; width: 300px; align-items: center;">
   <table class="tg" style="text-align: center;">
@@ -111,7 +116,7 @@ input, label {
   </table>
 </div>
 
-<div style="position: fixed; bottom:405px; right: 950px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:575px; right: 950px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
           <td><p style="font-weight: bold;">GAME SCORING</p>
@@ -280,7 +285,7 @@ input, label {
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom:575px; right: 950px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:405px; right: 950px;width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">PENALTIES & FOULS</p>
@@ -312,6 +317,43 @@ input, label {
                         <td class="tg-0pky" contenteditable="true"></td>
                       </tr>
                     </table>
+                  </tbody>
+                </table>
+            </td>
+        </tr>
+  </table>
+</div>
+<div style="position: fixed; bottom: 100px; right: 950px; width: 300px; align-items: center">
+  <table class="tg" style="text-align: center;">
+      <tr>
+          <td><p style="font-weight: bold;">FINAL SCORES</p>
+              <table class="tg">
+                  <thead>
+                    <table style=" height: 100px; width: 600px;">
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="tg-0pky" contenteditable="true">HOME TEAM</td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
+                    <tr>
+                      <td class="tg-0pky" contenteditable="true">VISITING TEAM</td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                      <td class="tg-0pky" contenteditable="true"></td>
+                    </tr>
                   </tbody>
                 </table>
             </td>
