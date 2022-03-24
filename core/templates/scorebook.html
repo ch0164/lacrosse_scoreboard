@@ -53,10 +53,12 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
 
 .button1 {background-color: #4CAF50;} /* Green */
 .button2 {background-color: #008CBA;} /* Blue */
+.button3 {background-color: #4CAF50;  position: absolute; right: 300px; bottom: 50px;}
+.button4 {background-color: #af4c4c;  position: absolute; right: 150px; bottom: 50px;}
 </style>
 {% endblock custom_css %}
 {% block content %}
-
+<div>
 <h1 style="font-size:60px; font-family: Arial,sans-serif; font-weight: bold; text-align: center;">SCOREBOOK</h1>
 
 <div class="checkboxelement">
@@ -359,5 +361,8 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
             </td>
         </tr>
   </table>
+</div>
+<button class="button button3">Save Changes</button>
+<button class="button button4">Discard Changes</button>
 </div>
 {% endblock %}
