@@ -1,11 +1,17 @@
 from django.contrib import admin
 
-from .models import Coach, Player, Roster
-from user_registration.models import CustomUser
+import core.models as core
+import user_registration.models as registration
 
-# Register your models here.
-admin.site.register(Coach)
-admin.site.register(Player)
-admin.site.register(Roster)
-admin.site.register(CustomUser)
+admin.site.register(core.Roster)
+admin.site.register(core.Coach)
+admin.site.register(core.Scorekeeper)
+admin.site.register(core.Player)
+admin.site.register(core.RunningScore)
+admin.site.register(core.Score)
+admin.site.register(core.Scorebook)
+admin.site.register(core.PlayerStatistics)
+admin.site.register(core.Penalty)
+
+admin.site.register(registration.CustomUser)
 

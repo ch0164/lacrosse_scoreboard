@@ -1,109 +1,209 @@
 {% extends "base.html" %}
 
 {% block title %}Roster{% endblock %}
+{% load crispy_forms_tags %}
 
-{% if user.is_authenticated %}
-    {% block content %}
-    Create a roster here.
+{% block custom_css %}
+<style>
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-header {
+      padding: 0px 16px;
+      background-color: #0275d8;
+      color: white;
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 30px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+      color: black;
+      float: right;
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                    <div class="form-group bg_blue">
-                        All Players
+        <div class="custom-block col-md-8 col-sm-8">
+        <h1 class="bg_blue">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}'s Roster</h1>
+        {% if has_roster is False %}
+                <p>No roster has been established yet. Click below to establish a roster.</p>
+                <!-- Roster Modal -->
+                <button id="buttonElement" class="btn btn-primary btn-lg">Establish Roster</button>
+                <div id="modalElement" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="close">&times;</span>
+                            <h2>Establish New Roster</h2>
+                        </div>
+                        <form action="" method="GET">
+                            {{ form|crispy }}
+                            <input class="btn btn-primary btn-lg" type="submit" value="Create">
+                            <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+                        </form>
                     </div>
-                    <div class="table">
-                    <table class="table">
-                        <tr>
-                            <th>Player #</th>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Class</th>
-                            <th>Weight (lbs)</th>
-                            <th>Height (ft)</th>
-                            <th>Height (in)</th>
-                            <th>Major</th>
-                            <th>Hometown</th>
-                            <th>Action</th>
-                        </tr>
-                        {% for player in players %}
-                            <tr>
-                                <td class="editable" data-id="{{ player.id }}" data-type="player_number">{{ player.player_number }}</td>>
-                                <td class="editable" data-id="{{ player.id }}" data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="position">{{ player.position }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="class_standing">{{ player.class_standing }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="weight_pounds">{{ player.weight_pounds }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="height_feet">{{ player.height_feet }}</td>
-                                <!--<td><img src="/media/{{ player.profile_image }}" style="width:250px;height:100px"></td>-->
-                                <td class="editable" data-id="{{ player.id }}" data-type="height_inches">{{ player.height_inches }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="major">{{ player.major }}</td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="hometown">{{ player.hometown }}</td>
-                                <td>
-                                    <a href="/edit_player/{{player.id}}" class="btn btn-success btn-sm"> <span class="glyphicon glyphicon-pencil"></span>
-                                    <a href="/delete_player/{{player.id}}" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-minus"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                    </div>
+                </div>
             </div>
-    {% endblock %}
-{% else %}
-    <p>You must login as a verified coach before continuing.</p>
-    <p>Are you a coach? Login <a href="/login/">here</a>.</p>
-{% endif %}
+        {% else %}
+            <p><b>School</b>: {{ roster.school }}</p>
+            <p><b>Team Name</b>: {{ roster.team_name }}</p>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="table">
+                        <table class="table">
+                            <tr>
+                                <th>Player #</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Class</th>
+                                <th>Weight (lbs)</th>
+                                <th>Height (ft in)</th>
+                                <th>Major</th>
+                                <th>Hometown</th>
+                                <th>Action</th>
+                            </tr>
+                            {% for player in players %}
+                                <tr>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="player_number">{{ player.player_number }}</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="position">{{ player.position }}</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="class_standing">{{ player.class_standing }}</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="weight_pounds">{{ player.weight_pounds }}</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="major">{{ player.major }}</td>
+                                    <td class="editable" data-id="{{ player.id }}" data-type="hometown">{{ player.hometown }}</td>
+                                    <td>
+                                        <a href="/edit-player/{{player.id}}" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="/delete-player/{{player.id}}" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-lg" id="buttonElement">Add Player</button>
+            <div id="modalElement" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                        <h2>Add Player</h2>
+                    </div>
+                    <form action="" method="GET">
+                        {{ form|crispy }}
+                        <input class="btn btn-primary btn-lg" type="submit" id="" value="Add">
+                        <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
 
 {% block custom_js %}
     <script>
-        $(document).ready(function() {
-            $(document).on("dblclick", ".editable", function(){
-                var value = $(this).text();
-                var data_type = $(this).data("type");
-                var input_type = "text";
-                var input = "<input type='" + input_type + "' class='input-data' value='" + value + "' class='form-control'>";
-                $(this).html(input);
-                $(this).removeClass("editable")
-            });
+        /* Modal Dialogue */
+        var modalElement = document.getElementById("modalElement");
+        var buttonElement = document.getElementById("buttonElement");
+        var cancelButton = document.getElementById("cancelButton");
+        var span = document.getElementsByClassName("close")[0];
+        // When the user clicks on the button, open the modal
+        buttonElement.onclick = function() {
+          modalElement.style.display = "block";
+        }
+        cancelButton.onclick = function() {
+            modalElement.style.display = "none";
+        }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modalElement.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target === modalElement) {
+              modalElement.style.display = "none";
+          }
+        }
 
-            {% comment %} $(document).on("blur", ".input-data", function(){
-                var value = $(this).val();
-                var td = $(this).parent("td");
-                $(this).remove();
-                td.html(value);
-                td.addClass("editable");
-                var type = td.data("type");
-                sendToServer(td.data("id"), value, type);
-            }); {% endcomment %}
-            $(document).on("keypress", ".input-data", function(e){
-                var key = e.which;
-                if (key == 13) {
-                    var value = $(this).val();
-                    var td = $(this).parent("td");
-                    $(this).remove();
-                    td.html(value);
-                    td.addClass("editable");
-                   var type = td.data("type");
-                   sendToServer(td.data("id"), value,type);
-                }
-            });
-
-            function sendToServer(id, value, type) {
-                console.log(id);
-                console.log(value);
-                console.log(type);
-                $.ajax({
-                    url: "http://127.0.0.1:8000/save-roster/",
-                    type: "GET",
-                    data: {id: id, type: type, value: value},
-                })
-                .done(function(response) {
-                    console.log(response);
-                })
-                .fail(function() {
-                   console.log("Error Occured");
-                });
-
-            }
-        });
+        {#$(document).ready(function() {#}
+        {#    $(document).on("dblclick", ".editable", function(){#}
+        {#        var value = $(this).text();#}
+        {#        var data_type = $(this).data("type");#}
+        {#        var input_type = "text";#}
+        {#        var input = "<input type='" + input_type + "' class='input-data' value='" + value + "' class='form-control'>";#}
+        {#        $(this).html(input);#}
+        {#        $(this).removeClass("editable")#}
+        {#    });#}
+        {##}
+        {#    {% comment %} $(document).on("blur", ".input-data", function(){#}
+        {#        var value = $(this).val();#}
+        {#        var td = $(this).parent("td");#}
+        {#        $(this).remove();#}
+        {#        td.html(value);#}
+        {#        td.addClass("editable");#}
+        {#        var type = td.data("type");#}
+        {#        sendToServer(td.data("id"), value, type);#}
+        {#    }); {% endcomment %}#}
+        {#    $(document).on("keypress", ".input-data", function(e){#}
+        {#        var key = e.which;#}
+        {#        if (key === 13) {#}
+        {#            var value = $(this).val();#}
+        {#            var td = $(this).parent("td");#}
+        {#            $(this).remove();#}
+        {#            td.html(value);#}
+        {#            td.addClass("editable");#}
+        {#           var type = td.data("type");#}
+        {#           sendToServer(td.data("id"), value,type);#}
+        {#        }#}
+        {#    });#}
+        {##}
+        {#    function sendToServer(id, value, type) {#}
+        {#        console.log(id);#}
+        {#        console.log(value);#}
+        {#        console.log(type);#}
+        {#        $.ajax({#}
+        {#            url: "http://127.0.0.1:8000/update-player/",#}
+        {#            type: "GET",#}
+        {#            data: {id: id, type: type, value: value},#}
+        {#        })#}
+        {#        .done(function(response) {#}
+        {#            console.log(response);#}
+        {#        })#}
+        {#        .fail(function() {#}
+        {#           console.log("Error Occured");#}
+        {#        });#}
+        {##}
+        {#    }#}
     </script>
 {% endblock custom_js %}

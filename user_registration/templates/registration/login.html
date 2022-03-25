@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}
-Login below.
-{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="POST" class="form-group">
-    {% csrf_token %}
-    {{form|crispy}}
-    <p>Don't have an account? Create one <a href="/register/">here</a>.</p>
-    <button type="submit" class="btn btn-success">Login</button>
-</form>
+<div class="container">
+    <div id="content" name="content" class="login">
+        <div class="custom-block col-md-8 col-sm-8">
+            <h1 class="bg_blue">Login</h1>
+            <hr class="ml-auto mr-auto mt-auto mb-auto">
+            <form method="POST" class="form-group">
+                {% csrf_token %}
+                {{form|crispy}}
+                <p>Don't have an account? Create one <a href="/register/">here</a>.</p>
+                <button type="submit" class="btn btn-success">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
