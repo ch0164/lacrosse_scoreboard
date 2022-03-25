@@ -22,7 +22,7 @@ def view_scorebook(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def edit_scorebook(request: HttpRequest) -> HttpResponse:
-    return render(request, "scorebook.html")
+    return render(request, "scorebook.html", {"numbers": list(range(100))})
 
 
 @login_required
