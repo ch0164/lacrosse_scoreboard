@@ -4,10 +4,14 @@ button website: https://www.w3schools.com/tags/tag_button.asp
 coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
 {% block custom_css %}
 <style type="text/css">
+  	* {
+    padding: 0;
+    margin: 0;
+}
     .tg {
       border-collapse:collapse;
       border-spacing:0;
-      cursor:cell
+      cursor:cell;
     }
     .tg td {
       border-color:rgb(0, 0, 0); 
@@ -53,7 +57,33 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
 div.scrollWrapper{
 height:250px;
 width: 200px;;
-overflow:scroll;
+overflow-y:scroll;
+}
+
+.boxalign2 {
+    width:400px;
+}
+input.rounded2 {
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+    font-size: 20px;
+    padding: 4px 7px;
+    outline: 0;
+    -webkit-appearance: none;
+	display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+label {
+    text-align:right;
+    padding-right:20px;
+    display:inline-block;
+    min-width:150px;
 }
 
 
@@ -64,6 +94,13 @@ overflow:scroll;
 </style>
 {% endblock custom_css %}
 {% block content %}
+<div id="boxalign2" class="boxalign2" >
+					
+  <label>Hospital*:</label><input class="rounded2" required title="Hospital is required!" name="MainHospital" type="text" />	
+        <label>Title*:</label><input class="rounded2" name="MainTitle" type="text"/>			
+        <label>Department*:</label><input class="rounded2" name="MainDept" type="text"/>
+      
+    </div>	
 <div>
 <h1 style="font-size:60px; font-family: Arial,sans-serif; font-weight: bold; text-align: center;">SCOREBOOK</h1>
 
@@ -126,14 +163,13 @@ overflow:scroll;
   </table>
 </div>
 </div>
-<div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center", class="scrollWrapper">
+<div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
-      <tr>
         <td><p style="font-weight: bold;">HOME ROSTER</p>
+          <div class="scrollWrapper">
               <table class="tg">
-                  <thead>
                     <table style="width: 600px;">
-                      <tbody height= 500px;>
+                      <tbody height= "500px;" width="600px">
                     <tr>
                       <th class="tg-0pky">NO.</th>
                       <th class="tg-0pky">NAME</th>
@@ -143,7 +179,7 @@ overflow:scroll;
                       <th class="tg-0pky">ASSISTS</th>
                       <th class="tg-0pky">GROUND BALLS</th>
                     </tr>
-                  </thead>
+                  </div>
                   <tbody>
                     <tr>
                       <td class="tg-0pky" contenteditable="true"></td>
@@ -261,7 +297,7 @@ overflow:scroll;
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom:405px; right: 950px;width: 300px; align-items: center">
+<div style="position: fixed; bottom:450px; right: 700px;width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">PENALTIES & FOULS</p>
@@ -284,7 +320,6 @@ overflow:scroll;
                       <td class="tg-0pky" contenteditable="true"></td>
                       <td class="tg-0pky" contenteditable="true"></td>
                     </tr>
-                    <tbody>
                       <tr>
                         <td class="tg-0pky" contenteditable="true"></td>
                         <td class="tg-0pky" contenteditable="true"></td>
@@ -292,6 +327,27 @@ overflow:scroll;
                         <td class="tg-0pky" contenteditable="true"></td>
                         <td class="tg-0pky" contenteditable="true"></td>
                       </tr>
+                        <tr>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                      </tr>
+                        <tr>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                          <td class="tg-0pky" contenteditable="true"></td>
+                        </tr>
+                          <tr>
+                            <td class="tg-0pky" contenteditable="true"></td>
+                            <td class="tg-0pky" contenteditable="true"></td>
+                            <td class="tg-0pky" contenteditable="true"></td>
+                            <td class="tg-0pky" contenteditable="true"></td>
+                            <td class="tg-0pky" contenteditable="true"></td>
+                          </tr>
                     </table>
                   </tbody>
                 </table>
@@ -299,7 +355,7 @@ overflow:scroll;
         </tr>
   </table>
 </div>
-<div style="position: fixed; bottom: 100px; right: 950px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:290px; right: 700px; width: 300px; align-items: center">
   <table class="tg" style="text-align: center;">
       <tr>
           <td><p style="font-weight: bold;">FINAL SCORES</p>
