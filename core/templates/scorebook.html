@@ -50,6 +50,12 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
     width: 60%;
     margin: .5rem;
 }
+div.scrollWrapper{
+height:250px;
+width: 200px;;
+overflow:scroll;
+}
+
 
 .button1 {background-color: #4CAF50;} /* Green */
 .button2 {background-color: #008CBA;} /* Blue */
@@ -77,7 +83,8 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
           <td><p style="font-weight: bold;">RUNNING SCORES</p>
               <table class="tg">
                   <thead>
-                    <table style="width: 1500px; height: 0px;">
+                    <table style="width: 1500px;">
+              
                     <body>
                     <tr>
                       <td class="tg-0pky" contenteditable="true">HOME TEAM</td>
@@ -115,52 +122,18 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                 </table>
             </td>
         </tr>
+      </tbody>
   </table>
 </div>
-
-<div style="position: fixed; bottom:575px; right: 950px; width: 300px; align-items: center">
-  <table class="tg" style="text-align: center;">
-      <tr>
-          <td><p style="font-weight: bold;">GAME SCORING</p>
-              <table class="tg">
-                  <thead>
-                    <table style=" height: 100px; width: 400px;">
-                    <tr>
-                      <th class="tg-0pky">NO.</th>
-                      <th class="tg-0pky">NAME</th>
-                      <th class="tg-0pky">G</th>
-                      <th class="tg-0pky">A</th>
-                      <th class="tg-0pky">P</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                    </tr>
-                    <tr>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                      <td class="tg-0pky" contenteditable="true"></td>
-                    </tr>
-                  </tbody>
-                </table>
-            </td>
-        </tr>
-  </table>
 </div>
-<div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center">
+<div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center", class="scrollWrapper">
   <table class="tg" style="text-align: center;">
       <tr>
         <td><p style="font-weight: bold;">HOME ROSTER</p>
               <table class="tg">
                   <thead>
                     <table style="width: 600px;">
+                      <tbody height= 500px;>
                     <tr>
                       <th class="tg-0pky">NO.</th>
                       <th class="tg-0pky">NAME</th>
@@ -223,6 +196,7 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                 </table>
             </td>
         </tr>
+      </tbody>
   </table>
 </div>
 <div style="position: fixed; bottom:100px; right: 1600px; width: 300px; align-items: center">
