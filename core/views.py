@@ -7,7 +7,7 @@ from core.models import *
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    return render(request, "home.html")
+    return render(request, "home.html", {"scorebook": Scorebook.objects.all()[0], "numbers": list(range(100))})
 
 
 def login(request: HttpRequest) -> HttpResponse:

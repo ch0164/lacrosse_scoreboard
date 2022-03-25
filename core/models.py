@@ -114,7 +114,7 @@ class Score(models.Model):
 class Scorebook(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    time_remaining = models.DateTimeField(default=datetime.time(1, 0, 0))
+    # time_remaining = models.DateTimeField(default=datetime.time(1, 0, 0))
     is_published = models.BooleanField(default=False)
     home_score = models.PositiveIntegerField(default=0)
     visiting_score = models.PositiveIntegerField(default=0)
