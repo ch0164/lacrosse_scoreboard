@@ -60,23 +60,24 @@
         display: none;
     }
 
-    .wrapper ul li a:hover .tooltip{
+    .wrapper ul li a: hover .tooltip{
         display: block;
     }
 
-    #nav li a:hover {
+    #nav li a: hover {
         color: #FFFFFF;
         background-color: #0275d8;
     }
 
-    .bg_blue{
+    .bg_blue {
         padding: 10px;
         border-radius: 10px;
         box-shadow :3px 3px 3px grey;
         background: #0275d8;
         color: #fff;
+        text-align: center;
     }
-    .custom-block{
+    .custom-block {
         padding: 15px;
         border: 3px solid #0275d8;
     }
@@ -102,14 +103,14 @@
     <ul>
         <li>
             <a href="/">Home
-            <span class="glyphicon glyphicon-home" ></span>
+            <span class="glyphicon glyphicon-home"></span>
             <div class="tooltip">Home</div>
             </a>
         </li>
         {% if user.is_coach or user.is_scorekeeper %}
         <li>
             <a href="/edit-scorebook/"> Scorebook
-            <span class="glyphicon glyphicon-book" ></span>
+            <span class="glyphicon glyphicon-book"></span>
             <div class="tooltip">Scorebook</div>
             </a>
         </li>
@@ -117,7 +118,7 @@
         {% if user.is_coach %}
         <li>
             <a href="/roster/">Roster
-            <span class="glyphicon glyphicon-list-alt" ></span>
+            <span class="glyphicon glyphicon-list-alt"></span>
             <div class="tooltip">Roster</div>
             </a>
         </li>
@@ -125,12 +126,12 @@
         <li>
             {% if user.is_authenticated %}
                 <a href="/logout/">Logout
-                <span class="glyphicon glyphicon-user" ></span>
+                <span class="glyphicon glyphicon-user"></span>
                 <div class="tooltip">Account</div>
                 </a>
             {% else %}
                 <a href="/login/">Login
-                <span class="glyphicon glyphicon-user" ></span>
+                <span class="glyphicon glyphicon-user"></span>
                 <div class="tooltip">Account</div>
                 </a>
             {% endif %}
