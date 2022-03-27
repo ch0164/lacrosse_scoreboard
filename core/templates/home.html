@@ -20,8 +20,8 @@
         background-color: #96D4D4
     }
 
-    <!-- tr:hover {background-color: #96D4D4; -->
-    tr:nth-child(even) {background-color: #f2f2f2;}
+    {#<!-- tr:hover {background-color: #96D4D4; -->#}
+    {#tr:nth-child(even) {background-color: #f2f2f2;}#}
 
     div.scrollWrapper {
         height: 900px;
@@ -36,13 +36,13 @@
     }
 
     .tg td {
-        border:1.5px solid #000;
+        border: 1.5px solid #000;
         font-family: Arial, sans-serif;
         font-size: 12px;
         overflow: hidden;
         padding: 10px 5px;
         word-break: normal;
-        width:0.1%;
+        width: 0.1%;
         white-space: nowrap;
     }
 
@@ -63,7 +63,6 @@
         text-align: center;
         vertical-align: top;
     }
-
     </style>
 {% endblock custom_css %}
 
@@ -73,22 +72,20 @@
         <h1 class="bg_blue">Published Scorebooks</h1>
         <div class="scrollWrapper">
             <table class="table">
-                <table class="table" style="font-size:20px">
-                    <th>
-                        Home Team   --   Visiting Team
-                    </th>
+                <table class="table table-striped" style="font-size:20px;">
+                    <th>Home Team   —   Visiting Team</th>
                     {% for n in numbers %}
                         {% if scorebook.home_score > scorebook.visiting_score %}
                         <!-- Home score green - Visitor score red -->
                             <tr>
                                 <td>
-                                    <span style="color:green; float:left; width:25%;">
+                                    <span style="color:green; float:left; width:25%; font-size: 30px;">
                                         <b>{{ scorebook.home_score}}</b>
                                     </span>
                                     <span style="text-align: center;">
-                                        {{scorebook.home_coach.roster}}  -- {{scorebook.visiting_coach.roster}}
+                                        <a href="scorebook/{{ scorebook.id }}">{{ scorebook.home_coach.roster }} — {{ scorebook.visiting_coach.roster }}</a>
                                     </span>
-                                    <span style="color:red; float:right; width:25%;">
+                                    <span style="color:red; float:right; width:25%; font-size: 30px;">
                                         <b>{{ scorebook.visiting_score }}</b>
                                     </span>
                                 </td>
@@ -97,28 +94,28 @@
                         <!-- Home score red - Visitor score green -->
                             <tr>
                                 <td>
-                                        <span style="color:red; float:left; width:25%;">
-                                            <b>{{ scorebook.home_score}}</b>
-                                        </span>
-                                        <span style="text-align: center;">
-                                            {{scorebook.home_coach.roster}}  -- {{scorebook.visiting_coach.roster}}
-                                        </span>
-                                        <span style="color:green; float:right; width:25%;">
-                                            <b>{{ scorebook.visiting_score }}</b>
-                                        </span>
+                                    <span style="color:red; float:left; width:25%; font-size: 30px;">
+                                        <b>{{ scorebook.home_score}}</b>
+                                    </span>
+                                    <span style="text-align: center;">
+                                        <a href="scorebook/{{ scorebook.id }}">{{ scorebook.home_coach.roster }} — {{ scorebook.visiting_coach.roster }}</a>
+                                    </span>
+                                    <span style="color:green; float:right; width:25%; font-size: 30px;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
                                 </td>
                             </tr>
                         {% else %}
                         <!-- TIE Home score and Visitor score yellow -->
                             <tr>
                                 <td>
-                                    <span style="color:orange; float:left; width:25%;">
+                                    <span style="color:orange; float:left; width: 25%; font-size: 30px;">
                                         <b>{{ scorebook.home_score}}</b>
                                     </span>
                                     <span style="text-align: center;">
-                                        {{scorebook.home_coach.roster}}  -- {{scorebook.visiting_coach.roster}}
+                                        <a href="scorebook/{{ scorebook.id }}">{{ scorebook.home_coach.roster }} — {{ scorebook.visiting_coach.roster }}</a>
                                     </span>
-                                    <span style="color:orange; float:right; width:25%;">
+                                    <span style="color:orange; float:right; width: 25%; font-size: 30px;">
                                         <b>{{ scorebook.visiting_score }}</b>
                                     </span>
                                 </td>
