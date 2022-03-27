@@ -21,7 +21,7 @@
 
     .modal-header {
       padding: 0px 16px;
-      background-color: #0275d8;
+      background-color: black;
       color: white;
     }
 
@@ -54,15 +54,15 @@
 {% block content %}
     <div class="container">
         <div class="custom-block col-md-8 col-sm-8">
-        <h1 class="bg_blue">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}'s Roster</h1>
+        <h1 class="bg_black">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}'s Roster</h1>
         {% if has_roster is False %}
                 <p>No roster has been established yet. Click below to establish a roster.</p>
                 <!-- Roster Modal -->
                 <button id="buttonElement" class="btn btn-primary btn-lg">Establish Roster</button>
                 <div id="modalElement" class="modal">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <span class="close">&times;</span>
+                        <div class="modal-header" style="text-align: center;">
+{#                            <span class="close">&times;</span>#}
                             <h2>Establish New Roster</h2>
                         </div>
                         <form action="" method="GET">
@@ -115,8 +115,7 @@
             <div id="modalElement" class="modal">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <span class="close">&times;</span>
-                        <h2>Add Player</h2>
+                        <h2 style="text-align: center;">Add Player</h2>
                     </div>
                     <form action="" method="GET">
                         {{ form|crispy }}

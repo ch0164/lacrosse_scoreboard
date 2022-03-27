@@ -4,158 +4,103 @@ button website: https://www.w3schools.com/tags/tag_button.asp
 coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
 {% block custom_css %}
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-        .element {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .tg {
-            border-collapse: collapse;
-            border-spacing: 0;
-            cursor: cell;
-        }
-
-        .tg td {
-            border:1.5px solid #000;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            overflow: hidden;
-            padding: 10px 5px;
-            word-break: normal;
-            width:0.1%;
-            white-space: nowrap;
-        }
-
-        .tg th {
-            border: 1.5px solid #000;
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            font-weight: normal;
-            overflow: hidden;
-            padding: 10px 5px;
-            word-break: normal;
-            background-color: #96D4D4
-        }
-
-        .tg .tg-0pky {
-            border-color: inherit;
-            border-collapse: collapse;
-            text-align: center;
-            vertical-align: top;
-
-        }
-
-        .button {
-            border: none;
-            color: white;
-            padding: 15px 24px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 12px;
-            margin: 4px 2px;
-            cursor: pointer;
-            horiz-align: right;
-            vertical-align: bottom;
-        }
-
-        .checkboxelement {
-            display: flex;
-            justify-content: center;
-            width: 60%;
-            margin: .5rem;
-        }
-
-        div.scrollWrapper {
-            height: 250px;
-            width: 625px;
+        div.rosterScroll {
+            height: 500px;
+            width: 1225px;
             overflow-y: scroll;
         }
 
-        .boxalign2 {
-            width: 400px;
-        }
-
-        input.rounded2 {
-            border: 1px solid #ccc;
-            -moz-border-radius: 10px;
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            -moz-box-shadow: 2px 2px 3px #666;
-            -webkit-box-shadow: 2px 2px 3px #666;
-            box-shadow: 2px 2px 3px #666;
-            font-size: 20px;
-            padding: 4px 7px;
-            outline: 0;
-            -webkit-appearance: none;
-            display: inline-block;
-            width: 150px;
-            text-align: right;
-        }
-
-        label {
-            text-align: right;
-            padding-right: 20px;
-            display: inline-block;
-            min-width: 150px;
-        }
-
-        .container {
-            width: 100%;
-            height: auto;
-            background-color: white;
-            margin-right: auto;
-            margin-left: auto;
-            color: black;
+        div.scrollWrapper {
+            height: 500px;
+            width: 575px;
+            overflow-y: scroll;
         }
     </style>
 {% endblock custom_css %}
 {% block content %}
-    <div class="container">
-{#        <div class="custom-block">#}
-        <h1 class="bg_blue">SCOREBOOK</h1>
-        <div style="position: fixed; top: 150px; right: 1600px; width: 300px; align-items: center;">
-            <table class="tg" style="text-align: center;">
+
+<div class="container-fluid">
+    <div class="row">
+        <h1 class="bg_black">Scorebook</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="bg_black">Metadata</h1>
+        </div>
+        <div class="col-md-4">
+            <h1 class="bg_black">Timer</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-dark" style="text-align: center;">
                 <tr>
-                    <td><p style="font-weight: bold;">RUNNING SCORES</p>
+                    <td><b style="font-size:20px;">RUNNING SCORES</b>
                         <table class="tg">
                             <thead>
-                                <table class="table table-primary table-striped" style="width: 1500px;">
+                                <table class="table table-striped table-light table-bordered">
                                     <body>
                                         <tr>
-                                            <td style="background-color: #96D4D4;" class="tg-0pky">HOME TEAM</td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
+                                            <td><b>HOME TEAM</b></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
                                         </tr>
                                         <tr>
-                                            <td style="background-color: #96D4D4;" class="tg-0pky">VISITING TEAM</td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
+                                            <td><b>VISITING TEAM</b></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
+                                            <td contenteditable="true"></td>
                                         </tr>
                                     </body>
                                 </table>
@@ -165,203 +110,197 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                 </tr>
             </table>
         </div>
-    <div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center;">
-        <table class="tg" style="text-align: center;">
-            <td>
-                <p style="font-weight: bold;">HOME ROSTER
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-dark table-striped" style="text-align: center; overflow-y: scroll;">
+                <td>
+                    <b style="font-size:20px;">HOME ROSTER</b>
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     <button id="homeRosterButton" type="button" class="btn btn-primary">Import Roster</button>
-                </p>
-                <div class="scrollWrapper">
-                    <table class="tg">
-                        <table class="table table-primary table-striped" style="width: 600px;">
+                    <div class="rosterScroll">
+                        <table class="table table-light table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="tg-0pky">NO.</th>
-                                    <th class="tg-0pky">NAME</th>
-                                    <th class="tg-0pky">QUARTERS PLAYED</th>
-                                    <th class="tg-0pky">SHOTS</th>
-                                    <th class="tg-0pky">GOALS</th>
-                                    <th class="tg-0pky">ASSISTS</th>
-                                    <th class="tg-0pky">GROUND BALLS</th>
+                                    <th>NO.</th>
+                                    <th>NAME</th>
+                                    <th>QUARTERS PLAYED</th>
+                                    <th>SHOTS</th>
+                                    <th>GOALS</th>
+                                    <th>ASSISTS</th>
+                                    <th>GROUND BALLS</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {% for n in numbers %}
                                 <tr>
-                                    <td class="tg-0pky" contenteditable="true">{{ n }}</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
+                                    <td contenteditable="true">{{ n }}</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
-                    </table>
-                </div>
-            </td>
-        </table>
-    </div>
+                    </div>
+                </td>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-dark table-bordered table-striped" style="text-align: center;">
+                <tr>
+                    <td><b style="font-size:20px;">PENALTIES</b>
+                        <div class="scrollWrapper">
+                            <table class="table table-light table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>PERSONAL OR TECHNICAL</th>
+                                        <th>PLAYER NO.</th>
+                                        <th>INFRACTION</th>
+                                        <th>QUARTER</th>
+                                        <th>TIME</th>
+                                    </tr>
 
-    <div style="position: fixed; bottom:50px; right: 1600px; width: 300px; align-items: center">
-        <table class="tg" style="text-align: center;">
-            <td>
-                <p style="font-weight: bold;">VISITING ROSTER
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    <button id="visitingRosterButton" type="button" class="btn btn-primary">Import Roster</button>
-                </p>
-                <div class="scrollWrapper">
-                    <table class="tg">
-                        <table class="table table-primary table-striped" style="width: 600px;">
-                            <thead>
-                                <tr>
-                                    <th class="tg-0pky">NO.</th>
-                                    <th class="tg-0pky">NAME</th>
-                                    <th class="tg-0pky">QUARTERS PLAYED</th>
-                                    <th class="tg-0pky">SHOTS</th>
-                                    <th class="tg-0pky">GOALS</th>
-                                    <th class="tg-0pky">ASSISTS</th>
-                                    <th class="tg-0pky">GROUND BALLS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for n in numbers %}
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true">{{ n }}</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </table>
-                </div>
-            </td>
-        </table>
-    </div>
-
-     <div style="position: fixed; bottom:450px; right: 700px;width: 300px; align-items: center">
-        <table class="tg" style="text-align: center;">
-            <tr>
-                <td><p style="font-weight: bold;">PENALTIES & FOULS</p>
-                    <div class="scrollWrapper">
-                    <table class="tg">
-                        <table class="table table-primary table-striped" style="height: 100px; width: 600px;">
-                            <thead>
-
-                                <tr>
-                                    <th class="tg-0pky">PERSONAL OR TECHNICAL</th>
-                                    <th class="tg-0pky">PLAYER NO.</th>
-                                    <th class="tg-0pky">INFRACTION</th>
-                                    <th class="tg-0pky">QUARTER</th>
-                                    <th class="tg-0pky">TIME</th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                {% for n in numbers %}
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                </thead>
+                                <tbody>
+                                    {% for n in numbers %}
+                                    <tr>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    <tr>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                        <td contenteditable="true"></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
-                        </table>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div style="position: fixed; bottom: 150px; right: 700px; width: 300px; align-items: center">
-        <table class="tg" style="text-align: center;">
-            <tr>
-                <td><p style="font-weight: bold;">FINAL SCORES</p>
-                    <table class="tg">
-                        <table class="table table-primary table-striped" style="height: 100px; width: 600px;">
+
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-dark table-striped" style="text-align: center; overflow-y: scroll;">
+                <td>
+                    <b style="font-size:20px;">VISITING ROSTER</b>
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <button id="visitingRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                    <div class="rosterScroll">
+                        <table class="table table-light table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>NO.</th>
+                                    <th>NAME</th>
+                                    <th>QUARTERS PLAYED</th>
+                                    <th>SHOTS</th>
+                                    <th>GOALS</th>
+                                    <th>ASSISTS</th>
+                                    <th>GROUND BALLS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for n in numbers %}
+                                <tr>
+                                    <td contenteditable="true">{{ n }}</td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-dark table-striped table-bordered" style="text-align: center;">
+                <tr>
+                    <td><b style="font-size:20px;">FINAL SCORES</b>
+                        <table class="table table-light table-striped table-bordered">
                             <tbody>
                                 <tr>
-                                    <td style="background-color: #96D4D4">HOME TEAM</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
+                                    <td><b>HOME TEAM</b></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
                                 </tr>
                                 <tr>
-                                    <td style="background-color: #96D4D4">VISITING TEAM</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
+                                    <td><b >VISITING TEAM</b></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
+                                    <td contenteditable="true"></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 
-    <button id="publishScorebookButton" type="button" class="btn btn-success" style="position: absolute; right: 200px; bottom: 50px;">Publish Scorebook</button>
-    <button id="clearScorebookButton" type="button" class="btn btn-danger" style="position: absolute; right: 50px; bottom: 50px;">Clear Scorebook</button>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg" style="position: relative; bottom: 150px;">Publish Scorebook</button>
+            <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg" style="position: relative; bottom: 150px;">&ensp;Clear Scorebook&ensp;</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-{#<div class="container" style="margin: auto;">#}
-{#    <th class="tg-0pky">COACH: </th>#}
-{#    <table class="table" style="height: 30px; width: 60px;">#}
-{#        <tbody>#}
-{#            <tr>#}
-{#                <td class="tg-0pky" contenteditable="true">dfasjfdjalkf</td>#}
-{#            </tr>#}
-{#        </tbody>#}
-{#    </table>#}
-{#  </div>#}
 {% endblock %}

@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b338365b-f969-4381-aeeb-0f746576449c" name="Changes" comment="">
+    <list default="true" id="a89ae4b3-729e-40f7-b6e0-a6296071d0a6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/lacrosse_scoreboard.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/lacrosse_scoreboard.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/edit_player.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/edit_player.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/roster.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/roster.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_registration/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_registration/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user_registration/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/user_registration/templates/registration/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,11 +113,24 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Coach-roster relationship and roster-player relationship is now good to go." />
     <MESSAGE value="Fully populated scorebook by defining other models (penalties, running score)." />
     <MESSAGE value="Finalized scorebook model; cleaned up files and other models." />
     <MESSAGE value="Cleaning up HTML closing tags and scroll bars; testing scroll bars with passed in list of numbers." />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaning up HTML closing tags and scroll bars; testing scroll bars with passed in list of numbers." />
+    <MESSAGE value="Merging master + alisa branches" />
+    <MESSAGE value="Merge branch 'master' of https://github.com/ch0164/lacrosse_scoreboard into alisa&#10;&#10; Conflicts:&#10;&#9;core/__pycache__/views.cpython-310.pyc&#10;&#9;core/templates/scorebook.html&#10;&#9;db.sqlite3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/ch0164/lacrosse_scoreboard into alisa&#10;&#10; Conflicts:&#10;&#9;core/__pycache__/views.cpython-310.pyc&#10;&#9;core/templates/scorebook.html&#10;&#9;db.sqlite3" />
   </component>
 </project>
