@@ -10,25 +10,124 @@
         overflow-y: scroll;
         }
     table, th, td {
-        border: 1px solid black;
+        border:1px solid black;
+        width: 50%;
         align-content: center;
+        text-align: center;
     }
-</style>
+
+    th {
+        background-color: #96D4D4
+    }
+
+    <!-- tr:hover {background-color: #96D4D4; -->
+    tr:nth-child(even) {background-color: #f2f2f2;}
+
+    div.scrollWrapper {
+        height: 900px;
+        width: 1100px;
+        overflow-y: scroll;
+        }
+
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+        cursor: cell;
+    }
+
+    .tg td {
+        border:1.5px solid #000;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+        width:0.1%;
+        white-space: nowrap;
+    }
+
+    .tg th {
+        border: 1.5px solid #000;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: normal;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+        background-color: #96D4D4
+    }
+
+    .tg .tg-0pky {
+        border-color: inherit;
+        border-collapse: collapse;
+        text-align: center;
+        vertical-align: top;
+    }
+
+    </style>
 {% endblock custom_css %}
 
 {% block content %}
-<div class="container">
-<div class="custom-block">
-    <h1 class="bg_blue">HOME PAGE</h1>
-<div class="scrollWrapper">
-    <table class="table">
-        {% for n in numbers %}
-        <tr>
-            <td><a href="scorebook/{{ scorebook.id }}">{{ scorebook }}</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
-</div>
+<div class="container" style="text-align: center;">
+    <div class="custom-block">
+        <h1 class="bg_blue">Published Scorebooks</h1>
+        <div class="scrollWrapper">
+            <table class="table">
+                <table class="table" style="font-size:20px">
+                    <th>
+                        Home Team   --   Visiting Team
+                    </th>
+                    {% for n in numbers %}
+                        {% if scorebook.home_score > scorebook.visiting_score %}
+                        <!-- Home score green - Visitor score red -->
+                            <tr>
+                                <td>
+                                    <span style="color:green; float:left; width:25%;">
+                                        <b>{{ scorebook.home_score}}</b>
+                                    </span>
+                                    <span style="text-align: center;">
+                                        {{scorebook.home_coach.roster}}  -- {{scorebook.visiting_coach.roster}}
+                                    </span>
+                                    <span style="color:red; float:right; width:25%;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% elif scorebook.home_score < scorebook.visiting_score %}
+                        <!-- Home score red - Visitor score green -->
+                            <tr>
+                                <td>
+                                        <span style="color:red; float:left; width:25%;">
+                                            <b>{{ scorebook.home_score}}</b>
+                                        </span>
+                                        <span style="text-align: center;">
+                                            {{scorebook.home_coach.roster}}  -- {{scorebook.visiting_coach.roster}}
+                                        </span>
+                                        <span style="color:green; float:right; width:25%;">
+                                            <b>{{ scorebook.visiting_score }}</b>
+                                        </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                        <!-- TIE Home score and Visitor score yellow -->
+                            <tr>
+                                <td>
+                                    <span style="color:orange; float:left; width:25%;">
+                                        <b>{{ scorebook.home_score}}</b>
+                                    </span>
+                                    <span style="text-align: center;">
+                                        {{scorebook.home_coach.roster}}  -- {{scorebook.visiting_coach.roster}}
+                                    </span>
+                                    <span style="color:orange; float:right; width:25%;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}
