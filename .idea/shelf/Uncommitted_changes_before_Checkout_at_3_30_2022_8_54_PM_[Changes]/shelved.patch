@@ -1,0 +1,214 @@
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
++++ /dev/null	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
+@@ -1,8 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+-# Editor-based HTTP Client requests
+-/httpRequests/
+-# Datasource local storage ignored files
+-/dataSources/
+-/dataSources.local.xml
+Index: .idea/inspectionProfiles/Project_Default.xml
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/Project_Default.xml	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
++++ /dev/null	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
+@@ -1,16 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <profile version="1.0">
+-    <option name="myName" value="Project Default" />
+-    <inspection_tool class="DjangoUnresolvedLoadInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+-    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+-      <option name="myValues">
+-        <value>
+-          <list size="1">
+-            <item index="0" class="java.lang.String" itemvalue="name" />
+-          </list>
+-        </value>
+-      </option>
+-      <option name="myCustomValuesEnabled" value="true" />
+-    </inspection_tool>
+-  </profile>
+-</component>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+deleted file mode 100644
+--- a/.idea/workspace.xml	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
++++ /dev/null	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
+@@ -1,128 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ChangeListManager">
+-    <list default="true" id="a89ae4b3-729e-40f7-b6e0-a6296071d0a6" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/core/templates/roster.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/roster.html" afterDir="false" />
+-    </list>
+-    <option name="SHOW_DIALOG" value="false" />
+-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-    <option name="LAST_RESOLUTION" value="IGNORE" />
+-  </component>
+-  <component name="Git.Merge.Settings">
+-    <option name="BRANCH" value="origin/master" />
+-  </component>
+-  <component name="Git.Settings">
+-    <option name="RECENT_BRANCH_BY_REPOSITORY">
+-      <map>
+-        <entry key="$PROJECT_DIR$" value="alisa" />
+-      </map>
+-    </option>
+-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-  </component>
+-  <component name="MarkdownSettingsMigration">
+-    <option name="stateVersion" value="1" />
+-  </component>
+-  <component name="ProjectId" id="26X4QtStM2oyN4PLhyzvcUsCDza" />
+-  <component name="ProjectViewState">
+-    <option name="hideEmptyMiddlePackages" value="true" />
+-    <option name="showLibraryContents" value="true" />
+-  </component>
+-  <component name="PropertiesComponent">
+-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+-    <property name="WebServerToolWindowFactoryState" value="false" />
+-  </component>
+-  <component name="RunManager">
+-    <configuration name="lacrosse_scoreboard" type="Python.DjangoServer" factoryName="Django server">
+-      <module name="lacrosse_scoreboard" />
+-      <option name="INTERPRETER_OPTIONS" value="" />
+-      <option name="PARENT_ENVS" value="true" />
+-      <envs>
+-        <env name="PYTHONUNBUFFERED" value="1" />
+-        <env name="DJANGO_SETTINGS_MODULE" value="scoreboard.settings" />
+-      </envs>
+-      <option name="SDK_HOME" value="" />
+-      <option name="WORKING_DIRECTORY" value="" />
+-      <option name="IS_MODULE_SDK" value="false" />
+-      <option name="ADD_CONTENT_ROOTS" value="true" />
+-      <option name="ADD_SOURCE_ROOTS" value="true" />
+-      <option name="launchJavascriptDebuger" value="false" />
+-      <option name="port" value="8000" />
+-      <option name="host" value="" />
+-      <option name="additionalOptions" value="" />
+-      <option name="browserUrl" value="" />
+-      <option name="runTestServer" value="false" />
+-      <option name="runNoReload" value="false" />
+-      <option name="useCustomRunCommand" value="false" />
+-      <option name="customRunCommand" value="" />
+-      <method v="2" />
+-    </configuration>
+-  </component>
+-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+-  <component name="TaskManager">
+-    <task active="true" id="Default" summary="Default task">
+-      <changelist id="754831cf-7a6c-41a7-afa7-6f703ad4b993" name="Changes" comment="" />
+-      <created>1647556585528</created>
+-      <option name="number" value="Default" />
+-      <option name="presentableId" value="Default" />
+-      <updated>1647556585528</updated>
+-      <workItem from="1647556586828" duration="2319000" />
+-      <workItem from="1647625346924" duration="4410000" />
+-    </task>
+-    <task id="LOCAL-00001" summary="Coach-roster relationship and roster-player relationship is now good to go.">
+-      <created>1647558911368</created>
+-      <option name="number" value="00001" />
+-      <option name="presentableId" value="LOCAL-00001" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1647558911368</updated>
+-    </task>
+-    <task id="LOCAL-00002" summary="Fully populated scorebook by defining other models (penalties, running score).">
+-      <created>1647639152205</created>
+-      <option name="number" value="00002" />
+-      <option name="presentableId" value="LOCAL-00002" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1647639152205</updated>
+-    </task>
+-    <task id="LOCAL-00003" summary="Finalized scorebook model; cleaned up files and other models.">
+-      <created>1647724135386</created>
+-      <option name="number" value="00003" />
+-      <option name="presentableId" value="LOCAL-00003" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1647724135386</updated>
+-    </task>
+-    <task id="LOCAL-00004" summary="Cleaning up HTML closing tags and scroll bars; testing scroll bars with passed in list of numbers.">
+-      <created>1648195636498</created>
+-      <option name="number" value="00004" />
+-      <option name="presentableId" value="LOCAL-00004" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1648195636498</updated>
+-    </task>
+-    <option name="localTasksCounter" value="5" />
+-    <servers />
+-  </component>
+-  <component name="TypeScriptGeneratedFilesManager">
+-    <option name="version" value="3" />
+-  </component>
+-  <component name="Vcs.Log.Tabs.Properties">
+-    <option name="TAB_STATES">
+-      <map>
+-        <entry key="MAIN">
+-          <value>
+-            <State />
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-  </component>
+-  <component name="VcsManagerConfiguration">
+-    <MESSAGE value="Coach-roster relationship and roster-player relationship is now good to go." />
+-    <MESSAGE value="Fully populated scorebook by defining other models (penalties, running score)." />
+-    <MESSAGE value="Finalized scorebook model; cleaned up files and other models." />
+-    <MESSAGE value="Cleaning up HTML closing tags and scroll bars; testing scroll bars with passed in list of numbers." />
+-    <MESSAGE value="Merging master + alisa branches" />
+-    <MESSAGE value="Merge branch 'master' of https://github.com/ch0164/lacrosse_scoreboard into alisa&#10;&#10; Conflicts:&#10;&#9;core/__pycache__/views.cpython-310.pyc&#10;&#9;core/templates/scorebook.html&#10;&#9;db.sqlite3" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/ch0164/lacrosse_scoreboard into alisa&#10;&#10; Conflicts:&#10;&#9;core/__pycache__/views.cpython-310.pyc&#10;&#9;core/templates/scorebook.html&#10;&#9;db.sqlite3" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.10 (2)\" project-jdk-type=\"Python SDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
++++ b/.idea/misc.xml	(date 1648601412883)
+@@ -1,4 +1,4 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 (2)" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
+Index: .idea/lacrosse_scoreboard.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"PYTHON_MODULE\" version=\"4\">\r\n  <component name=\"FacetManager\">\r\n    <facet type=\"django\" name=\"Django\">\r\n      <configuration>\r\n        <option name=\"rootFolder\" value=\"$MODULE_DIR$\" />\r\n        <option name=\"settingsModule\" value=\"scoreboard/settings.py\" />\r\n        <option name=\"manageScript\" value=\"$MODULE_DIR$/manage.py\" />\r\n        <option name=\"environment\" value=\"&lt;map/&gt;\" />\r\n        <option name=\"doNotUseTestRunner\" value=\"false\" />\r\n        <option name=\"trackFilePattern\" value=\"migrations\" />\r\n      </configuration>\r\n    </facet>\r\n  </component>\r\n  <component name=\"NewModuleRootManager\">\r\n    <content url=\"file://$MODULE_DIR$\" />\r\n    <orderEntry type=\"jdk\" jdkName=\"Python 3.10 (2)\" jdkType=\"Python SDK\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n  <component name=\"PyDocumentationSettings\">\r\n    <option name=\"format\" value=\"PLAIN\" />\r\n    <option name=\"myDocStringFormat\" value=\"Plain\" />\r\n  </component>\r\n  <component name=\"TemplatesService\">\r\n    <option name=\"TEMPLATE_CONFIGURATION\" value=\"Django\" />\r\n    <option name=\"TEMPLATE_FOLDERS\">\r\n      <list>\r\n        <option value=\"$MODULE_DIR$/core/templates\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/lacrosse_scoreboard.iml b/.idea/lacrosse_scoreboard.iml
+--- a/.idea/lacrosse_scoreboard.iml	(revision cc8ba3b10c01e87423247216a306430f864b9c69)
++++ b/.idea/lacrosse_scoreboard.iml	(date 1648601412857)
+@@ -14,7 +14,7 @@
+   </component>
+   <component name="NewModuleRootManager">
+     <content url="file://$MODULE_DIR$" />
+-    <orderEntry type="jdk" jdkName="Python 3.10 (2)" jdkType="Python SDK" />
++    <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+   </component>
+   <component name="PyDocumentationSettings">
