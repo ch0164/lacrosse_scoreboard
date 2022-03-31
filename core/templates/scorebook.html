@@ -298,9 +298,33 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         <div class="col-md-3">
             <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg" style="position: relative; bottom: 150px;">Publish Scorebook</button>
             <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg" style="position: relative; bottom: 150px;">&ensp;Clear Scorebook&ensp;</button>
+            <button id="importRosterButton" type="button" class="btn btn-primary" style="position: relative; bottom: 150px;">&ensp;Import Roster&ensp;</button>
             </div>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+        /* Modal Dialogue */
+        // When the user clicks on the button, open the modal
+        buttonElement.onclick = function() {
+          modalElement.style.display = "block";
+        }
+        cancelButton.onclick = function() {
+            modalElement.style.display = "none";
+        }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modalElement.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target === modalElement) {
+              modalElement.style.display = "none";
+          }
+        }
 
 {% endblock %}
