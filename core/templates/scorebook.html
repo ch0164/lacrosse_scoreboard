@@ -20,7 +20,7 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
 
           /* The Modal (background) */
     .modal {
-       /* display: none; /* Hidden by default */
+      display: none;
       position: fixed; /* Stay in place */
       z-index: 1; /* , m Sit on top */
       left: 0;
@@ -33,7 +33,7 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
     }
 
     .modal-header {
-      padding: 0px 16px;
+      padding: 0 16px;
       background-color: black;
       color: white;
     }
@@ -69,8 +69,6 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
 {% block content %}
 
 <div class="container-fluid">
-
-
     <div class="row">
         <h1 class="bg_black">Scorebook</h1>
     </div>
@@ -352,43 +350,61 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         <div class="col-md-3">
             <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg" style="position: relative; bottom: 150px;">Publish Scorebook</button>
             <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg" style="position: relative; bottom: 150px;">&ensp;Clear Scorebook&ensp;</button>
-            </div>
         </div>
     </div>
 </div>
-            <button class="btn btn-primary" id="importRosterButton">Test Roster</button>
-            <div id="modalElement" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header" style="text-align: center;">
+
+    <button class="btn btn-primary" id="importRosterButton">Test Roster</button>
+    <div id="modalElement" class="modal">
+        <div class="modal-content">
+{#            <div class="container-fluid" style="text-align: center;">#}
+{#                <div class="row">#}
+{#                    <div class="col-md-6">#}
+                        <div class="modal-header" style="text-align: center;">
+                            <h2 style="text-align: center;">Import Roster</h2>
+                        </div>
+                        <table class="table table-bordered table-light table-striped">
+                            {% for coach in coaches %}
+                                {% if coach.roster != None %}
+                                    <tr>
+                                        <th>
+                                            <p>Head Coach: {{ coach.last_name }}, {{ coach.first_name }}
+                                            <span style="color:orange; float:right; width: 25%; font-size: 30px;">
+                                                <button class="btn btn-success" type="button" id="confirmRosterButton{{ coach.roster.id }}" value="confirm">Confirm</button>
+                                            </span>
+                                            </p>
+                                            <p>Team: {{ coach.roster }}</p>
+                                        </th>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+{#                            <tr>#}
+{#                                <th>Team: #1#}
+{#                                    <span style="color:orange; float:right; width: 25%; font-size: 30px;">#}
+{#                                        <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button>#}
+{#                                    </span>#}
+{#                                </th>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <th>Team: #2 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <th>Team: #3 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <th>Team: #4 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>#}
+{#                            </tr>#}
+                        </table>
+                        <form action="" method="GET">
+                            {{ form|crispy }}
+                            <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+                        </form>
                     </div>
                 </div>
-                    <form action="" method="GET">
-                        {{ form|crispy }}
-                        <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
-                    </form>
-                <div class="row">
-                <div class="col-lg-12">
-                    <table class="table table-bordered table-light table-striped">
-                        <tr>
-                            <th>Team: #1 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>
-                        </tr>
-                        <tr>
-                            <th>Team: #2 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>
-                            
-                        </tr>
-                        <tr>
-                            <th>Team: #3 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>
-                        </tr>
-                        <tr>
-                            <th>Team: #4 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>
-                        </tr>
-
-                    </table>
-                </div>
-                </div>
-
-
-</div>
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 {% endblock %}
 
@@ -399,6 +415,20 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         var importRosterButton = document.getElementById("importRosterButton");
         var cancelButton = document.getElementById("cancelButton");
         var span = document.getElementsByClassName("close")[0];
+
+        var importRosterButtons = document.getElementsByClassName("importRosterButton");
+
+        /*
+        * for button in importRosterButtons
+        *   button.onclick = function() {
+        *     roster_id = strip className of "importRosterButton"
+        *     close modal
+        *     call function to send a HttpRequest with this id to save the roster to this scorebook instance
+        *     this function takes id and home/visiting roster button to save scorebook.coach.roster to appropriate one
+        *     (see edit_student in views.py and sendToServer in templates/showData.html in simpleDjangoProject)
+        * }
+        * */
+
         // When the user clicks on the button, open the modal
         importRosterButton.onclick = function() {
           modalElement.style.display = "block";
@@ -416,5 +446,18 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                 modalElement.style.display = "none";
             }
         }
+
+        /*
+        * function updateRoster (rosterId, buttonComponent) {
+        *   if buttonComponent is "Home"
+        *     is_home = True
+        *   else
+        *     is_home = False
+        *
+        *   console.log(rosterId)
+        *   console.log(is_home)
+        *
+        * }
+        * */
     </script>
 {% endblock %}
