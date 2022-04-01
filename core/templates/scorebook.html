@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Scorebook{% endblock %}
+{% load crispy_forms_tags %}
 button website: https://www.w3schools.com/tags/tag_button.asp
 coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
 {% block custom_css %}
     <style>
+
         div.rosterScroll {
             height: 500px;
             width: 1225px;
@@ -15,11 +17,45 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
             width: 575px;
             overflow-y: scroll;
         }
+
+          /* The Modal (background) */
+    .modal {
+       /* display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* , m Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-header {
+      padding: 0px 16px;
+      background-color: black;
+      color: white;
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 30px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+    }
+
     </style>
 {% endblock custom_css %}
+
+
 {% block content %}
 
 <div class="container-fluid">
+
+
     <div class="row">
         <h1 class="bg_black">Scorebook</h1>
     </div>
@@ -122,6 +158,7 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     <button id="homeRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                </div>
                     <div class="rosterScroll">
                         <table class="table table-light table-striped table-bordered">
                             <thead>
@@ -226,6 +263,7 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     <button id="visitingRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+
                     <div class="rosterScroll">
                         <table class="table table-light table-striped table-bordered">
                             <thead>
@@ -298,10 +336,18 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         <div class="col-md-3">
             <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg" style="position: relative; bottom: 150px;">Publish Scorebook</button>
             <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg" style="position: relative; bottom: 150px;">&ensp;Clear Scorebook&ensp;</button>
-            <button id="importRosterButton" type="button" class="btn btn-primary" style="position: relative; bottom: 150px;">&ensp;Import Roster&ensp;</button>
             </div>
         </div>
     </div>
+</div>
+            <button class="btn btn-primary" id="importRosterButton">Test Roster</button>
+            <div id="modalElement" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header" style="text-align: center;">
+                    </div>
+                </div>
+
+
 </div>
 
 {% endblock %}
@@ -309,8 +355,11 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
 {% block custom_js %}
     <script>
         /* Modal Dialogue */
+        var modalElement = document.getElementById("modalElement");
+        var importRosterButton = document.getElementById("importRosterButton");
+        var span = document.getElementsByClassName("close")[0];
         // When the user clicks on the button, open the modal
-        buttonElement.onclick = function() {
+        importRosterButton.onclick = function() {
           modalElement.style.display = "block";
         }
         cancelButton.onclick = function() {
