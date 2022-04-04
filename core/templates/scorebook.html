@@ -374,6 +374,9 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                                             </span>
                                             </p>
                                             <p>Team: {{ coach.roster }}</p>
+                                            <h1>
+                                            <input id="coachRoster" value= {{coach.roster.id}}>
+                                            </h1>
                                         </th>
                                     </tr>
                                 {% endif %}
@@ -415,8 +418,15 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         var importRosterButton = document.getElementById("importRosterButton");
         var cancelButton = document.getElementById("cancelButton");
         var span = document.getElementsByClassName("close")[0];
+        var coach_roster = document.getElementById("coachRoster");
 
         var importRosterButtons = document.getElementsByClassName("importRosterButton");
+
+        for (button in importRosterButtons) {
+            button.onclick = function () {
+                console.log(coach_roster)
+            };
+        }
 
         /*
         * for button in importRosterButtons
