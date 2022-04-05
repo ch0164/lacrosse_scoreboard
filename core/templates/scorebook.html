@@ -171,6 +171,33 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     <button id="homeRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                         <div id="modalElement" class="modal">
+                             <div class="modal-content">
+{#                           <div class="container-fluid" style="text-align: center;">#}
+{#                           <div class="row">#}
+{#                           <div class="col-md-6">#}
+                        <div class="modal-header" style="text-align: center;">
+                            <h2 style="text-align: center;">Import Roster</h2>
+                        </div>
+                        <table class="table table-bordered table-light table-striped">
+                            {% for coach in coaches %}
+                                {% if coach.roster != None %}
+                                    <tr>
+                                        <th>
+                                            <p>Head Coach: {{ coach.last_name }}, {{ coach.first_name }}
+                                            <span style="color:orange; float:right; width: 25%; font-size: 30px;">
+                                                <button class="btn btn-success" type="button" id="confirmRosterButton{{ coach.roster.id }}" value="confirm">Confirm</button>
+                                            </span>
+                                            </p>
+                                            <p>Team: {{ coach.roster }}</p>
+                                            <h1>
+                                            <input id="coachRoster" value= {{coach.roster.id}}>
+                                            </h1>
+                                        </th>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
                 <div>
                     <div class="rosterScroll">
                         <table class="table table-light table-striped table-bordered">
@@ -276,7 +303,58 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                     &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                </td>
                     <button id="visitingRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                         <div id="modalElement" class="modal">
+                             <div class="modal-content">
+{#                           <div class="container-fluid" style="text-align: center;">#}
+{#                           <div class="row">#}
+{#                           <div class="col-md-6">#}
+                        <div class="modal-header" style="text-align: center;">
+                            <h2 style="text-align: center;">Import Roster</h2>
+                        </div>
+                        <table class="table table-bordered table-light table-striped">
+                            {% for coach in coaches %}
+                                {% if coach.roster != None %}
+                                    <tr>
+                                        <th>
+                                            <p>Head Coach: {{ coach.last_name }}, {{ coach.first_name }}
+                                            <span style="color:orange; float:right; width: 25%; font-size: 30px;">
+                                                <button class="btn btn-success" type="button" id="confirmRosterButton{{ coach.roster.id }}" value="confirm">Confirm</button>
+                                            </span>
+                                            </p>
+                                            <p>Team: {{ coach.roster }}</p>
+                                            <h1>
+                                            <input id="coachRoster" value= {{coach.roster.id}}>
+                                            </h1>
+                                        </th>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+{#                            <tr>#}
+{#                                <th>Team: #1#}
+{#                                    <span style="color:orange; float:right; width: 25%; font-size: 30px;">#}
+{#                                        <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button>#}
+{#                                    </span>#}
+{#                                </th>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <th>Team: #2 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <th>Team: #3 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <th>Team: #4 <button class="btn btn-success" type="button" id="confirmRosterButton" value="confirm">Confirm</button></th>#}
+{#                            </tr>#}
+                        </table>
+                        <form action="" method="GET">
+                            {{ form|crispy }}
+                            <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+                        </form>
+                    </div>
+                </div>
 
                     <div class="rosterScroll">
                         <table class="table table-light table-striped table-bordered">
@@ -415,7 +493,9 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
     <script>
         /* Modal Dialogue */
         var modalElement = document.getElementById("modalElement");
-        var importRosterButton = document.getElementById("importRosterButton");
+        var importRosterButtonTest = document.getElementById("importRosterButton");
+        var importRosterButtonHome = document.getElementById("homeRosterButton")
+        var importRosterButtonVisitor = document.getElementById("visitingRosterButton")
         var cancelButton = document.getElementById("cancelButton");
         var span = document.getElementsByClassName("close")[0];
         var coach_roster = document.getElementById("coachRoster");
@@ -440,9 +520,16 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         * */
 
         // When the user clicks on the button, open the modal
-        importRosterButton.onclick = function() {
+        importRosterButtonTest.onclick = function() {
           modalElement.style.display = "block";
         }
+        importRosterButtonHome.onclick = function() {
+          modalElement.style.display = "block";
+        }
+        importRosterButtonVisitor.onclick = function() {
+          modalElement.style.display = "block";
+        }
+
         cancelButton.onclick = function() {
             modalElement.style.display = "none";
         }
