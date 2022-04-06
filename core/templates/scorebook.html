@@ -5,7 +5,6 @@ button website: https://www.w3schools.com/tags/tag_button.asp
 coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
 {% block custom_css %}
     <style>
-
         div.rosterScroll {
             height: 500px;
             width: 1225px;
@@ -365,17 +364,18 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                         <table class="table table-bordered table-light table-striped">
                             {% for coach in coaches %}
                                 {% if coach.roster != None %}
-                                    <tr>
+                                    <tr name="importRosterRow">
                                         <th>
-                                            <p>Head Coach: {{ coach.last_name }}, {{ coach.first_name }}
-                                            <span style="color:orange; float:right; width: 25%; font-size: 30px;">
-                                                <button class="btn btn-success" type="button" id="confirmRosterButton{{ coach.roster.id }}" value="confirm">Confirm</button>
-                                            </span>
+                                            <p id="{{ coach.id }}" class="coachPar">Head Coach: {{ coach.last_name }}, {{ coach.first_name }}
                                             </p>
+                                            <span style="color:orange; float:right; width: 25%; font-size: 30px;">
+                                                <button class="btn btn-success" type="button" id="{{ coach.roster.id }}" value="confirm">Confirm</button>
+                                            </span>
                                             <p>Team: {{ coach.roster }}</p>
                                             <h1>
-                                            <input id="coachRoster" value= {{coach.roster.last_name}}>
                                             </h1>
+                                            <div id="coachRoster" value="{{coach.roster.last_name}}">
+                                            </div>
                                         </th>
                                     </tr>
                                 {% endif %}
@@ -411,89 +411,99 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
 {% endblock %}
 
 {% block custom_js %}
-    <script>
-        /* Modal Dialogue */
-        var modalElement = document.getElementById("modalElement");
-        var importRosterButtonTest = document.getElementById("importRosterButton");
-        var importRosterButtonHome = document.getElementById("homeRosterButton")
-        var importRosterButtonVisitor = document.getElementById("visitingRosterButton")
-        var cancelButton = document.getElementById("cancelButton");
-        var span = document.getElementsByClassName("close")[0];
-        var coach_roster = document.getElementById("coachRoster");
+<script>
+    var modalElement = document.getElementById("modalElement");
+    var importRosterButtonHome = document.getElementById("homeRosterButton")
+    var importRosterButtonVisitor = document.getElementById("visitingRosterButton")
+    var cancelButton = document.getElementById("cancelButton");
+    var span = document.getElementsByClassName("close")[0];
+    var coach_roster = document.getElementById("coachRoster");
+    var importRosterTeam;
 
-        var importRosterButtons = document.getElementsByClassName("importRosterButton");
+    var elements = document.getElementsByName("importRosterRow");
+    for (var i = 0; i < elements.length; i++) {
+        var button = (elements)[i].getElementsByClassName("btn btn-success")[0];
+        button.addEventListener("click", function () {
+            alert(this.id);
+        });
+    }
 
-        for (button in importRosterButtons) {
-            button.onclick = function () {
-                console.log(coach_roster)
-                sendToServer();
-                updateRoster();
-            };
-        }
-
-        function sendToServer(id) {
-            console.log(id);
-            $.ajax({
-                url: "http://127.0.0.1:8000/saveRoster", //not sure if this is correct URL
-                type: "POST",
-                data: {id: id},
+    function sendToServer(id) {
+        console.log(id);
+        $.ajax({
+            url: "http://127.0.0.1:8000/saveRoster", //not sure if this is correct URL
+            type: "POST",
+            data: {id: id},
+        })
+            .done(function (response) {
+                console.log(response);
             })
-                .done(function (response) {
-                    console.log(response);
-                })
-                .fail(function () {
-                    console.log("Error Occured");
-                });
-        }
+            .fail(function () {
+                console.log("Error Occured");
+            });
+    }
 
 
-        /*
-        * for button in importRosterButtons
-        *   button.onclick = function() {
-        *     roster_id = strip className of "importRosterButton"
-        *     close modal
-        *     call function to send a HttpRequest with this id to save the roster to this scorebook instance
-        *     this function takes id and home/visiting roster button to save scorebook.coach.roster to appropriate one
-        *     (see edit_student in views.py and sendToServer in templates/showData.html in simpleDjangoProject)
-        * }
-        * */
+    /*
+    * for button in importRosterButtons
+    *   button.onclick = function() {
+    *     roster_id = strip className of "importRosterButton"
+    *     close modal
+    *     call function to send a HttpRequest with this id to save the roster to this scorebook instance
+    *     this function takes id and home/visiting roster button to save scorebook.coach.roster to appropriate one
+    *     (see edit_student in views.py and sendToServer in templates/showData.html in simpleDjangoProject)
+    * }
+    * */
 
-        // When the user clicks on the button, open the modal
-        importRosterButtonTest.onclick = function() {
-          modalElement.style.display = "block";
-        }
-        importRosterButtonHome.onclick = function() {
-          modalElement.style.display = "block";
-        }
-        importRosterButtonVisitor.onclick = function() {
-          modalElement.style.display = "block";
-        }
+    // When the user clicks on the button, open the modal
+    importRosterButtonHome.onclick = function() {
+      modalElement.style.display = "block";
+    }
+    importRosterButtonVisitor.onclick = function() {
+      modalElement.style.display = "block";
+    }
 
-        cancelButton.onclick = function() {
+    cancelButton.onclick = function() {
+        modalElement.style.display = "none";
+    }
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modalElement.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target === modalElement) {
             modalElement.style.display = "none";
         }
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modalElement.style.display = "none";
+    }
+
+    $(document).ready(function(){
+        $('.btn btn-success').click(function(){
+            $(this).html("Hello");
+        });
+    });
+
+    /*
+    1. User clicks import roster button
+    2. Print out whether it was the home importRoster button clicked or the visiting one
+    [use .includes("") method for strings]
+    3. User hits select on a roster
+    3. Modal closes
+    4. Print out the id of the selected roster
+     */
+
+    function updateRoster (rosterId, buttonComponent) {
+        var is_home = "Home" in buttonComponent
+        if (buttonComponent = "Home") {
+            is_home = True
+        } else {
+            is_home = False
+
+            console.log(rosterId)
+            console.log(is_home)
+
         }
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target === modalElement) {
-                modalElement.style.display = "none";
-            }
-        }
+    }
 
-        function updateRoster (rosterId, buttonComponent) {
-            if (buttonComponent = "Home") {
-                is_home = True
-            } else {
-                is_home = False
-
-                console.log(rosterId)
-                console.log(is_home)
-
-            }
-        }
-
-    </script>
+</script>
 {% endblock %}
