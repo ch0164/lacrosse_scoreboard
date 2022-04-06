@@ -354,7 +354,6 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
     </div>
 </div>
 
-    <button class="btn btn-primary" id="importRosterButton">Test Roster</button>
     <div id="modalElement" class="modal">
         <div class="modal-content">
 {#            <div class="container-fluid" style="text-align: center;">#}
@@ -375,7 +374,7 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
                                             </p>
                                             <p>Team: {{ coach.roster }}</p>
                                             <h1>
-                                            <input id="coachRoster" value= {{coach.roster.id}}>
+                                            <input id="coachRoster" value= {{coach.roster.last_name}}>
                                             </h1>
                                         </th>
                                     </tr>
@@ -427,7 +426,8 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         for (button in importRosterButtons) {
             button.onclick = function () {
                 console.log(coach_roster)
-                sendToServer()
+                sendToServer();
+                updateRoster();
             };
         }
 
