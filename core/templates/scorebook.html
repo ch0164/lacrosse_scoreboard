@@ -427,8 +427,25 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         for (button in importRosterButtons) {
             button.onclick = function () {
                 console.log(coach_roster)
+                sendToServer()
             };
         }
+
+        function sendToServer(id) {
+            console.log(id);
+            $.ajax({
+                url: "http://127.0.0.1:8000/saveRoster", //not sure if this is correct URL
+                type: "POST",
+                data: {id: id},
+            })
+                .done(function (response) {
+                    console.log(response);
+                })
+                .fail(function () {
+                    console.log("Error Occured");
+                });
+        }
+
 
         /*
         * for button in importRosterButtons
@@ -466,17 +483,17 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
             }
         }
 
-        /*
-        * function updateRoster (rosterId, buttonComponent) {
-        *   if buttonComponent is "Home"
-        *     is_home = True
-        *   else
-        *     is_home = False
-        *
-        *   console.log(rosterId)
-        *   console.log(is_home)
-        *
-        * }
-        * */
+        function updateRoster (rosterId, buttonComponent) {
+            if (buttonComponent = "Home") {
+                is_home = True
+            } else {
+                is_home = False
+
+                console.log(rosterId)
+                console.log(is_home)
+
+            }
+        }
+
     </script>
 {% endblock %}
