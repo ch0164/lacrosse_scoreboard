@@ -425,8 +425,10 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
         var button = (elements)[i].getElementsByClassName("btn btn-success")[0];
         button.addEventListener("click", function () {
             alert(this.id);
+            alert(importRosterTeam)
         });
     }
+    var rosterButton =
 
     function sendToServer(id) {
         console.log(id);
@@ -458,9 +460,11 @@ coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_t
     // When the user clicks on the button, open the modal
     importRosterButtonHome.onclick = function() {
       modalElement.style.display = "block";
+      importRosterTeam = "Home"
     }
     importRosterButtonVisitor.onclick = function() {
       modalElement.style.display = "block";
+      importRosterTeam = "Away"
     }
 
     cancelButton.onclick = function() {
