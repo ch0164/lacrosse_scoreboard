@@ -14,6 +14,8 @@ class Roster(models.Model):
     school = models.CharField(max_length=100, default="")
     win_count = models.PositiveIntegerField(default=0)
     loss_count = models.PositiveIntegerField(default=0)
+    # TODO: Change below default to False and add publish button.
+    is_published = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.school} {self.team_name}"  # Example: "UAH Chargers"
@@ -84,40 +86,98 @@ class Player(models.Model):
 class RunningScore(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    home_team = models.CharField(max_length=50)
-    visiting_team = models.CharField(max_length=50)
-    home_coach = models.CharField(max_length=62)
-    visiting_coach = models.CharField(max_length=62)
-
-    def __str__(self):
-        return f"Home: {self.home_team} -- {self.home_coach}\n" \
-               f"Visiting: {self.visiting_team} -- {self.visiting_coach}"
 
 
-# Scorebook will have a RunningScore with 26 Score entries.
 class Score(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    time = models.TimeField("Time Scored")
-    quarter = models.CharField("Position", max_length=8, choices=QUARTERS, default="")
+    time = models.TimeField(auto_now=True)
+    quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     goal_number = models.PositiveIntegerField("Goal Jersey", default=0)
     assist_number = models.PositiveIntegerField("Assist Jersey", default=0)
     # Relationships
-    running_score = models.ForeignKey(RunningScore,
-                                      on_delete=models.CASCADE,
-                                      default=None)
+    home_score = models.ForeignKey(RunningScore,
+                                   related_name="home_score",
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.CASCADE,
+                                   default=None)
+    visiting_score = models.ForeignKey(RunningScore,
+                                       related_name="visiting_score",
+                                       null=True,
+                                       blank=True,
+                                       on_delete=models.CASCADE,
+                                       default=None)
 
     def __str__(self):
         return f"{self.goal_number} made a goal at {self.time}"
 
 
+class PenaltySet(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+
+
+class Penalty(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    personal_foul = models.BooleanField(default=False)
+    player_number = models.PositiveIntegerField(default=0)
+    infraction = models.CharField(max_length=50, default="")
+    quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
+    time = models.TimeField(auto_now=True)
+    # Relationships
+    home_penalties = models.ForeignKey(PenaltySet,
+                                       related_name="home_penalties",
+                                       null=True,
+                                       blank=True,
+                                       on_delete=models.CASCADE,
+                                       default=None)
+    visiting_penalties = models.ForeignKey(PenaltySet,
+                                           related_name="visiting_penalties",
+                                           null=True,
+                                           blank=True,
+                                           on_delete=models.CASCADE,
+                                           default=None)
+
+    def __str__(self):
+        return f"Player {self.player_number} penalized for {self.time.strftime('%M:%S')}.\n" \
+               f"Reason: {self.infraction}"
+
+
+class TimeoutSet(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+
+
+class Timeout(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    time = models.TimeField(auto_now=True)
+    quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
+    # Relationships
+    home_timeouts = models.ForeignKey(TimeoutSet,
+                                      related_name="home_timeouts",
+                                      null=True,
+                                      blank=True,
+                                      on_delete=models.CASCADE,
+                                      default=None)
+    visiting_timeouts = models.ForeignKey(TimeoutSet,
+                                          related_name="visiting_timeouts",
+                                          null=True,
+                                          blank=True,
+                                          on_delete=models.CASCADE,
+                                          default=None)
+
+
 class Scorebook(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    # time_remaining = models.DateTimeField(default=datetime.time(1, 0, 0))
-    is_published = models.BooleanField(default=False)
     home_score = models.PositiveIntegerField(default=0)
     visiting_score = models.PositiveIntegerField(default=0)
+    is_published = models.BooleanField(default=False)
+    time_remaining = models.TimeField(auto_now=True)
+    date_published = models.DateTimeField(auto_now=True)
     # Relationships
     home_coach = models.OneToOneField(Coach,
                                       related_name="home_coach",
@@ -133,11 +193,30 @@ class Scorebook(models.Model):
                                        null=True,
                                        blank=True,
                                        default=None)
-    running_score = models.OneToOneField(RunningScore,
+    home_running_score = models.OneToOneField(RunningScore,
+                                              related_name="home_running_score",
+                                              on_delete=models.CASCADE,
+                                              default=None)
+    visiting_running_score = models.OneToOneField(RunningScore,
+                                                  related_name="visiting_running_score",
+                                                  on_delete=models.CASCADE,
+                                                  default=None)
+    home_timeouts = models.OneToOneField(TimeoutSet,
+                                         related_name="home_running_score",
                                          on_delete=models.CASCADE,
-                                         null=True,
-                                         blank=True,
                                          default=None)
+    visiting_timeouts = models.OneToOneField(TimeoutSet,
+                                             related_name="visiting_running_score",
+                                             on_delete=models.CASCADE,
+                                             default=None)
+    home_penalties = models.OneToOneField(PenaltySet,
+                                          related_name="home_running_score",
+                                          on_delete=models.CASCADE,
+                                          default=None)
+    visiting_penalties = models.OneToOneField(PenaltySet,
+                                              related_name="visiting_running_score",
+                                              on_delete=models.CASCADE,
+                                              default=None)
 
     def __str__(self):
         return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
@@ -164,20 +243,3 @@ class PlayerStatistics(models.Model):
 
     def __str__(self):
         return f"{self.player} scored {self.shots} shots, {self.goals} goals, and {self.assists} assists"
-
-
-class Penalty(models.Model):
-    # Attributes
-    id = models.AutoField(primary_key=True)
-    personal_foul = models.BooleanField(default=False)
-    home_team = models.BooleanField(default=True)
-    player_number = models.PositiveIntegerField(default=0)
-    infraction = models.CharField(max_length=50, default="")
-    quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
-    time = models.TimeField(default=datetime.time(0, 0, 0))
-    # Relationships
-    scorebook = models.ForeignKey(Scorebook, on_delete=models.CASCADE, default=None)
-
-    def __str__(self):
-        return f"Player {self.player_number} penalized for {self.time.strftime('%M:%S')}.\n" \
-               f"Reason: {self.infraction}"

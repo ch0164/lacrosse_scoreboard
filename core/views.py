@@ -5,6 +5,20 @@ from django.shortcuts import render
 from core.forms import *
 from core.models import *
 
+scorebook_context = {
+    "running_score": None,
+    "home_penalties": None,
+    "visiting_penalties": None,
+    "timeouts": None,
+    "home_roster": None,
+    "visiting_roster": None,
+    "running_score_form": ScorebookAddScore(),
+    "personal_foul_form": ScorebookPersonalFoul(),
+    "technical_foul_form": ScorebookTechnicalFoul(),
+    "timeout_form": ScorebookTimeout(),
+    "add_player_form": ScorebookAddPlayer(),
+    "import_roster_form": ScorebookImportRoster(),
+}
 
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html", {"scorebooks": Scorebook.objects.all()})
@@ -22,7 +36,108 @@ def view_scorebook(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def edit_scorebook(request: HttpRequest) -> HttpResponse:
-    return render(request, "scorebook.html", {"numbers": list(range(100))})
+    print(scorebook_context)
+
+    # User has submitted a form -- determine which one and handle it.
+    if request.method == "POST":
+        print(request.POST)
+
+        # User selected the home team's running score.
+        if "homeScoreModal" in str(request.POST):
+            print("THIS IS A TEST")
+            form = ScorebookAddScore(request.POST)
+            if form.is_valid():
+
+                if scorebook_context["running_score"] is None:
+                    running_score = RunningScore()
+                    running_score.save()
+                else:
+                    running_score = scorebook_context["running_score"]
+
+                score = Score(time=form.cleaned_data.get("time"),
+                              quarter=form.cleaned_data.get("quarter"),
+                              goal_number=form.cleaned_data.get("goal_jersey"),
+                              assist_number=form.cleaned_data.get("assist_jersey"),
+                              home_score=running_score)
+                score.save()
+                scorebook_context["running_score"] = running_score
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        # User selected the visiting team's running score.
+        elif "visitingScoreModal" in str(request.POST):
+            form = ScorebookAddScore(request.POST)
+            if form.is_valid():
+
+                if scorebook_context["running_score"] is None:
+                    running_score = RunningScore()
+                    running_score.save()
+                else:
+                    running_score = scorebook_context["running_score"]
+
+                score = Score(time=form.cleaned_data.get("time"),
+                              quarter=form.cleaned_data.get("quarter"),
+                              goal_number=form.cleaned_data.get("goal_jersey"),
+                              assist_number=form.cleaned_data.get("assist_jersey"),
+                              visiting_score=running_score)
+                score.save()
+                scorebook_context["running_score"] = running_score
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        elif "homePenaltyModal" in str(request.POST):
+            pass
+
+        elif "visitingPenaltyModal" in str(request.POST):
+            pass
+
+        # User selected to call a timeout for the home team.
+        elif "homeTimeoutModal" in str(request.POST):
+            form = ScorebookTimeout(request.POST)
+            if form.is_valid():
+                if scorebook_context["timeouts"] is None:
+                    timeouts = TimeoutSet()
+                    timeouts.save()
+                else:
+                    timeouts = scorebook_context["timeouts"]
+
+                timeout = Timeout(time=form.cleaned_data.get("time"),
+                                  quarter=form.cleaned_data.get("quarter"),
+                                  home_timeouts=timeouts)
+                timeout.save()
+                scorebook_context["timeouts"] = timeouts
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        # User selected to call a timeout for the home team.
+        elif "visitingTimeoutModal" in str(request.POST):
+            form = ScorebookTimeout(request.POST)
+            if form.is_valid():
+                if scorebook_context["timeouts"] is None:
+                    timeouts = TimeoutSet()
+                    timeouts.save()
+                else:
+                    timeouts = scorebook_context["timeouts"]
+
+                timeout = Timeout(time=form.cleaned_data.get("time"),
+                                  quarter=form.cleaned_data.get("quarter"),
+                                  visiting_timeouts=timeouts)
+                timeout.save()
+                scorebook_context["timeouts"] = timeouts
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        # User selected a roster for the home team.
+        elif "homeImportRosterModal" in str(request.POST):
+            roster_id = request.POST.get("roster")[0]
+            roster = Roster.objects.filter(id=roster_id)[0]
+            scorebook_context["home_roster"] = roster
+            return HttpResponseRedirect('/edit-scorebook/')
+
+        # User selected a roster for the home team.
+        elif "visitingImportRosterModal" in str(request.POST):
+            roster_id = request.POST.get("roster")[0]
+            roster = Roster.objects.filter(id=roster_id)[0]
+            scorebook_context["visiting_roster"] = roster
+            return HttpResponseRedirect('/edit-scorebook/')
+
+    return render(request, "scorebook.html", scorebook_context)
 
 
 @login_required

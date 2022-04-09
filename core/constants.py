@@ -21,9 +21,30 @@ POSITION_CHOICES = (
 )
 
 QUARTERS = (
-    ("", ""),
     ("I", "First"),
     ("II", "Second"),
     ("III", "Third"),
-    ("IV", "Fourth")
+    ("IV", "Fourth"),
+    ("OT", "Overtime")
+)
+
+PERSONAL_FOULS = (
+    ("SLASH", "Slashing"),
+    ("TRIP", "Tripping"),
+    ("X CHECK", "Cross Check"),
+    ("CONDUCT", "Unsportsmanlike Conduct"),
+    ("ROUGHNESS", "Unnecessary Roughness"),
+    ("CROSSE", "Illegal Crosse"),
+    ("B CHECK", "Illegal Body Check"),
+    ("GLOVES", "Illegal Gloves"),
+)
+
+TECHNICAL_FOULS = (
+    ("HOLD", "Holding"),
+    ("INTERFERENCE", "Interference"),
+    ("OOB", "Off Sides"),
+    ("PUSH", "Pushing"),
+    ("SCREEN", "Screening"),
+    ("STALL", "Stalling"),
+    ("WARD", "Warding Off"),
 )
