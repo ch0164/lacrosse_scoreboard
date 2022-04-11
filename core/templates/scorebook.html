@@ -16,6 +16,11 @@
             width: 100%;
             overflow-y: scroll;
         }
+        p {
+            text-align: center;
+            font-size: 60px;
+            margin-top: 0px;
+        }
     </style>
 {% endblock custom_css %}
 
@@ -31,6 +36,9 @@
             </div>
             <div class="col-md-3">
                 <h1 class="bg_black">Timer</h1>
+                <p id="countdown"></p>
+                    <button id="startTimer" type="button" class="btn btn-success">Start</button>
+                    <button id="stopTimer" type="button" class="btn btn-danger">Pause</button>
             </div>
             <div class="col-md-3">
                 <h1 class="bg_black">
@@ -583,5 +591,19 @@
             })
         });
 
+        const startingTime = 60;
+        let time = startingTime * 60;
+        const countdownEl = document.getElementById('countdown');
+
+        setInterval(updateCountdown, 1000);
+
+        function updateCountdown(){
+            const minutes = Math.floor(time/60);
+            let seconds = time % 60;
+            seconds = seconds < 10 ? '0' + seconds:seconds;
+
+            countdownEl.innerHTML = `${minutes}:${seconds}`;
+            time--;
+}
     </script>
 {% endblock %}
