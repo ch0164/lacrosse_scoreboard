@@ -427,12 +427,12 @@
                 {% csrf_token %}
                 {#            {{ form|crispy }}#}
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Dropdown button
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Personal Foul</a>
-                <a class="dropdown-item" href="#">Technical Fowl</a>
+              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
+                  <li><a href="#" data-value="action">Personal Fowl</a></li>
+                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
               </div>
             </div>
                 <input class="btn btn-primary btn-lg" type="submit" name="homePenaltyModalConfirm" value="Confirm">
@@ -448,16 +448,16 @@
                 {% csrf_token %}
                 {#            {{ form|crispy }}#}
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Dropdown button
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Personal Foul</a>
-                <a class="dropdown-item" href="#">Technical Fowl</a>
+              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
+                  <li><a href="#" data-value="action">Personal Fowl</a></li>
+                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
               </div>
             </div>
-                <input class="btn btn-primary btn-lg" type="submit" name="visitingPenaltyModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="visitingPenaltyModalCancel" value="Cancel">
+                <input class="btn btn-primary btn-lg" type="submit" name="homePenaltyModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homePenaltyModalCancel" value="Cancel">
             </form>
         </div>
     </div>
@@ -595,6 +595,11 @@
                 {#console.log(confirmButton.id);#}
                 {#console.log(cancelButton.id);#}
             })
+
+                  $(".dropdown-menu li a").click(function(){
+                  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+                  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+});
         });
 
     </script>
