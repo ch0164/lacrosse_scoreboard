@@ -48,3 +48,13 @@ TECHNICAL_FOULS = (
     ("STALL", "Stalling"),
     ("WARD", "Warding Off"),
 )
+
+Penalties_Home = (
+    ("PF", "Personal Foul")
+    ("TF", "Technical Foul")
+)
+
+Penalties_Away = (
+    ("PF", "Personal Foul")
+    ("TF", "Technical Foul")
+)
