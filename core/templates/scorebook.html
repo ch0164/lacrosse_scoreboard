@@ -591,7 +591,43 @@
             })
         });
 
-        const startingTime = 0;
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10)
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = `${minutes}:${seconds}` + "/60:00";
+            if (--timer < 0) {
+                timer = duration;
+            }
+        console.log(parseInt(seconds))
+        window.localStorage.setItem("seconds",seconds)
+        window.localStorage.setItem("minutes",minutes)
+        }, 1000);
+}
+
+window.onload = function () {
+  sec  = parseInt(window.localStorage.getItem("seconds"))
+  min = parseInt(window.localStorage.getItem("minutes"))
+
+  if(parseInt(min*sec)){
+    var sixtyMinutes = (parseInt(min*60)+sec);
+  }
+    else{
+    var sixtyMinutes = 60 * 60;
+    }
+    // var sixtyMinutes = 60 * 60;
+  display = document.querySelector('#countdown');
+  startTimer(sixtyMinutes, display);
+};
+
+
+//EASY TIMER
+ /*       const startingTime = 0;
         let time = startingTime * 60;
         const countdownEl = document.getElementById('countdown');
 
@@ -605,5 +641,6 @@
             countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
             time++;
 }
+*/
     </script>
 {% endblock %}
