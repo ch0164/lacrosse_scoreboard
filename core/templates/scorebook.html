@@ -591,6 +591,7 @@
             })
         });
 
+//Refresh Handled Timer
 function startTimer(duration, display) {
     var timer = duration, minutes, seconds;
         setInterval(function () {
@@ -609,7 +610,7 @@ function startTimer(duration, display) {
         window.localStorage.setItem("minutes",minutes)
         }, 1000);
 }
-
+//onload - object has been loaded or created
 window.onload = function () {
   sec  = parseInt(window.localStorage.getItem("seconds"))
   min = parseInt(window.localStorage.getItem("minutes"))
@@ -620,7 +621,7 @@ window.onload = function () {
     else{
     var sixtyMinutes = 60 * 60;
     }
-    // var sixtyMinutes = 60 * 60;
+    //var sixtyMinutes = 60 * 60;
   display = document.querySelector('#countdown');
   startTimer(sixtyMinutes, display);
 };
