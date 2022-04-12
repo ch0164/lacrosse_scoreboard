@@ -117,12 +117,12 @@
                 <h1 class="bg_black">
                     <b>Home Penalties</b>
                 <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Dropdown button
+              <button class="btn btn-secondary dropdown-toggle" id="homeDropdownMenuButton" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Penalties
               </button>
               <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
-                  <li><a href="#" data-value="action">Personal Fowl</a></li>
-                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
+                  <li><button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Fowl</button></li>
+                  <li><button class="dropdown-item" id="homeTechnicalFoulButton" type="button">Technical Fowl</button></li>
               </div>
                 </div>
                 </h1>
@@ -142,6 +142,7 @@
                     </table>
                 </div>
             </div>
+
 
             <div class="col-md-3">
                 <h1 class="bg_black">
@@ -176,12 +177,12 @@
                 <h1 class="bg_black">
                     <b>Visiting Penalties</b>
                                 <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Dropdown button
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="visitingDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Penalties
               </button>
-              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
-                  <li><a href="#" data-value="action">Personal Fowl</a></li>
-                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
+              <div class="dropdown-menu" aria-labelledby=dropdownMenu2>
+                  <li><button class="dropdown-item" id="visitingPersonalFoulButton" type="button">Personal Fowl</button></li>
+                  <li><button class="dropdown-item" id="visitingTechnicalFoulButton" type="button">Technical Fowl</button></li>
               </div>
             </div>
                 </h1>
@@ -434,49 +435,64 @@
         </div>
     </div>
 
-    {#    TODO: Handle events in this modal such that clicking one of the buttons below will#}
+   {#    TODO: Handle events in this modal such that clicking one of the buttons below will#}
     {#    display a different form (Personal/Technical) as a modal#}
-    <div id="homePenaltyModal" class="modal">
+    <div id="homePersonalPenaltyModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Penalize Player</h1>
+            <p>
+                <button class="btn btn-primary btn-lg">Personal Foul</button>
+                <button class="btn btn-secondary btn-lg">Technical Foul</button>
+            </p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {#            {{ form|crispy }}#}
+                <input class="btn btn-primary btn-lg" type="submit" name="homePersonalPenaltyModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homePersonalPenaltyModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homeTechnicalPenaltyModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Penalize Player</h1>
+            <p>
+                <button class="btn btn-primary btn-lg">Personal Foul</button>
+                <button class="btn btn-secondary btn-lg">Technical Foul</button>
+            </p>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {#            {{ form|crispy }}#}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeTechnicalPenaltyModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeTechnicalPenaltyModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingPersonalPenaltyModal" class="modal">
         <div class="modal-content">
             <h1 class="bg_black">Penalize Player</h1>
             <form action="" method="POST">
                 {% csrf_token %}
                 {#            {{ form|crispy }}#}
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Dropdown button
-              </button>
-              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
-                  <li><a href="#" data-value="action">Personal Fowl</a></li>
-                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
-              </div>
-            </div>
-                <input class="btn btn-primary btn-lg" type="submit" name="homePenaltyModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="homePenaltyModalCancel" value="Cancel">
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingPersonalPenaltyModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingPersonalPenaltyModalCancel" value="Cancel">
             </form>
         </div>
     </div>
 
-    <div id="visitingPenaltyModal" class="modal">
-        <div class="modal-content">
-            <h1 class="bg_black">Penalize Player</h1>
-            <form action="" method="POST">
-                {% csrf_token %}
-                {{ personal_foul_form|crispy }}
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Dropdown button
-              </button>
-              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
-                  <li><a href="#" data-value="action">Personal Fowl</a></li>
-                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
-              </div>
-            </div>
-                <input class="btn btn-primary btn-lg" type="submit" name="homePenaltyModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="homePenaltyModalCancel" value="Cancel">
-            </form>
-        </div>
+    <div id="visitingTechnicalPenaltyModal" class="modal">
+    <div class="modal-content">
+        <h1 class="bg_black">Penalize Player</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {#            {{ form|crispy }}#}
+            <input class="btn btn-primary btn-lg" type="submit" name="visitingTechnicalPenaltyModalConfirm" value="Confirm">
+            <input class="btn btn-danger btn-lg" type="button" name="visitingTechnicalPenaltyModalCancel" value="Cancel">
+        </form>
     </div>
+</div>
+
 
     <div id="homeTimeoutModal" class="modal">
         <div class="modal-content">
@@ -574,8 +590,10 @@
         let visitingScoreButton = document.getElementById("visitingScoreButton");
 
         /* Get penalty buttons. */
-        let homePenaltyButton = document.getElementById("homePenaltyButton");
-        let visitingPenaltyButton = document.getElementById("visitingPenaltyButton");
+        let homePersonalFoulButton = document.getElementById("homePersonalFoulButton");
+        let homeTechnicalFoulButton = document.getElementById("homeTechnicalFoulButton");
+        let visitingPersonalFoulButton = document.getElementById("visitingPersonalFoulButton");
+        let visitingTechnicalFoulButton = document.getElementById("visitingTechnicalFoulButton");
 
         /* Get timeout buttons. */
         let homeTimeoutButton = document.getElementById("homeTimeoutButton");
@@ -591,7 +609,8 @@
         let buttons = [
             publishScorebookButton, clearScorebookButton,
             homeScoreButton, visitingScoreButton,
-            homePenaltyButton, visitingPenaltyButton,
+            homePersonalFoulButton, homeTechnicalFoulButton,
+            visitingPersonalFoulButton, visitingTechnicalFoulButton,
             homeTimeoutButton, visitingTimeoutButton,
             homeAddPlayerButton, homeImportRosterButton,
             visitingAddPlayerButton, visitingImportRosterButton,
@@ -607,9 +626,9 @@
                 cancelButton.addEventListener("click", function () {
                     modal.style.display = "none";
                 })
-                {#console.log(modal.id);#}
-                {#console.log(confirmButton.id);#}
-                {#console.log(cancelButton.id);#}
+                console.log(modal.id);
+                console.log(confirmButton.id);
+                console.log(cancelButton.id);
             })
                   //Set dropdown menu to item selected
                   $(".dropdown-menu li a").click(function(){
