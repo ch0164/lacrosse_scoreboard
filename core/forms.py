@@ -38,7 +38,7 @@ class ScorebookAddScore(forms.Form):
 class ScorebookPenalty(forms.Form):
     player_number = forms.IntegerField(min_value=0)
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
-    time = forms.TimeField()
+    # time = forms.TimeField()
     infraction = forms.CharField()
 
 

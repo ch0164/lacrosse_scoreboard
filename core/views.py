@@ -7,8 +7,7 @@ from core.models import *
 
 scorebook_context = {
     "running_score": None,
-    "home_penalties": None,
-    "visiting_penalties": None,
+    "penalties": None,
     "timeouts": None,
     "home_roster": None,
     "visiting_roster": None,
@@ -85,11 +84,93 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 scorebook_context["running_score"] = running_score
                 return HttpResponseRedirect('/edit-scorebook/')
 
-        elif "homePenaltyModal" in str(request.POST):
-            pass
+        elif "homePersonalFoulModal" in str(request.POST):
+            form = ScorebookPersonalFoul(request.POST)
+            if form.is_valid():
 
-        elif "visitingPenaltyModal" in str(request.POST):
-            pass
+                if scorebook_context["penalties"] is None:
+                    print("NONE SET")
+                    penalties = PenaltySet()
+                    penalties.save()
+                else:
+                    penalties = scorebook_context["penalties"]
+
+                penalty = Penalty(personal_foul=True,
+                                  player_number=form.cleaned_data.get("player_number"),
+                                  infraction=form.cleaned_data.get("infraction"),
+                                  quarter=form.cleaned_data.get("quarter"),
+                                  time=form.cleaned_data.get("time"),
+                                  home_penalties=penalties)
+                penalty.save()
+                print("PENALTY SAVED")
+                scorebook_context["penalties"] = penalties
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        elif "homeTechnicalFoulModal" in str(request.POST):
+            form = ScorebookPersonalFoul(request.POST)
+            if form.is_valid():
+
+                if scorebook_context["penalties"] is None:
+                    penalties = PenaltySet()
+                    penalties.save()
+                else:
+                    penalties = scorebook_context["penalties"]
+
+                penalty = Penalty(personal_foul=False,
+                                  player_number=form.cleaned_data.get(
+                                      "player_number"),
+                                  infraction=form.cleaned_data.get(
+                                      "infraction"),
+                                  quarter=form.cleaned_data.get("quarter"),
+                                  time=form.cleaned_data.get("time"),
+                                  home_penalties=penalties)
+                penalty.save()
+                scorebook_context["penalties"] = penalties
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        elif "visitingPersonalFoulModal" in str(request.POST):
+            form = ScorebookPersonalFoul(request.POST)
+            if form.is_valid():
+
+                if scorebook_context["penalties"] is None:
+                    penalties = PenaltySet()
+                    penalties.save()
+                else:
+                    penalties = scorebook_context["penalties"]
+
+                penalty = Penalty(personal_foul=True,
+                                  player_number=form.cleaned_data.get(
+                                      "player_number"),
+                                  infraction=form.cleaned_data.get(
+                                      "infraction"),
+                                  quarter=form.cleaned_data.get("quarter"),
+                                  time=form.cleaned_data.get("time"),
+                                  visiting_penalties=penalties)
+                penalty.save()
+                scorebook_context["penalties"] = penalties
+                return HttpResponseRedirect('/edit-scorebook/')
+
+        elif "visitingTechnicalFoulModal" in str(request.POST):
+            form = ScorebookPersonalFoul(request.POST)
+            if form.is_valid():
+
+                if scorebook_context["penalties"] is None:
+                    penalties = PenaltySet()
+                    penalties.save()
+                else:
+                    penalties = scorebook_context["penalties"]
+
+                penalty = Penalty(personal_foul=False,
+                                  player_number=form.cleaned_data.get(
+                                      "player_number"),
+                                  infraction=form.cleaned_data.get(
+                                      "infraction"),
+                                  quarter=form.cleaned_data.get("quarter"),
+                                  time=form.cleaned_data.get("time"),
+                                  visiting_penalties=penalties)
+                penalty.save()
+                scorebook_context["penalties"] = penalties
+                return HttpResponseRedirect('/edit-scorebook/')
 
         # User selected to call a timeout for the home team.
         elif "homeTimeoutModal" in str(request.POST):
@@ -125,12 +206,48 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 scorebook_context["timeouts"] = timeouts
                 return HttpResponseRedirect('/edit-scorebook/')
 
+        elif "homeAddPlayerModal" in str(request.POST):
+            form = ScorebookAddPlayer(request.POST)
+            if form.is_valid():
+                if scorebook_context["home_roster"] is None:
+                    roster = Roster()
+                    roster.save()
+                else:
+                    roster = scorebook_context["home_roster"]
+
+                player = Player(player_number=form.cleaned_data.get("player_number"),
+                                first_name=form.cleaned_data.get("first_name"),
+                                last_name=form.cleaned_data.get("last_name"),
+                                position=form.cleaned_data.get("position"),
+                                team=roster)
+                player.save()
+                scorebook_context["home_roster"] = roster
+                return HttpResponseRedirect("/edit-scorebook/")
+
         # User selected a roster for the home team.
         elif "homeImportRosterModal" in str(request.POST):
             roster_id = request.POST.get("roster")[0]
             roster = Roster.objects.filter(id=roster_id)[0]
             scorebook_context["home_roster"] = roster
             return HttpResponseRedirect('/edit-scorebook/')
+
+        elif "visitingAddPlayerModal" in str(request.POST):
+            form = ScorebookAddPlayer(request.POST)
+            if form.is_valid():
+                if scorebook_context["visiting_roster"] is None:
+                    roster = Roster()
+                    roster.save()
+                else:
+                    roster = scorebook_context["visiting_roster"]
+
+                player = Player(player_number=form.cleaned_data.get("player_number"),
+                                first_name=form.cleaned_data.get("first_name"),
+                                last_name=form.cleaned_data.get("last_name"),
+                                position=form.cleaned_data.get("position"),
+                                team=roster)
+                player.save()
+                scorebook_context["visiting_roster"] = roster
+                return HttpResponseRedirect("/edit-scorebook/")
 
         # User selected a roster for the home team.
         elif "visitingImportRosterModal" in str(request.POST):

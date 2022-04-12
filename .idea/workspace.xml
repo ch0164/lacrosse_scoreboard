@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0f0f661-779b-4316-aced-8a3a0d8efb59" name="Changes" comment="Change penalty buttons to drop down menus. Working on displaying modal on dropdown selection">
+    <list default="true" id="a0f0f661-779b-4316-aced-8a3a0d8efb59" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649723164206</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Hotfix to penalties buttons (modals not following naming scheme); touchups.">
+      <created>1649733892938</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1649733892938</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +140,7 @@
     <MESSAGE value="More testing and adding dropdown menus" />
     <MESSAGE value="Fixed dropdown menus to display value chosen" />
     <MESSAGE value="Change penalty buttons to drop down menus. Working on displaying modal on dropdown selection" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change penalty buttons to drop down menus. Working on displaying modal on dropdown selection" />
+    <MESSAGE value="Hotfix to penalties buttons (modals not following naming scheme); touchups." />
+    <option name="LAST_COMMIT_MESSAGE" value="Hotfix to penalties buttons (modals not following naming scheme); touchups." />
   </component>
 </project>

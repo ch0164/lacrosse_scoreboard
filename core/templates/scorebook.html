@@ -146,6 +146,23 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% if penalties is not None %}
+                            {% if penalties.home_penalties is not None %}
+                                {% for penalty in penalties.home_penalties.all %}
+                                <tr>
+                                    {% if penalty.personal_foul == True %}
+                                        <td>P</td>
+                                    {% else %}
+                                        <td>T</td>
+                                    {% endif %}
+                                    <td>{{ penalty.player_number }}</td>
+                                    <td>{{ penalty.infraction }}</td>
+                                    <td>{{ penalty.quarter }}</td>
+                                    <td>{{ penalty.time }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -215,6 +232,23 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% if penalties is not None %}
+                            {% if penalties.visiting_penalties is not None %}
+                                {% for penalty in penalties.visiting_penalties.all %}
+                                <tr>
+                                    {% if penalty.personal_foul == True %}
+                                        <td>P</td>
+                                    {% else %}
+                                        <td>T</td>
+                                    {% endif %}
+                                    <td>{{ penalty.player_number }}</td>
+                                    <td>{{ penalty.infraction }}</td>
+                                    <td>{{ penalty.quarter }}</td>
+                                    <td>{{ penalty.time }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -534,7 +568,7 @@
             <h1 class="bg_black">Add Player</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
+                {{ add_player_form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" name="homeAddPlayerModalConfirm" value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="homeAddPlayerModalCancel" value="Cancel">
             </form>
@@ -546,7 +580,7 @@
             <h1 class="bg_black">Add Player</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
+                {{ add_player_form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" name="visitingAddPlayerModalConfirm"
                        value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="visitingAddPlayerModalCancel" value="Cancel">
