@@ -16,8 +16,8 @@ scorebook_context = {
     "personal_foul_form": ScorebookPersonalFoul(),
     "technical_foul_form": ScorebookTechnicalFoul(),
     "timeout_form": ScorebookTimeout(),
-    #"home_penalties_form": ScorebookPenaltyHome(),
-    #"visiting_penalties_form": ScorebookPenaltyVisiting(),
+    "home_penalties_form": ScorebookPenalty(),
+    "visiting_penalties_form": ScorebookPenalty(),
     "add_player_form": ScorebookAddPlayer(),
     "import_roster_form": ScorebookImportRoster(),
 }

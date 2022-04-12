@@ -116,7 +116,15 @@
             <div class="col-md-3">
                 <h1 class="bg_black">
                     <b>Home Penalties</b>
-                    <button id="homePenaltyButton" type="button" class="btn btn-danger">Penalize</button>
+                <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Dropdown button
+              </button>
+              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
+                  <li><a href="#" data-value="action">Personal Fowl</a></li>
+                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
+              </div>
+                </div>
                 </h1>
                 <div class="scrollWrapper">
                     <table class="table table-light table-bordered table-striped">
@@ -167,7 +175,15 @@
             <div class="col-md-3">
                 <h1 class="bg_black">
                     <b>Visiting Penalties</b>
-                    <button id="visitingPenaltyButton" type="button" class="btn btn-danger">Penalize</button>
+                                <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Dropdown button
+              </button>
+              <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
+                  <li><a href="#" data-value="action">Personal Fowl</a></li>
+                  <li><a href="#" data-value="another action">Technical Fowl</a></li>
+              </div>
+            </div>
                 </h1>
                 <div class="scrollWrapper">
                     <table class="table table-light table-bordered table-striped">
@@ -446,7 +462,7 @@
             <h1 class="bg_black">Penalize Player</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
+                {{ personal_foul_form|crispy }}
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Dropdown button
@@ -595,9 +611,9 @@
                 {#console.log(confirmButton.id);#}
                 {#console.log(cancelButton.id);#}
             })
-
+                  //Set dropdown menu to item selected
                   $(".dropdown-menu li a").click(function(){
-                  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+                  $(this).parents(".dropdown").find('.btn').html($(this).text());
                   $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
 });
         });
