@@ -182,10 +182,14 @@ class Scorebook(models.Model):
     home_coach = models.OneToOneField(Coach,
                                       related_name="home_coach",
                                       on_delete=models.CASCADE,
+                                      null=True,
+                                      blank=True,
                                       default=None)
     visiting_coach = models.OneToOneField(Coach,
                                           related_name="visiting_coach",
                                           on_delete=models.CASCADE,
+                                          null=True,
+                                          blank=True,
                                           default=None)
     scorekeeper = models.OneToOneField(Scorekeeper,
                                        related_name="scorekeeper",
@@ -219,8 +223,9 @@ class Scorebook(models.Model):
                                               default=None)
 
     def __str__(self):
-        return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
-               f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
+        # return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
+        #        f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
+        return f"Scorebook Id: {self.id}"
 
 
 class PlayerStatistics(models.Model):

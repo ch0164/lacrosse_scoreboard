@@ -7,8 +7,7 @@ from core.models import *
 
 scorebook_context = {
     "running_score": None,
-    "home_penalties": None,
-    "visiting_penalties": None,
+    "penalties": None,
     "timeouts": None,
     "home_roster": None,
     "visiting_roster": None,
@@ -19,6 +18,8 @@ scorebook_context = {
     "add_player_form": ScorebookAddPlayer(),
     "import_roster_form": ScorebookImportRoster(),
 }
+
+scorebook = None
 
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html", {"scorebooks": Scorebook.objects.all()})
@@ -35,7 +36,48 @@ def view_scorebook(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+def create_scorebook(request: HttpRequest) -> HttpResponse:
+    global scorebook
+    form = CreateScorebook()
+    print(scorebook)
+    if request.method == "POST":
+        form = CreateScorebook(request.POST)
+        if form.is_valid():
+            # Create running score models.
+            home_running_score = RunningScore()
+            home_running_score.save()
+            visiting_running_score = RunningScore()
+            visiting_running_score.save()
+
+            # Create timeout set models.
+            home_timeouts = TimeoutSet()
+            home_timeouts.save()
+            visiting_timeouts = TimeoutSet()
+            visiting_timeouts.save()
+
+            # Create penalty set models.
+            home_penalties = PenaltySet()
+            home_penalties.save()
+            visiting_penalties = PenaltySet()
+            visiting_penalties.save()
+
+            # Create scorebook.
+            scorebook = Scorebook(home_running_score=home_running_score,
+                                  visiting_running_score=visiting_running_score,
+                                  home_timeouts=home_timeouts,
+                                  visiting_timeouts=visiting_timeouts,
+                                  home_penalties=home_penalties,
+                                  visiting_penalties=visiting_penalties)
+            scorebook.save()
+            return HttpResponseRedirect('/edit-scorebook/')
+    return render(request, "create_scorebook.html", {"form": form})
+
+@login_required
 def edit_scorebook(request: HttpRequest) -> HttpResponse:
+    global scorebook
+    if scorebook is None:
+        return HttpResponseRedirect('/create-scorebook/')
+
     print(scorebook_context)
 
     # User has submitted a form -- determine which one and handle it.
@@ -136,6 +178,15 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             roster = Roster.objects.filter(id=roster_id)[0]
             scorebook_context["visiting_roster"] = roster
             return HttpResponseRedirect('/edit-scorebook/')
+
+
+        # User selected to clear the roster.
+        elif "clearScorebookModal" in str(request.POST):
+            if scorebook is not None:
+                scorebook.delete()
+                scorebook = None
+                return HttpResponseRedirect('/create-scorebook/')
+            pass
 
     return render(request, "scorebook.html", scorebook_context)
 

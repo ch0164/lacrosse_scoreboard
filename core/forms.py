@@ -24,6 +24,12 @@ class RosterEntryForm(forms.Form):
 
 
 # Define Scorebook modal forms below.
+class CreateScorebook(forms.Form):
+    pass
+    # time_created = forms.TimeField()
+
+
+
 class ScorebookAddScore(forms.Form):
     # time = forms.TimeField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))

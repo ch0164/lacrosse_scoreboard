@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Scorebook{% endblock %}
+
+{% block content %}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary btn-lg" type="submit" value="Create">
+    <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+</form>
+
+
+{% endblock %}
