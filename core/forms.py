@@ -60,7 +60,7 @@ class ScorebookTechnicalFoul(ScorebookPenalty):
 
 class ScorebookTimeout(forms.Form):
     # time = forms.TimeField()
-    penalties = forms.CharField(widget=forms.Select(choices=QUARTERS))
+    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
 
 #class ScorebookPenaltyHome(forms.Form):
     #penalties = forms.CharField(widget=forms.Select(choices=Penalties_Home))
