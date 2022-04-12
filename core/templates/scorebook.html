@@ -120,7 +120,23 @@
             <div class="col-md-3">
                 <h1 class="bg_black">
                     <b>Home Penalties</b>
-                    <button id="homePenaltyButton" type="button" class="btn btn-danger">Penalize</button>
+                    <span class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle" id="homeDropdownMenuButton" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Penalties
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
+                            <li>
+                                <button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Fowl
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" id="homeTechnicalFoulButton" type="button">Technical
+                                    Fowl
+                                </button>
+                            </li>
+                        </div>
+                    </span>
                 </h1>
                 <div class="scrollWrapper">
                     <table class="table table-light table-bordered table-striped">
@@ -134,10 +150,28 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% if penalties is not None %}
+                            {% if penalties.home_penalties is not None %}
+                                {% for penalty in penalties.home_penalties.all %}
+                                <tr>
+                                    {% if penalty.personal_foul == True %}
+                                        <td>P</td>
+                                    {% else %}
+                                        <td>T</td>
+                                    {% endif %}
+                                    <td>{{ penalty.player_number }}</td>
+                                    <td>{{ penalty.infraction }}</td>
+                                    <td>{{ penalty.quarter }}</td>
+                                    <td>{{ penalty.time }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
             </div>
+
 
             <div class="col-md-3">
                 <h1 class="bg_black">
@@ -171,7 +205,24 @@
             <div class="col-md-3">
                 <h1 class="bg_black">
                     <b>Visiting Penalties</b>
-                    <button id="visitingPenaltyButton" type="button" class="btn btn-danger">Penalize</button>
+                    <span class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle" type="button" id="visitingDropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Penalize
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby=dropdownMenu2>
+                            <li>
+                                <button class="dropdown-item" id="visitingPersonalFoulButton" type="button">Personal
+                                    Fowl
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" id="visitingTechnicalFoulButton" type="button">Technical
+                                    Fowl
+                                </button>
+                            </li>
+                        </div>
+                    </span>
                 </h1>
                 <div class="scrollWrapper">
                     <table class="table table-light table-bordered table-striped">
@@ -185,6 +236,23 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% if penalties is not None %}
+                            {% if penalties.visiting_penalties is not None %}
+                                {% for penalty in penalties.visiting_penalties.all %}
+                                <tr>
+                                    {% if penalty.personal_foul == True %}
+                                        <td>P</td>
+                                    {% else %}
+                                        <td>T</td>
+                                    {% endif %}
+                                    <td>{{ penalty.player_number }}</td>
+                                    <td>{{ penalty.infraction }}</td>
+                                    <td>{{ penalty.quarter }}</td>
+                                    <td>{{ penalty.time }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -244,7 +312,7 @@
                         <tbody>
                         {% if home_roster is not None %}
                             {% for player in home_roster.player_set.all %}
-{#                                TODO: Update IDs for home/visiting roster checkboxes/text fields.#}
+                                {#                                TODO: Update IDs for home/visiting roster checkboxes/text fields.#}
                                 <tr>
                                     <td>{{ player.player_number }}</td>
                                     <td>{{ player.position }}</td>
@@ -422,28 +490,55 @@
         </div>
     </div>
 
-    {#    TODO: Handle events in this modal such that clicking one of the buttons below will#}
-    {#    display a different form (Personal/Technical) as a modal#}
-    <div id="homePenaltyModal" class="modal">
+    <div id="homePersonalFoulModal" class="modal">
         <div class="modal-content">
-            <h1 class="bg_black">Penalize Player</h1>
+            <h1 class="bg_black">Personal Foul</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
-                <input class="btn btn-primary btn-lg" type="submit" name="homePenaltyModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="homePenaltyModalCancel" value="Cancel">
+                {{ personal_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homePersonalFoulModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homePersonalFoulModalCancel" value="Cancel">
             </form>
         </div>
     </div>
 
-    <div id="visitingPenaltyModal" class="modal">
+    <div id="homeTechnicalFoulModal" class="modal">
         <div class="modal-content">
-            <h1 class="bg_black">Penalize Player</h1>
+            <h1 class="bg_black">Technical Foul</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
-                <input class="btn btn-primary btn-lg" type="submit" name="visitingPenaltyModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="visitingPenaltyModalCancel" value="Cancel">
+                {{ technical_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeTechnicalFoulModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeTechnicalFoulModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingPersonalFoulModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Personal Foul</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ personal_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingPersonalFoulModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingPersonalFoulModalCancel"
+                       value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingTechnicalFoulModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Technical Foul</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ technical_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingTechnicalFoulModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingTechnicalFoulModalCancel"
+                       value="Cancel">
             </form>
         </div>
     </div>
@@ -477,25 +572,19 @@
             <h1 class="bg_black">Add Player</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
+                {{ add_player_form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" name="homeAddPlayerModalConfirm" value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="homeAddPlayerModalCancel" value="Cancel">
             </form>
         </div>
     </div>
 
-    {#    TODO: how to handle multiple POST requests in one page #}
-    {#    if 'newsletter_sub' in request.POST:#}
-    {#    # do subscribe#}
-    {#elif 'newsletter_unsub' in request.POST:#}
-    {#    # do unsubscribe#}
-
     <div id="visitingAddPlayerModal" class="modal">
         <div class="modal-content">
             <h1 class="bg_black">Add Player</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
+                {{ add_player_form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" name="visitingAddPlayerModalConfirm"
                        value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="visitingAddPlayerModalCancel" value="Cancel">
@@ -544,8 +633,10 @@
         let visitingScoreButton = document.getElementById("visitingScoreButton");
 
         /* Get penalty buttons. */
-        let homePenaltyButton = document.getElementById("homePenaltyButton");
-        let visitingPenaltyButton = document.getElementById("visitingPenaltyButton");
+        let homePersonalFoulButton = document.getElementById("homePersonalFoulButton");
+        let homeTechnicalFoulButton = document.getElementById("homeTechnicalFoulButton");
+        let visitingPersonalFoulButton = document.getElementById("visitingPersonalFoulButton");
+        let visitingTechnicalFoulButton = document.getElementById("visitingTechnicalFoulButton");
 
         /* Get timeout buttons. */
         let homeTimeoutButton = document.getElementById("homeTimeoutButton");
@@ -561,7 +652,8 @@
         let buttons = [
             publishScorebookButton, clearScorebookButton,
             homeScoreButton, visitingScoreButton,
-            homePenaltyButton, visitingPenaltyButton,
+            homePersonalFoulButton, homeTechnicalFoulButton,
+            visitingPersonalFoulButton, visitingTechnicalFoulButton,
             homeTimeoutButton, visitingTimeoutButton,
             homeAddPlayerButton, homeImportRosterButton,
             visitingAddPlayerButton, visitingImportRosterButton,
@@ -577,9 +669,9 @@
                 cancelButton.addEventListener("click", function () {
                     modal.style.display = "none";
                 })
-                {#console.log(modal.id);#}
-                {#console.log(confirmButton.id);#}
-                {#console.log(cancelButton.id);#}
+                // console.log(modal.id);
+                // console.log(confirmButton.id);
+                // console.log(cancelButton.id);
             })
         });
 

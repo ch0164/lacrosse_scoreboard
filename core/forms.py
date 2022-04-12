@@ -44,7 +44,7 @@ class ScorebookAddScore(forms.Form):
 class ScorebookPenalty(forms.Form):
     player_number = forms.IntegerField(min_value=0)
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
-    time = forms.TimeField()
+    # time = forms.TimeField()
     infraction = forms.CharField()
 
 
@@ -60,7 +60,13 @@ class ScorebookTechnicalFoul(ScorebookPenalty):
 
 class ScorebookTimeout(forms.Form):
     # time = forms.TimeField()
-    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
+    penalties = forms.CharField(widget=forms.Select(choices=QUARTERS))
+
+#class ScorebookPenaltyHome(forms.Form):
+    #penalties = forms.CharField(widget=forms.Select(choices=Penalties_Home))
+
+#class ScorebookPenaltyVisiting(forms.Form):
+    #penalties = forms.CharField(widget=forms.Select(choices=Penalties_Away))
 
 
 class ScorebookAddPlayer(forms.Form):
