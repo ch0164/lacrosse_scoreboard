@@ -238,3 +238,18 @@ class PlayerStatistics(models.Model):
 
     def __str__(self):
         return f"{self.player} scored {self.shots} shots, {self.goals} goals, and {self.assists} assists"
+
+
+class PlayerSaves(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    first_quarter = models.PositiveIntegerField(default=0)
+    second_quarter = models.PositiveIntegerField(default=0)
+    third_quarter = models.PositiveIntegerField(default=0)
+    fourth_quarter = models.PositiveIntegerField(default=0)
+    overtime = models.PositiveIntegerField(default=0)
+    # Relationships
+    player = models.OneToOneField(Player,
+                                  related_name="player_saves",
+                                  on_delete=models.CASCADE,
+                                  default=None)

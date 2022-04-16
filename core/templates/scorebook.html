@@ -270,7 +270,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <h1 class="bg_black">
                     <b>Home Roster</b>
                     <button id="homeAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
@@ -298,32 +298,33 @@
                                 <td>{{ player.position }}</td>
                                 <td>{{ player.last_name }}, {{ player.first_name }}</td>
                                 <td>
-                                        <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterI{{ player.id }}">
-                                            <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
-                                        </span>
+                                    <span class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                               id="quarterI{{ player.id }}">
+                                        <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterII{{ player.id }}">
                                             <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
-                                        </span>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIII{{ player.id }}">
                                             <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
-                                        </span>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIV{{ player.id }}">
                                             <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
-                                        </span>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterOT{{ player.id }}">
                                             <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
-                                        </span>
+                                    </span>
                                 </td>
+                                {#                                TODO: Wrap all of these number input fields in a form and add a "Save" button. #}
                                 <td>
                                     <input type="number" class="form-control" min="0" id="input1" placeholder="0">
                                 </td>
@@ -342,10 +343,73 @@
                     </table>
                 </div>
             </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Goalies & Saves</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput1_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput2_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput3_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput4_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInputOT_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td name="goalTotal"><b>0</b></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <h1 class="bg_black">
                     <b>Visiting Roster</b>
                     <button id="visitingAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
@@ -416,8 +480,72 @@
                     </table>
                 </div>
             </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Goalies & Saves</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput1_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput2_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput3_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput4_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInputOT_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td name="goalTotal"><b>0</b></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <div id="publishScorebookModal" class="modal">
         <div class="modal-content">
@@ -601,6 +729,12 @@
 {% block custom_js %}
     <script type="text/javascript">
 
+        /* Initialize the page with JavaScript before loading it using jQuery ready event. */
+        $(document).ready(function () {
+            /* Ensure goal totals are updated correctly. */
+            updateGoalTotals();
+        });
+
         /* Get publish/clear scorebook buttons. */
         let publishScorebookButton = document.getElementById("publishScorebookButton");
         let clearScorebookButton = document.getElementById("clearScorebookButton");
@@ -651,6 +785,23 @@
                 // console.log(cancelButton.id);
             })
         });
+
+        /* Add home goalies' totals. */
+        function updateGoalTotals() {
+            let goalTotals = document.getElementsByName("goalTotal");
+            goalTotals.forEach((total) => {
+                let row = total.parentNode;
+                let quarters = Array.from(row.children).slice(1, -1);
+                let totalGoalsSaved = 0;
+                quarters.forEach((quarter) => {
+                    let goalsSaved = parseInt(quarter.children[0].value);
+                    totalGoalsSaved += goalsSaved;
+                    console.log(goalsSaved);
+                })
+                total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
+            });
+            console.log("onLoad!");
+        }
 
         //Refresh Handled Timer
         function startTimer(duration, display) {
