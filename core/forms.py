@@ -24,6 +24,12 @@ class RosterEntryForm(forms.Form):
 
 
 # Define Scorebook modal forms below.
+class CreateScorebook(forms.Form):
+    pass
+    # time_created = forms.TimeField()
+
+
+
 class ScorebookAddScore(forms.Form):
     # time = forms.TimeField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
@@ -54,7 +60,7 @@ class ScorebookTechnicalFoul(ScorebookPenalty):
 
 class ScorebookTimeout(forms.Form):
     # time = forms.TimeField()
-    penalties = forms.CharField(widget=forms.Select(choices=QUARTERS))
+    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
 
 #class ScorebookPenaltyHome(forms.Form):
     #penalties = forms.CharField(widget=forms.Select(choices=Penalties_Home))

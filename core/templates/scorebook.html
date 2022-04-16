@@ -16,21 +16,30 @@
             width: 100%;
             overflow-y: scroll;
         }
+
+        p {
+            text-align: center;
+            font-size: 60px;
+            margin-top: 0px;
+        }
     </style>
 {% endblock custom_css %}
 
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <h1 class="bg_black">Scorebook</h1>
-        </div>
-
-        <div class="row">
             <div class="col-md-6">
                 <h1 class="bg_black">Metadata</h1>
             </div>
             <div class="col-md-3">
-                <h1 class="bg_black">Timer</h1>
+                <h1 class="bg_black"><b>Game Timer</b></h1>
+                <p id="countdown"></p>
+                <button id="startTimerButton" type="button" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play"></span>
+                </button>
+                <button id="stopTimerButton" type="button" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-pause"></span>
+                </button>
             </div>
             <div class="col-md-3">
                 <h1 class="bg_black">
@@ -61,18 +70,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if running_score is not None %}
-                            {% if running_score.home_score is not None %}
-                                {% for score in running_score.home_score.all %}
-                                    <tr>
-                                        <td>{{ score.time }}</td>
-                                        <td>{{ score.quarter }}</td>
-                                        <td>{{ score.goal_number }}</td>
-                                        <td>{{ score.assist_number }}</td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
+                        {% for score in scorebook.running_score.home.all %}
+                            <tr>
+                                <td>{{ score.time }}</td>
+                                <td>{{ score.quarter }}</td>
+                                <td>{{ score.goal_number }}</td>
+                                <td>{{ score.assist_number }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -94,18 +99,14 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if running_score is not None %}
-                            {% if running_score.visiting_score is not None %}
-                                {% for score in running_score.visiting_score.all %}
-                                    <tr>
-                                        <td>{{ score.time }}</td>
-                                        <td>{{ score.quarter }}</td>
-                                        <td>{{ score.goal_number }}</td>
-                                        <td>{{ score.assist_number }}</td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
+                        {% for score in scorebook.running_score.visiting.all %}
+                            <tr>
+                                <td>{{ score.time }}</td>
+                                <td>{{ score.quarter }}</td>
+                                <td>{{ score.goal_number }}</td>
+                                <td>{{ score.assist_number }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -146,23 +147,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if penalties is not None %}
-                            {% if penalties.home_penalties is not None %}
-                                {% for penalty in penalties.home_penalties.all %}
-                                <tr>
-                                    {% if penalty.personal_foul == True %}
-                                        <td>P</td>
-                                    {% else %}
-                                        <td>T</td>
-                                    {% endif %}
-                                    <td>{{ penalty.player_number }}</td>
-                                    <td>{{ penalty.infraction }}</td>
-                                    <td>{{ penalty.quarter }}</td>
-                                    <td>{{ penalty.time }}</td>
-                                </tr>
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
+                        {% for penalty in scorebook.penalties.home.all %}
+                            <tr>
+                                {% if penalty.personal_foul == True %}
+                                    <td>P</td>
+                                {% else %}
+                                    <td>T</td>
+                                {% endif %}
+                                <td>{{ penalty.player_number }}</td>
+                                <td>{{ penalty.infraction }}</td>
+                                <td>{{ penalty.quarter }}</td>
+                                <td>{{ penalty.time }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -183,16 +180,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if timeouts is not None %}
-                            {% if timeouts.home_timeouts is not None %}
-                                {% for timeout in timeouts.home_timeouts.all %}
-                                    <tr>
-                                        <td>{{ timeout.time }}</td>
-                                        <td>{{ timeout.quarter }}</td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
+                        {% for timeout in scorebook.timeouts.home.all %}
+                            <tr>
+                                <td>{{ timeout.time }}</td>
+                                <td>{{ timeout.quarter }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -232,23 +225,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if penalties is not None %}
-                            {% if penalties.visiting_penalties is not None %}
-                                {% for penalty in penalties.visiting_penalties.all %}
-                                <tr>
-                                    {% if penalty.personal_foul == True %}
-                                        <td>P</td>
-                                    {% else %}
-                                        <td>T</td>
-                                    {% endif %}
-                                    <td>{{ penalty.player_number }}</td>
-                                    <td>{{ penalty.infraction }}</td>
-                                    <td>{{ penalty.quarter }}</td>
-                                    <td>{{ penalty.time }}</td>
-                                </tr>
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
+                        {% for penalty in scorebook.penalties.visiting.all %}
+                            <tr>
+                                {% if penalty.personal_foul == True %}
+                                    <td>P</td>
+                                {% else %}
+                                    <td>T</td>
+                                {% endif %}
+                                <td>{{ penalty.player_number }}</td>
+                                <td>{{ penalty.infraction }}</td>
+                                <td>{{ penalty.quarter }}</td>
+                                <td>{{ penalty.time }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -268,16 +257,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if timeouts is not None %}
-                            {% if timeouts.visiting_timeouts is not None %}
-                                {% for timeout in timeouts.visiting_timeouts.all %}
-                                    <tr>
-                                        <td>{{ timeout.time }}</td>
-                                        <td>{{ timeout.quarter }}</td>
-                                    </tr>
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
+                        {% for timeout in scorebook.timeouts.visiting.all %}
+                            <tr>
+                                <td>{{ timeout.time }}</td>
+                                <td>{{ timeout.quarter }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -306,55 +291,53 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if home_roster is not None %}
-                            {% for player in home_roster.player_set.all %}
-                                {#                                TODO: Update IDs for home/visiting roster checkboxes/text fields.#}
-                                <tr>
-                                    <td>{{ player.player_number }}</td>
-                                    <td>{{ player.position }}</td>
-                                    <td>{{ player.last_name }}, {{ player.first_name }}</td>
-                                    <td>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            {# TODO: Update IDs for home/visiting roster checkboxes/text fields.#}
+                            <tr>
+                                <td>{{ player.player_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                <td>
                                         <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterI{{ player.id }}">
                                             <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterII{{ player.id }}">
                                             <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIII{{ player.id }}">
                                             <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIV{{ player.id }}">
                                             <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterOT{{ player.id }}">
                                             <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
                                         </span>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input1" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input2" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input3" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input4" placeholder="0">
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input1" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input2" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input3" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -383,54 +366,52 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if visiting_roster is not None %}
-                            {% for player in visiting_roster.player_set.all %}
-                                <tr>
-                                    <td>{{ player.player_number }}</td>
-                                    <td>{{ player.position }}</td>
-                                    <td>{{ player.last_name }}, {{ player.first_name }}</td>
-                                    <td>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            <tr>
+                                <td>{{ player.player_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                <td>
                                         <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterI{{ player.id }}">
                                             <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterII{{ player.id }}">
                                             <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIII{{ player.id }}">
                                             <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIV{{ player.id }}">
                                             <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
                                         </span>
-                                        <span class="form-check form-check-inline">
+                                    <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterOT{{ player.id }}">
                                             <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
                                         </span>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input1" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input2" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input3" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control" min="0" id="input4" placeholder="0">
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input1" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input2" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input3" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -455,7 +436,7 @@
             <h1 class="bg_black">Clear Scorebook</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {#            {{ form|crispy }}#}
+                <p>Are you sure you want to clear all changes?</p>
                 <input class="btn btn-primary btn-lg" type="submit" name="clearScorebookModalConfirm" value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="clearScorebookModalCancel" value="Cancel">
             </form>
@@ -671,5 +652,57 @@
             })
         });
 
+        //Refresh Handled Timer
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            setInterval(function () {
+                minutes = parseInt(timer / 60, 10)
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = `${minutes}:${seconds}` + "/60:00";
+                if (--timer < 0) {
+                    timer = duration;
+                }
+                console.log(parseInt(seconds))
+                window.localStorage.setItem("seconds", seconds)
+                window.localStorage.setItem("minutes", minutes)
+            }, 1000);
+        }
+
+        //onload - object has been loaded or created
+        window.onload = function () {
+            sec = parseInt(window.localStorage.getItem("seconds"))
+            min = parseInt(window.localStorage.getItem("minutes"))
+
+            if (parseInt(min * sec)) {
+                var sixtyMinutes = (parseInt(min * 60) + sec);
+            } else {
+                var sixtyMinutes = 60 * 60;
+            }
+            //var sixtyMinutes = 60 * 60;
+            display = document.querySelector('#countdown');
+            startTimer(sixtyMinutes, display);
+        };
+
+
+        //EASY TIMER
+        /*       const startingTime = 0;
+               let time = startingTime * 60;
+               const countdownEl = document.getElementById('countdown');
+
+               setInterval(updateCountdown, 1000);
+
+               function updateCountdown(){
+                   const minutes = Math.floor(time/60);
+                   let seconds = time % 60;
+                   seconds = seconds < 10 ? '0' + seconds:seconds;
+
+                   countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
+                   time++;
+       }
+       */
     </script>
 {% endblock %}

@@ -97,13 +97,13 @@ class Score(models.Model):
     assist_number = models.PositiveIntegerField("Assist Jersey", default=0)
     # Relationships
     home_score = models.ForeignKey(RunningScore,
-                                   related_name="home_score",
+                                   related_name="home",
                                    null=True,
                                    blank=True,
                                    on_delete=models.CASCADE,
                                    default=None)
     visiting_score = models.ForeignKey(RunningScore,
-                                       related_name="visiting_score",
+                                       related_name="visiting",
                                        null=True,
                                        blank=True,
                                        on_delete=models.CASCADE,
@@ -128,13 +128,13 @@ class Penalty(models.Model):
     time = models.TimeField(auto_now=True)
     # Relationships
     home_penalties = models.ForeignKey(PenaltySet,
-                                       related_name="home_penalties",
+                                       related_name="home",
                                        null=True,
                                        blank=True,
                                        on_delete=models.CASCADE,
                                        default=None)
     visiting_penalties = models.ForeignKey(PenaltySet,
-                                           related_name="visiting_penalties",
+                                           related_name="visiting",
                                            null=True,
                                            blank=True,
                                            on_delete=models.CASCADE,
@@ -157,13 +157,13 @@ class Timeout(models.Model):
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     # Relationships
     home_timeouts = models.ForeignKey(TimeoutSet,
-                                      related_name="home_timeouts",
+                                      related_name="home",
                                       null=True,
                                       blank=True,
                                       on_delete=models.CASCADE,
                                       default=None)
     visiting_timeouts = models.ForeignKey(TimeoutSet,
-                                          related_name="visiting_timeouts",
+                                          related_name="visiting",
                                           null=True,
                                           blank=True,
                                           on_delete=models.CASCADE,
@@ -182,45 +182,40 @@ class Scorebook(models.Model):
     home_coach = models.OneToOneField(Coach,
                                       related_name="home_coach",
                                       on_delete=models.CASCADE,
+                                      null=True,
+                                      blank=True,
                                       default=None)
     visiting_coach = models.OneToOneField(Coach,
                                           related_name="visiting_coach",
                                           on_delete=models.CASCADE,
+                                          null=True,
+                                          blank=True,
                                           default=None)
-    scorekeeper = models.OneToOneField(Scorekeeper,
-                                       related_name="scorekeeper",
-                                       on_delete=models.CASCADE,
-                                       null=True,
-                                       blank=True,
-                                       default=None)
-    home_running_score = models.OneToOneField(RunningScore,
-                                              related_name="home_running_score",
-                                              on_delete=models.CASCADE,
-                                              default=None)
-    visiting_running_score = models.OneToOneField(RunningScore,
-                                                  related_name="visiting_running_score",
-                                                  on_delete=models.CASCADE,
-                                                  default=None)
-    home_timeouts = models.OneToOneField(TimeoutSet,
-                                         related_name="home_running_score",
+    # scorekeeper = models.OneToOneField(Scorekeeper,
+    #                                    on_delete=models.CASCADE,
+    #                                    null=True,
+    #                                    blank=True,
+    #                                    default=None)
+    running_score = models.OneToOneField(RunningScore,
                                          on_delete=models.CASCADE,
+                                         null=True,
+                                         blank=True,
                                          default=None)
-    visiting_timeouts = models.OneToOneField(TimeoutSet,
-                                             related_name="visiting_running_score",
-                                             on_delete=models.CASCADE,
-                                             default=None)
-    home_penalties = models.OneToOneField(PenaltySet,
-                                          related_name="home_running_score",
-                                          on_delete=models.CASCADE,
-                                          default=None)
-    visiting_penalties = models.OneToOneField(PenaltySet,
-                                              related_name="visiting_running_score",
-                                              on_delete=models.CASCADE,
-                                              default=None)
+    timeouts = models.OneToOneField(TimeoutSet,
+                                    on_delete=models.CASCADE,
+                                    null=True,
+                                    blank=True,
+                                    default=None)
+    penalties = models.OneToOneField(PenaltySet,
+                                     on_delete=models.CASCADE,
+                                     null=True,
+                                     blank=True,
+                                     default=None)
 
     def __str__(self):
-        return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
-               f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
+        # return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
+        #        f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
+        return f"Scorebook Id: {self.id}"
 
 
 class PlayerStatistics(models.Model):
