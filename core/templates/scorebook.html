@@ -1,378 +1,675 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
 {% block title %}Scorebook{% endblock %}
-button website: https://www.w3schools.com/tags/tag_button.asp
-coach textbox: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_input_test
+
 {% block custom_css %}
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        .tg {
-            border-collapse: collapse;
-            border-spacing: 0;
-            cursor: cell;
-        }
-
-        .tg td {
-            border:1.5px solid #000;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            overflow: hidden;
-            padding: 10px 5px;
-            word-break: normal;
-            width:0.1%;
-            white-space: nowrap;
-        }
-
-        .tg th {
-            border: 1.5px solid #000;
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            font-weight: normal;
-            overflow: hidden;
-            padding: 10px 5px;
-            word-break: normal;
-            background-color: #96D4D4
-        }
-
-        .tg .tg-0pky {
-            border-color: inherit;
-            border-collapse: collapse;
-            text-align: center;
-            vertical-align: top;
-        }
-
-        .button {
-            border: none;
-            color: white;
-            padding: 15px 24px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 12px;
-            margin: 4px 2px;
-            cursor: pointer;
-            vertical-align: right;
-        }
-
-        .checkboxelement {
-            display: flex;
-            justify-content: center;
-            width: 60%;
-            margin: .5rem;
-        }
-
         div.scrollWrapper {
-            height: 250px;
-            width: 625px;;
+            height: 200px;
+            width: 100%;
             overflow-y: scroll;
         }
 
-        .boxalign2 {
-            width: 400px;
-        }
-
-        input.rounded2 {
-            border: 1px solid #ccc;
-            -moz-border-radius: 10px;
-            -webkit-border-radius: 10px;
-            border-radius: 10px;
-            -moz-box-shadow: 2px 2px 3px #666;
-            -webkit-box-shadow: 2px 2px 3px #666;
-            box-shadow: 2px 2px 3px #666;
-            font-size: 20px;
-            padding: 4px 7px;
-            outline: 0;
-            -webkit-appearance: none;
-            display: inline-block;
-            width: 150px;
-            text-align: right;
-        }
-
-        label {
-            text-align: right;
-            padding-right: 20px;
-            display: inline-block;
-            min-width: 150px;
-        }
-
-
-        .button1 {
-            background-color: #4CAF50;
-        }
-
-        /* Green */
-        .button2 {
-            background-color: #008CBA;
-        }
-
-        /* Blue */
-        .button3 {
-            background-color: #4CAF50;
-            position: absolute;
-            right: 300px;
-            bottom: 50px;
-        }
-
-        .button4 {
-            background-color: #af4c4c;
-            position: absolute;
-            right: 150px;
-            bottom: 50px;
+        div.rosterScroll {
+            height: 500px;
+            width: 100%;
+            overflow-y: scroll;
         }
     </style>
 {% endblock custom_css %}
+
 {% block content %}
-{#    <div id="boxalign2" class="boxalign2">#}
-{##}
-{#        <label>Hospital*:</label><input class="rounded2" required title="Hospital is required!" name="MainHospital"#}
-{#                                        type="text"/>#}
-{#        <label>Title*:</label><input class="rounded2" name="MainTitle" type="text"/>#}
-{#        <label>Department*:</label><input class="rounded2" name="MainDept" type="text"/>#}
-{##}
-{#    </div>#}
-    <div class="container">
-        <h1 class="bg_blue">SCOREBOOK</h1>
-
-{#        <div class="checkboxelement">#}
-{#            <label for="cheese">Do you like cheese?</label>#}
-{#            <input type="checkbox" name="cheese" id="cheese">#}
-{#        </div>#}
-{##}
-{#        <div class="checkboxelement">#}
-{#            <label for="peas">Do you like peas?</label>#}
-{#            <input type="checkbox" name="peas" id="peas">#}
-{#        </div>#}
-
-        <div style="position: fixed; top: 150px; right: 1600px; width: 300px; align-items: center;">
-            <table class="tg" style="text-align: center;">
-                <tr>
-                    <td><p style="font-weight: bold;">RUNNING SCORES</p>
-                        <table class="tg">
-                            <thead>
-                                <table class="table" style="width: 1500px;">
-                                    <body>
-                                        <tr>
-                                            <td style="background-color: #96D4D4" class="tg-0pky">HOME TEAM</td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="background-color: #96D4D4" class="tg-0pky">VISITING TEAM</td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                            <td class="tg-0pky" contenteditable="true"></td>
-                                        </tr>
-                                    </body>
-                                </table>
-                            </thead>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+    <div class="container-fluid">
+        <div class="row">
+            <h1 class="bg_black">Scorebook</h1>
         </div>
-{#    </div>#}
-    <div style="position: fixed; bottom:405px; right: 1600px; width: 300px; align-items: center;">
-        <table class="tg" style="text-align: center;">
-            <td>
-                <p style="font-weight: bold;">HOME ROSTER
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    <button class="button button1">Import Roster</button>
-                </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="bg_black">Metadata</h1>
+            </div>
+            <div class="col-md-3">
+                <h1 class="bg_black">Timer</h1>
+            </div>
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg btn-block">Publish
+                        Scorebook
+                    </button>
+                    <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg btn-block">&ensp;Clear
+                        Scorebook&ensp;
+                    </button>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="bg_black">
+                    <b>Home Running Scores</b>
+                    <button id="homeScoreButton" type="button" class="btn btn-success">Add Score</button>
+                </h1>
                 <div class="scrollWrapper">
-                    <table class="tg">
-                        <table style="width: 600px;">
-                            <thead>
-                                <tr>
-                                    <th class="tg-0pky">NO.</th>
-                                    <th class="tg-0pky">NAME</th>
-                                    <th class="tg-0pky">QUARTERS PLAYED</th>
-                                    <th class="tg-0pky">SHOTS</th>
-                                    <th class="tg-0pky">GOALS</th>
-                                    <th class="tg-0pky">ASSISTS</th>
-                                    <th class="tg-0pky">GROUND BALLS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for n in numbers %}
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true">{{ n }}</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                    <table class="table table-striped table-light table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                            <th>Goal #</th>
+                            <th>Assist #</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if running_score is not None %}
+                            {% if running_score.home_score is not None %}
+                                {% for score in running_score.home_score.all %}
+                                    <tr>
+                                        <td>{{ score.time }}</td>
+                                        <td>{{ score.quarter }}</td>
+                                        <td>{{ score.goal_number }}</td>
+                                        <td>{{ score.assist_number }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
                     </table>
                 </div>
-            </td>
-        </table>
-    </div>
+            </div>
 
-    <div style="position: fixed; bottom:50px; right: 1600px; width: 300px; align-items: center">
-        <table class="tg" style="text-align: center;">
-            <td>
-                <p style="font-weight: bold;">VISITING ROSTER
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                    <button class="button button1">Import Roster</button>
-                </p>
+            <div class="col-md-6">
+                <h1 class="bg_black">
+                    <b>Visiting Running Scores</b>
+                    <button id="visitingScoreButton" type="button" class="btn btn-success">Add Score</button>
+                </h1>
                 <div class="scrollWrapper">
-                    <table class="tg">
-                        <table style="width: 600px;">
-                            <thead>
-                                <tr>
-                                    <th class="tg-0pky">NO.</th>
-                                    <th class="tg-0pky">NAME</th>
-                                    <th class="tg-0pky">QUARTERS PLAYED</th>
-                                    <th class="tg-0pky">SHOTS</th>
-                                    <th class="tg-0pky">GOALS</th>
-                                    <th class="tg-0pky">ASSISTS</th>
-                                    <th class="tg-0pky">GROUND BALLS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for n in numbers %}
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true">{{ n }}</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                    <table class="table table-striped table-light table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                            <th>Goal #</th>
+                            <th>Assist #</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if running_score is not None %}
+                            {% if running_score.visiting_score is not None %}
+                                {% for score in running_score.visiting_score.all %}
+                                    <tr>
+                                        <td>{{ score.time }}</td>
+                                        <td>{{ score.quarter }}</td>
+                                        <td>{{ score.goal_number }}</td>
+                                        <td>{{ score.assist_number }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
                     </table>
                 </div>
-            </td>
-        </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Penalties</b>
+                    <span class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle" id="homeDropdownMenuButton" type="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Penalties
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
+                            <li>
+                                <button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Fowl
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" id="homeTechnicalFoulButton" type="button">Technical
+                                    Fowl
+                                </button>
+                            </li>
+                        </div>
+                    </span>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>P/T</th>
+                            <th>#</th>
+                            <th>Infraction</th>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if penalties is not None %}
+                            {% if penalties.home_penalties is not None %}
+                                {% for penalty in penalties.home_penalties.all %}
+                                <tr>
+                                    {% if penalty.personal_foul == True %}
+                                        <td>P</td>
+                                    {% else %}
+                                        <td>T</td>
+                                    {% endif %}
+                                    <td>{{ penalty.player_number }}</td>
+                                    <td>{{ penalty.infraction }}</td>
+                                    <td>{{ penalty.quarter }}</td>
+                                    <td>{{ penalty.time }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Timeouts</b>
+                    <button id="homeTimeoutButton" type="button" class="btn btn-primary">Call Timeout</button>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if timeouts is not None %}
+                            {% if timeouts.home_timeouts is not None %}
+                                {% for timeout in timeouts.home_timeouts.all %}
+                                    <tr>
+                                        <td>{{ timeout.time }}</td>
+                                        <td>{{ timeout.quarter }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Penalties</b>
+                    <span class="dropdown">
+                        <button class="btn btn-danger dropdown-toggle" type="button" id="visitingDropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Penalize
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby=dropdownMenu2>
+                            <li>
+                                <button class="dropdown-item" id="visitingPersonalFoulButton" type="button">Personal
+                                    Fowl
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" id="visitingTechnicalFoulButton" type="button">Technical
+                                    Fowl
+                                </button>
+                            </li>
+                        </div>
+                    </span>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>P/T</th>
+                            <th>#</th>
+                            <th>Infraction</th>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if penalties is not None %}
+                            {% if penalties.visiting_penalties is not None %}
+                                {% for penalty in penalties.visiting_penalties.all %}
+                                <tr>
+                                    {% if penalty.personal_foul == True %}
+                                        <td>P</td>
+                                    {% else %}
+                                        <td>T</td>
+                                    {% endif %}
+                                    <td>{{ penalty.player_number }}</td>
+                                    <td>{{ penalty.infraction }}</td>
+                                    <td>{{ penalty.quarter }}</td>
+                                    <td>{{ penalty.time }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Timeouts</b>
+                    <button id="visitingTimeoutButton" type="button" class="btn btn-primary">Call Timeout</button>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if timeouts is not None %}
+                            {% if timeouts.visiting_timeouts is not None %}
+                                {% for timeout in timeouts.visiting_timeouts.all %}
+                                    <tr>
+                                        <td>{{ timeout.time }}</td>
+                                        <td>{{ timeout.quarter }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="bg_black">
+                    <b>Home Roster</b>
+                    <button id="homeAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
+                    <button id="homeImportRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Quarters</th>
+                            <th>Shots</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Ground Balls</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if home_roster is not None %}
+                            {% for player in home_roster.player_set.all %}
+                                {#                                TODO: Update IDs for home/visiting roster checkboxes/text fields.#}
+                                <tr>
+                                    <td>{{ player.player_number }}</td>
+                                    <td>{{ player.position }}</td>
+                                    <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                    <td>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterI{{ player.id }}">
+                                            <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterII{{ player.id }}">
+                                            <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIII{{ player.id }}">
+                                            <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIV{{ player.id }}">
+                                            <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterOT{{ player.id }}">
+                                            <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input1" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input2" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input3" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="bg_black">
+                    <b>Visiting Roster</b>
+                    <button id="visitingAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
+                    <button id="visitingImportRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Quarters</th>
+                            <th>Shots</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Ground Balls</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if visiting_roster is not None %}
+                            {% for player in visiting_roster.player_set.all %}
+                                <tr>
+                                    <td>{{ player.player_number }}</td>
+                                    <td>{{ player.position }}</td>
+                                    <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                    <td>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterI{{ player.id }}">
+                                            <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterII{{ player.id }}">
+                                            <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIII{{ player.id }}">
+                                            <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIV{{ player.id }}">
+                                            <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
+                                        </span>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterOT{{ player.id }}">
+                                            <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input1" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input2" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input3" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div style="position: fixed; bottom:450px; right: 700px;width: 300px; align-items: center">
-        <table class="tg" style="text-align: center;">
-            <tr>
-                <td><p style="font-weight: bold;">PENALTIES & FOULS</p>
-                    <table class="tg">
-                        <table style="height: 100px; width: 600px;">
-                            <thead>
-                                <tr>
-                                    <th class="tg-0pky">PERSONAL OR TECHNICAL</th>
-                                    <th class="tg-0pky">PLAYER NO.</th>
-                                    <th class="tg-0pky">INFRACTION</th>
-                                    <th class="tg-0pky">QUARTER</th>
-                                    <th class="tg-0pky">TIME</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div style="position: fixed; bottom:290px; right: 700px; width: 300px; align-items: center">
-        <table class="tg" style="text-align: center;">
-            <tr>
-                <td><p style="font-weight: bold;">FINAL SCORES</p>
-                    <table class="tg">
-                        <table style=" height: 100px; width: 600px;">
-                            <tbody>
-                                <tr>
-                                    <td style="background-color: #96D4D4">HOME TEAM</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                                <tr>
-                                    <td style="background-color: #96D4D4">VISITING TEAM</td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                    <td class="tg-0pky" contenteditable="true"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </table>
-                </td>
-            </tr>
-        </table>
+    <div id="publishScorebookModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Publish Scorebook</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {#            {{ form|crispy }}#}
+                <input class="btn btn-primary btn-lg" type="submit" name="publishScorebookModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="publishScorebookModalCancel" value="Cancel">
+            </form>
+        </div>
     </div>
 
-    <button class="button button3">Save Changes</button>
-    <button class="button button4">Discard Changes</button>
-</div>
+    <div id="clearScorebookModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Clear Scorebook</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {#            {{ form|crispy }}#}
+                <input class="btn btn-primary btn-lg" type="submit" name="clearScorebookModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="clearScorebookModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homeScoreModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Add Score</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ running_score_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeScoreModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeScoreModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingScoreModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Add Score</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ running_score_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingScoreModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingScoreModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homePersonalFoulModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Personal Foul</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ personal_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homePersonalFoulModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homePersonalFoulModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homeTechnicalFoulModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Technical Foul</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ technical_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeTechnicalFoulModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeTechnicalFoulModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingPersonalFoulModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Personal Foul</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ personal_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingPersonalFoulModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingPersonalFoulModalCancel"
+                       value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingTechnicalFoulModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Technical Foul</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ technical_foul_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingTechnicalFoulModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingTechnicalFoulModalCancel"
+                       value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homeTimeoutModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Call Timeout</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ timeout_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeTimeoutModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeTimeoutModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingTimeoutModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Call Timeout</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ timeout_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingTimeoutModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingTimeoutModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homeAddPlayerModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Add Player</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ add_player_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeAddPlayerModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeAddPlayerModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingAddPlayerModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Add Player</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ add_player_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingAddPlayerModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingAddPlayerModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="homeImportRosterModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Import Roster</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ import_roster_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeImportRosterModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeImportRosterModalCancel" value="Cancel">
+            </form>
+        </div>
+    </div>
+
+    <div id="visitingImportRosterModal" class="modal">
+        <div class="modal-content">
+            <h1 class="bg_black">Import Roster</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ import_roster_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingImportRosterModalConfirm"
+                       value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="visitingImportRosterModalCancel"
+                       value="Cancel">
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript">
+
+        /* Get publish/clear scorebook buttons. */
+        let publishScorebookButton = document.getElementById("publishScorebookButton");
+        let clearScorebookButton = document.getElementById("clearScorebookButton");
+
+        /* Get running score buttons. */
+        let homeScoreButton = document.getElementById("homeScoreButton");
+        let visitingScoreButton = document.getElementById("visitingScoreButton");
+
+        /* Get penalty buttons. */
+        let homePersonalFoulButton = document.getElementById("homePersonalFoulButton");
+        let homeTechnicalFoulButton = document.getElementById("homeTechnicalFoulButton");
+        let visitingPersonalFoulButton = document.getElementById("visitingPersonalFoulButton");
+        let visitingTechnicalFoulButton = document.getElementById("visitingTechnicalFoulButton");
+
+        /* Get timeout buttons. */
+        let homeTimeoutButton = document.getElementById("homeTimeoutButton");
+        let visitingTimeoutButton = document.getElementById("visitingTimeoutButton");
+
+        /* Get roster buttons. */
+        let homeAddPlayerButton = document.getElementById("homeAddPlayerButton");
+        let homeImportRosterButton = document.getElementById("homeImportRosterButton");
+        let visitingAddPlayerButton = document.getElementById("visitingAddPlayerButton");
+        let visitingImportRosterButton = document.getElementById("visitingImportRosterButton");
+
+        /* Assign event handlers to all main view buttons to open corresponding modal. */
+        let buttons = [
+            publishScorebookButton, clearScorebookButton,
+            homeScoreButton, visitingScoreButton,
+            homePersonalFoulButton, homeTechnicalFoulButton,
+            visitingPersonalFoulButton, visitingTechnicalFoulButton,
+            homeTimeoutButton, visitingTimeoutButton,
+            homeAddPlayerButton, homeImportRosterButton,
+            visitingAddPlayerButton, visitingImportRosterButton,
+        ];
+        buttons.forEach((button) => {
+            let modalId = button.id.split("Button")[0] + "Modal";
+            button.addEventListener("click", function () {
+                let modal = document.getElementById(modalId);
+                let cancelButton = document.getElementsByName(modalId + "Cancel")[0];
+
+                modal.style.display = "block";
+
+                cancelButton.addEventListener("click", function () {
+                    modal.style.display = "none";
+                })
+                // console.log(modal.id);
+                // console.log(confirmButton.id);
+                // console.log(cancelButton.id);
+            })
+        });
+
+    </script>
 {% endblock %}
