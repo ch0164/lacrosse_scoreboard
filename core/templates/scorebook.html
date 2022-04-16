@@ -796,11 +796,9 @@
                 quarters.forEach((quarter) => {
                     let goalsSaved = parseInt(quarter.children[0].value);
                     totalGoalsSaved += goalsSaved;
-                    console.log(goalsSaved);
                 })
                 total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
             });
-            console.log("onLoad!");
         }
 
         //Refresh Handled Timer
