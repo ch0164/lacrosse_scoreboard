@@ -33,16 +33,16 @@
             </div>
             <div class="col-md-3">
                 <h1 class="bg_black"><b>Game Timer</b><p id="countdown"></p></h1>
-                <button id="startTimerButton" type="button" class="btn btn-success">
+                <button id="startTimerButton" type="button" class="btn btn-success" data-toggle="tooltip" data-html="true" title="Start Timer">
                     <span class="glyphicon glyphicon-play"></span>
                 </button>
-                <button id="stopTimerButton" type="button" class="btn btn-danger">
+                <button id="stopTimerButton" type="button" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="Stop Timer">
                     <span class="glyphicon glyphicon-pause"></span>
                 </button>
-                <button id="incrementTimer" type="button" class="btn btn-success">
+                <button id="incrementTimerButton" type="button" class="btn btn-danger" type="button" class="btn btn-success" data-toggle="tooltip" data-html="true" title="Increment Timer">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
-                <button id="decrementTimer" type="button" class="btn btn-danger">
+                <button id="decrementTimerButton" type="button" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="Decrement Timer">
                     <span class="glyphicon glyphicon-minus"></span>
                 </button>
             </div>
@@ -692,7 +692,7 @@
         //     startTimer(sixtyMinutes, display);
         // };
 
-
+    
         //EASY TIMER
                const startingTime = 0;
                let time = startingTime * 60;
@@ -713,6 +713,15 @@
               window.unload = function (){
                    clearInterval(time);
                }
-    
+
+
+        const button = document.getElementById("incrementTimerButton");
+        const textHolder = document.getElementById("time");
+        textHolder.innerHTML = time;
+
+        button.addEventListener("click", function() {
+        textHolder.innerHTML = timer = time + 30;
+        });
+
     </script>
 {% endblock %}
