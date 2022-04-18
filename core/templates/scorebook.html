@@ -36,7 +36,7 @@
                 <button id="startTimerButton" type="button" class="btn btn-success" data-toggle="tooltip" data-html="true" title="Start Timer">
                     <span class="glyphicon glyphicon-play"></span>
                 </button>
-                <button id="stopTimerButton" type="button" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="Stop Timer">
+                <button id="stopTimerButton" type="button" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="Stop Timer" onclick="stopTimer()">
                     <span class="glyphicon glyphicon-pause"></span>
                 </button>
                 <button id="incrementTimerButton" type="button" class="btn btn-danger" type="button" class="btn btn-success" data-toggle="tooltip" data-html="true" title="Increment Timer">
@@ -657,71 +657,110 @@
             })
         });
 
-        // //Refresh Handled Timer
-        // function startTimer(duration, display) {
-        //     var timer = duration, minutes, seconds;
-        //     setInterval(function () {
-        //         minutes = parseInt(timer / 60, 10)
-        //         seconds = parseInt(timer % 60, 10);
+        // window.onload = () => {
+        // let hour = 0;
+        // let minute = 0;
+        // let seconds = 0;
+        // let totalSeconds = 3600;
+        // let intervalId = null;
+        
+        // function startTimer() {
+        //     ++totalSeconds;
+        //     minute = Math.floor((totalSeconds - hour*3600)/60);
+        //     seconds = totalSeconds - (hour*3600 + minute*60);
 
-        //         minutes = minutes < 10 ? "0" + minutes : minutes;
-        //         seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        //         display.textContent = `${minutes}:${seconds}` + "/60:00";
-        //         if (++timer < 0) {
-        //             timer = duration;
-        //         }
-        //         console.log(parseInt(seconds))
-        //         window.localStorage.setItem("seconds", seconds)
-        //         window.localStorage.setItem("minutes", minutes)
-        //     }, 1000);
+        //     document.getElementById("minute").innerHTML =minute;
+        //     document.getElementById("seconds").innerHTML =seconds;
+            
+        //     display.textContent = `${minutes}:${seconds}` + "/60:00";
+        //     display = document.querySelector('#countdown');
+
         // }
 
-        // //onload - object has been loaded or created
-        // window.onload = function () {
-        //     sec = parseInt(window.localStorage.getItem("seconds"))
-        //     min = parseInt(window.localStorage.getItem("minutes"))
+        // document.getElementById('start-btn').addEventListener('click', () => {
+        //     intervalId = setInterval(startTimer, 1000);
+        // })
+        
 
-        //     if (parseInt(min * sec)) {
-        //         var sixtyMinutes = (parseInt(min * 60) + sec);
-        //     } else {
-        //         var sixtyMinutes = 60 * 60;
-        //     }
-        //     //var sixtyMinutes = 60 * 60;
-        //     display = document.querySelector('#countdown');
-        //     startTimer(sixtyMinutes, display);
-        // };
+        // document.getElementById('stop-btn').addEventListener('click', () => {
+        //     if (intervalId)
+        //     clearInterval(intervalId);
+        // });
+        
+        // }
+
+        //Refresh Handled Timer
+        var timerID;
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            timerID = setInterval(function () {
+                minutes = parseInt(timer / 60, 10)
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = `${minutes}:${seconds}` + "/60:00";
+                if (++timer < 0) {
+                    timer = duration;
+                }
+                //console.log(parseInt(seconds))
+                window.localStorage.setItem("seconds", seconds)
+                window.localStorage.setItem("minutes", minutes)
+            }, 1000);
+        }
+
+        //onload - object has been loaded or created
+        window.onload = function () {
+            sec = parseInt(window.localStorage.getItem("seconds"))
+            min = parseInt(window.localStorage.getItem("minutes"))
+
+            if (parseInt(min * sec)) {
+                var sixtyMinutes = (parseInt(min * 60) + sec);
+            } else {
+                var sixtyMinutes = 60 * 60;
+            }
+            //var sixtyMinutes = 60 * 60;
+            display = document.querySelector('#countdown');
+            startTimer(sixtyMinutes, display);
+        };
+
+        
+        function stopTimer() {
+            clearInterval(timerID);
+        }
 
     
-        //EASY TIMER
-               const startingTime = 0;
-               let time = startingTime * 60;
-               const countdownEl = document.getElementById('countdown');
+    //     //EASY TIMER
+    //            const startingTime = 0;
+    //            let time = startingTime * 60;
+    //            const countdownEl = document.getElementById('countdown');
 
-               window.onload = function (){
-                   setInterval(updateCountdown, 1000);
-               }
+    //            window.onload = function (){
+    //                setInterval(updateCountdown, 1000);
+    //            }
 
-                   function updateCountdown(){
-                   const minutes = Math.floor(time/60);
-                   let seconds = time % 60;
-                   seconds = seconds < 10 ? '0' + seconds:seconds;
+    //                function updateCountdown(){
+    //                const minutes = Math.floor(time/60);
+    //                let seconds = time % 60;
+    //                seconds = seconds < 10 ? '0' + seconds:seconds;
 
-                   countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
-                   time++;
-       }
-              window.unload = function (){
-                   clearInterval(time);
-               }
+    //                countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
+    //                time++;
+    //    }
+    //           window.unload = function (){
+    //                clearInterval(time);
+    //            }
 
 
-        const button = document.getElementById("incrementTimerButton");
-        const textHolder = document.getElementById("time");
-        textHolder.innerHTML = time;
+        // const button = document.getElementById("incrementTimerButton");
+        // const textHolder = document.getElementById("time");
+        // textHolder.innerHTML = time;
 
-        button.addEventListener("click", function() {
-        textHolder.innerHTML = timer = time + 30;
-        });
+        // button.addEventListener("click", function() {
+        // textHolder.innerHTML = timer = time + 30;
+        // });
 
     </script>
 {% endblock %}
