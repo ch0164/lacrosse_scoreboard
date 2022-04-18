@@ -67,6 +67,7 @@
                             <th>Qtr</th>
                             <th>Goal #</th>
                             <th>Assist #</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -76,6 +77,14 @@
                                 <td>{{ score.quarter }}</td>
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
+                                <td>
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -96,6 +105,7 @@
                             <th>Qtr</th>
                             <th>Goal #</th>
                             <th>Assist #</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -105,6 +115,14 @@
                                 <td>{{ score.quarter }}</td>
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
+                                <td>
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -124,12 +142,12 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
                             <li>
-                                <button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Fowl
+                                <button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Foul
                                 </button>
                             </li>
                             <li>
                                 <button class="dropdown-item" id="homeTechnicalFoulButton" type="button">Technical
-                                    Fowl
+                                    Foul
                                 </button>
                             </li>
                         </div>
@@ -144,6 +162,7 @@
                             <th>Infraction</th>
                             <th>Qtr</th>
                             <th>Time</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -158,6 +177,23 @@
                                 <td>{{ penalty.infraction }}</td>
                                 <td>{{ penalty.quarter }}</td>
                                 <td>{{ penalty.time }}</td>
+                                <td>
+                                    {% if penalty.personal_foul == True %}
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-personal-foul/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% else %}
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-technical-foul/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -177,6 +213,7 @@
                         <tr>
                             <th>Time</th>
                             <th>Qtr</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -184,6 +221,14 @@
                             <tr>
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
+                                <td>
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -202,12 +247,12 @@
                         <div class="dropdown-menu" aria-labelledby=dropdownMenu2>
                             <li>
                                 <button class="dropdown-item" id="visitingPersonalFoulButton" type="button">Personal
-                                    Fowl
+                                    Foul
                                 </button>
                             </li>
                             <li>
                                 <button class="dropdown-item" id="visitingTechnicalFoulButton" type="button">Technical
-                                    Fowl
+                                    Foul
                                 </button>
                             </li>
                         </div>
@@ -222,6 +267,7 @@
                             <th>Infraction</th>
                             <th>Qtr</th>
                             <th>Time</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -236,6 +282,23 @@
                                 <td>{{ penalty.infraction }}</td>
                                 <td>{{ penalty.quarter }}</td>
                                 <td>{{ penalty.time }}</td>
+                                <td>
+                                    {% if penalty.personal_foul == True %}
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-personal-foul/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% else %}
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-technical-foul/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -254,6 +317,7 @@
                         <tr>
                             <th>Time</th>
                             <th>Qtr</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -261,6 +325,14 @@
                             <tr>
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
+                                <td>
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -288,6 +360,7 @@
                             <th>Goals</th>
                             <th>Assists</th>
                             <th>Ground Balls</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -336,6 +409,14 @@
                                 </td>
                                 <td>
                                     <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                </td>
+                                <td>
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -427,6 +508,7 @@
                             <th>Goals</th>
                             <th>Assists</th>
                             <th>Ground Balls</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -473,6 +555,14 @@
                                 </td>
                                 <td>
                                     <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                </td>
+                                <td>
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -760,7 +850,7 @@
         let visitingImportRosterButton = document.getElementById("visitingImportRosterButton");
 
         /* Assign event handlers to all main view buttons to open corresponding modal. */
-        let buttons = [
+        let modalButtons = [
             publishScorebookButton, clearScorebookButton,
             homeScoreButton, visitingScoreButton,
             homePersonalFoulButton, homeTechnicalFoulButton,
@@ -769,7 +859,7 @@
             homeAddPlayerButton, homeImportRosterButton,
             visitingAddPlayerButton, visitingImportRosterButton,
         ];
-        buttons.forEach((button) => {
+        modalButtons.forEach((button) => {
             let modalId = button.id.split("Button")[0] + "Modal";
             button.addEventListener("click", function () {
                 let modal = document.getElementById(modalId);
@@ -815,7 +905,7 @@
                 if (--timer < 0) {
                     timer = duration;
                 }
-                console.log(parseInt(seconds))
+                //console.log(parseInt(seconds))
                 window.localStorage.setItem("seconds", seconds)
                 window.localStorage.setItem("minutes", minutes)
             }, 1000);
