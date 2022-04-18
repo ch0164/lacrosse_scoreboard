@@ -223,27 +223,55 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 roster.save()
 
                 lineup.attacker_1.team = roster
+                lineup.attacker_1.statistics = PlayerStatistics()
+                lineup.attacker_1.statistics.save()
                 lineup.attacker_1.save()
+
                 lineup.attacker_2.team = roster
+                lineup.attacker_2.statistics = PlayerStatistics()
+                lineup.attacker_2.statistics.save()
                 lineup.attacker_2.save()
+
                 lineup.attacker_3.team = roster
+                lineup.attacker_3.statistics = PlayerStatistics()
+                lineup.attacker_3.statistics.save()
                 lineup.attacker_3.save()
 
                 lineup.midfielder_1.team = roster
+                lineup.midfielder_1.statistics = PlayerStatistics()
+                lineup.midfielder_1.statistics.save()
                 lineup.midfielder_1.save()
+
                 lineup.midfielder_2.team = roster
+                lineup.midfielder_2.statistics = PlayerStatistics()
+                lineup.midfielder_2.statistics.save()
                 lineup.midfielder_2.save()
+
                 lineup.midfielder_3.team = roster
+                lineup.midfielder_3.statistics = PlayerStatistics()
+                lineup.midfielder_3.statistics.save()
                 lineup.midfielder_3.save()
 
                 lineup.defender_1.team = roster
+                lineup.defender_1.statistics = PlayerStatistics()
+                lineup.defender_1.statistics.save()
                 lineup.defender_1.save()
+
                 lineup.defender_2.team = roster
+                lineup.defender_2.statistics = PlayerStatistics()
+                lineup.defender_2.statistics.save()
                 lineup.defender_2.save()
+
                 lineup.defender_3.team = roster
+                lineup.defender_3.statistics = PlayerStatistics()
+                lineup.defender_3.statistics.save()
                 lineup.defender_3.save()
 
                 lineup.goalie.team = roster
+                lineup.goalie.statistics = PlayerStatistics()
+                lineup.goalie.statistics.save()
+                lineup.goalie.saves = PlayerSaves()
+                lineup.goalie.saves.save()
                 lineup.goalie.save()
 
                 # Overwrite the current roster with this new roster.
@@ -282,27 +310,55 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 roster.save()
 
                 lineup.attacker_1.team = roster
+                lineup.attacker_1.statistics = PlayerStatistics()
+                lineup.attacker_1.statistics.save()
                 lineup.attacker_1.save()
+
                 lineup.attacker_2.team = roster
+                lineup.attacker_2.statistics = PlayerStatistics()
+                lineup.attacker_2.statistics.save()
                 lineup.attacker_2.save()
+
                 lineup.attacker_3.team = roster
+                lineup.attacker_3.statistics = PlayerStatistics()
+                lineup.attacker_3.statistics.save()
                 lineup.attacker_3.save()
 
                 lineup.midfielder_1.team = roster
+                lineup.midfielder_1.statistics = PlayerStatistics()
+                lineup.midfielder_1.statistics.save()
                 lineup.midfielder_1.save()
+
                 lineup.midfielder_2.team = roster
+                lineup.midfielder_2.statistics = PlayerStatistics()
+                lineup.midfielder_2.statistics.save()
                 lineup.midfielder_2.save()
+
                 lineup.midfielder_3.team = roster
+                lineup.midfielder_3.statistics = PlayerStatistics()
+                lineup.midfielder_3.statistics.save()
                 lineup.midfielder_3.save()
 
                 lineup.defender_1.team = roster
+                lineup.defender_1.statistics = PlayerStatistics()
+                lineup.defender_1.statistics.save()
                 lineup.defender_1.save()
+
                 lineup.defender_2.team = roster
+                lineup.defender_2.statistics = PlayerStatistics()
+                lineup.defender_2.statistics.save()
                 lineup.defender_2.save()
+
                 lineup.defender_3.team = roster
+                lineup.defender_3.statistics = PlayerStatistics()
+                lineup.defender_3.statistics.save()
                 lineup.defender_3.save()
 
                 lineup.goalie.team = roster
+                lineup.goalie.statistics = PlayerStatistics()
+                lineup.goalie.statistics.save()
+                lineup.goalie.saves = PlayerSaves()
+                lineup.goalie.saves.save()
                 lineup.goalie.save()
 
                 # Overwrite the current roster with this new roster.
@@ -327,12 +383,24 @@ def update_stats(request: HttpRequest) -> HttpResponse:
     # Parse GET request.
     player_id = request.GET["id"]
     stat = request.GET["stat"]
-    team = request.GET["team"]
     value = request.GET["value"]
 
     # Get player.
     player = Player.objects.filter(id=player_id)[0]
 
+    # Update corresponding statistic.
+    if stat in "Shots":
+        player.statistics.shots = value
+    elif stat in "Goals":
+        player.statistics.goals = value
+    elif stat in "Assists":
+        player.statistics.assists = value
+    elif stat in "GroundBalls":
+        player.statistics.ground_balls = value
+
+    player.statistics.save()
+
+    print(player.statistics)
 
     return HttpResponseRedirect('/edit-scorebook/')
 
