@@ -13,7 +13,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="alisa" />
+        <entry key="$PROJECT_DIR$" value="Add_half-time_modal" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -104,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650254438036</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Merge branch 'master' of https://github.com/ch0164/lacrosse_scoreboard into alisa&#10;&#10; Conflicts:&#10;&#9;core/__pycache__/views.cpython-310.pyc&#10;&#9;core/templates/scorebook.html&#10;&#9;db.sqlite3">
+      <created>1650255150182</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1650255150182</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
