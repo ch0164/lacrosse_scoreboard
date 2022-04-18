@@ -346,7 +346,7 @@
                 <h1 class="bg_black">
                     <b>Home Roster</b>
                     <button id="homeAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
-                    <button id="homeImportRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                    <button id="homeImportLineupButton" type="button" class="btn btn-primary">Import Starting Lineup</button>
                 </h1>
                 <div class="rosterScroll">
                     <table class="table table-light table-striped table-bordered">
@@ -506,7 +506,7 @@
                 <h1 class="bg_black">
                     <b>Visiting Roster</b>
                     <button id="visitingAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
-                    <button id="visitingImportRosterButton" type="button" class="btn btn-primary">Import Roster</button>
+                    <button id="visitingImportLineupButton" type="button" class="btn btn-primary">Import Starting Lineup</button>
                 </h1>
                 <div class="rosterScroll">
                     <table class="table table-light table-striped table-bordered">
@@ -811,27 +811,27 @@
         </div>
     </div>
 
-    <div id="homeImportRosterModal" class="modal">
+    <div id="homeImportLineupModal" class="modal">
         <div class="modal-content">
-            <h1 class="bg_black">Import Roster</h1>
+            <h1 class="bg_black">Import Starting Lineup</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {{ import_roster_form|crispy }}
-                <input class="btn btn-primary btn-lg" type="submit" name="homeImportRosterModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="homeImportRosterModalCancel" value="Cancel">
+                {{ import_lineup_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="homeImportLineupModalConfirm" value="Confirm">
+                <input class="btn btn-danger btn-lg" type="button" name="homeImportLineupModalCancel" value="Cancel">
             </form>
         </div>
     </div>
 
-    <div id="visitingImportRosterModal" class="modal">
+    <div id="visitingImportLineupModal" class="modal">
         <div class="modal-content">
-            <h1 class="bg_black">Import Roster</h1>
+            <h1 class="bg_black">Import Starting Lineup</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {{ import_roster_form|crispy }}
-                <input class="btn btn-primary btn-lg" type="submit" name="visitingImportRosterModalConfirm"
+                {{ import_lineup_form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" name="visitingImportLineupModalConfirm"
                        value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="visitingImportRosterModalCancel"
+                <input class="btn btn-danger btn-lg" type="button" name="visitingImportLineupModalCancel"
                        value="Cancel">
             </form>
         </div>
@@ -869,9 +869,9 @@
 
         /* Get roster buttons. */
         let homeAddPlayerButton = document.getElementById("homeAddPlayerButton");
-        let homeImportRosterButton = document.getElementById("homeImportRosterButton");
+        let homeImportLineupButton = document.getElementById("homeImportLineupButton");
         let visitingAddPlayerButton = document.getElementById("visitingAddPlayerButton");
-        let visitingImportRosterButton = document.getElementById("visitingImportRosterButton");
+        let visitingImportLineupButton = document.getElementById("visitingImportLineupButton");
 
         /* Assign event handlers to all main view buttons to open corresponding modal. */
         let modalButtons = [
@@ -880,8 +880,8 @@
             homePersonalFoulButton, homeTechnicalFoulButton,
             visitingPersonalFoulButton, visitingTechnicalFoulButton,
             homeTimeoutButton, visitingTimeoutButton,
-            homeAddPlayerButton, homeImportRosterButton,
-            visitingAddPlayerButton, visitingImportRosterButton,
+            homeAddPlayerButton, homeImportLineupButton,
+            visitingAddPlayerButton, visitingImportLineupButton,
         ];
         modalButtons.forEach((button) => {
             let modalId = button.id.split("Button")[0] + "Modal";
