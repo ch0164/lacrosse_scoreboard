@@ -1,22 +1,24 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpRequest, JsonResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, JsonResponse, \
+    HttpResponseRedirect
 from django.shortcuts import render
 
 from core.forms import *
 from core.models import *
 
 scorebook_context = {
-    "running_score_form": ScorebookAddScore(),
-    "personal_foul_form": ScorebookPersonalFoul(),
-    "technical_foul_form": ScorebookTechnicalFoul(),
-    "timeout_form": ScorebookTimeout(),
-    "home_penalties_form": ScorebookPenalty(),
-    "visiting_penalties_form": ScorebookPenalty(),
-    "add_player_form": ScorebookAddPlayer(),
+    "running_score_form": ScorebookScoreForm(),
+    "personal_foul_form": ScorebookPersonalFoulForm(),
+    "technical_foul_form": ScorebookTechnicalFoulFormForm(),
+    "timeout_form": ScorebookTimeoutForm(),
+    "home_penalties_form": ScorebookPenaltyForm(),
+    "visiting_penalties_form": ScorebookPenaltyForm(),
+    "add_player_form": ScorebookPlayerForm(),
     "import_roster_form": ScorebookImportRoster(),
 }
 
 scorebook = None
+
 
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html", {"scorebooks": Scorebook.objects.all()})
@@ -35,9 +37,9 @@ def view_scorebook(request: HttpRequest) -> HttpResponse:
 @login_required
 def create_scorebook(request: HttpRequest) -> HttpResponse:
     global scorebook
-    form = CreateScorebook()
+    form = CreateScorebookForm()
     if request.method == "POST":
-        form = CreateScorebook(request.POST)
+        form = CreateScorebookForm(request.POST)
         if form.is_valid():
             # Create rosters.
             home_roster = Roster()
@@ -76,6 +78,7 @@ def create_scorebook(request: HttpRequest) -> HttpResponse:
             return HttpResponseRedirect('/edit-scorebook/')
     return render(request, "create_scorebook.html", {"form": form})
 
+
 @login_required
 def edit_scorebook(request: HttpRequest) -> HttpResponse:
     global scorebook
@@ -86,34 +89,38 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         # User selected the home team's running score.
         if "homeScoreModal" in str(request.POST):
-            form = ScorebookAddScore(request.POST)
+            form = ScorebookScoreForm(request.POST)
             if form.is_valid():
                 score = Score(time=form.cleaned_data.get("time"),
                               quarter=form.cleaned_data.get("quarter"),
                               goal_number=form.cleaned_data.get("goal_jersey"),
-                              assist_number=form.cleaned_data.get("assist_jersey"),
+                              assist_number=form.cleaned_data.get(
+                                  "assist_jersey"),
                               home_score=scorebook.running_score)
                 score.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
         # User selected the visiting team's running score.
         elif "visitingScoreModal" in str(request.POST):
-            form = ScorebookAddScore(request.POST)
+            form = ScorebookScoreForm(request.POST)
             if form.is_valid():
                 score = Score(time=form.cleaned_data.get("time"),
                               quarter=form.cleaned_data.get("quarter"),
                               goal_number=form.cleaned_data.get("goal_jersey"),
-                              assist_number=form.cleaned_data.get("assist_jersey"),
+                              assist_number=form.cleaned_data.get(
+                                  "assist_jersey"),
                               visiting_score=scorebook.running_score)
                 score.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
         elif "homePersonalFoulModal" in str(request.POST):
-            form = ScorebookPersonalFoul(request.POST)
+            form = ScorebookPersonalFoulForm(request.POST)
             if form.is_valid():
                 penalty = Penalty(personal_foul=True,
-                                  player_number=form.cleaned_data.get("player_number"),
-                                  infraction=form.cleaned_data.get("infraction"),
+                                  player_number=form.cleaned_data.get(
+                                      "player_number"),
+                                  infraction=form.cleaned_data.get(
+                                      "infraction"),
                                   quarter=form.cleaned_data.get("quarter"),
                                   time=form.cleaned_data.get("time"),
                                   home_penalties=scorebook.penalties)
@@ -121,7 +128,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 return HttpResponseRedirect('/edit-scorebook/')
 
         elif "homeTechnicalFoulModal" in str(request.POST):
-            form = ScorebookPersonalFoul(request.POST)
+            form = ScorebookPersonalFoulForm(request.POST)
             if form.is_valid():
                 penalty = Penalty(personal_foul=False,
                                   player_number=form.cleaned_data.get(
@@ -135,7 +142,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 return HttpResponseRedirect('/edit-scorebook/')
 
         elif "visitingPersonalFoulModal" in str(request.POST):
-            form = ScorebookPersonalFoul(request.POST)
+            form = ScorebookPersonalFoulForm(request.POST)
             if form.is_valid():
                 penalty = Penalty(personal_foul=True,
                                   player_number=form.cleaned_data.get(
@@ -149,7 +156,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 return HttpResponseRedirect('/edit-scorebook/')
 
         elif "visitingTechnicalFoulModal" in str(request.POST):
-            form = ScorebookPersonalFoul(request.POST)
+            form = ScorebookPersonalFoulForm(request.POST)
             if form.is_valid():
                 penalty = Penalty(personal_foul=False,
                                   player_number=form.cleaned_data.get(
@@ -164,7 +171,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected to call a timeout for the home team.
         elif "homeTimeoutModal" in str(request.POST):
-            form = ScorebookTimeout(request.POST)
+            form = ScorebookTimeoutForm(request.POST)
             if form.is_valid():
                 timeout = Timeout(time=form.cleaned_data.get("time"),
                                   quarter=form.cleaned_data.get("quarter"),
@@ -174,7 +181,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected to call a timeout for the home team.
         elif "visitingTimeoutModal" in str(request.POST):
-            form = ScorebookTimeout(request.POST)
+            form = ScorebookTimeoutForm(request.POST)
             if form.is_valid():
                 timeout = Timeout(time=form.cleaned_data.get("time"),
                                   quarter=form.cleaned_data.get("quarter"),
@@ -183,13 +190,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 return HttpResponseRedirect('/edit-scorebook/')
 
         elif "homeAddPlayerModal" in str(request.POST):
-            form = ScorebookAddPlayer(request.POST)
+            form = ScorebookPlayerForm(request.POST)
             if form.is_valid():
-                player = Player(player_number=form.cleaned_data.get("player_number"),
-                                first_name=form.cleaned_data.get("first_name"),
-                                last_name=form.cleaned_data.get("last_name"),
-                                position=form.cleaned_data.get("position"),
-                                team=scorebook.home_coach.roster)
+                player = Player(
+                    player_number=form.cleaned_data.get("player_number"),
+                    first_name=form.cleaned_data.get("first_name"),
+                    last_name=form.cleaned_data.get("last_name"),
+                    position=form.cleaned_data.get("position"),
+                    team=scorebook.home_coach.roster)
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
@@ -202,13 +210,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             return HttpResponseRedirect('/edit-scorebook/')
 
         elif "visitingAddPlayerModal" in str(request.POST):
-            form = ScorebookAddPlayer(request.POST)
+            form = ScorebookPlayerForm(request.POST)
             if form.is_valid():
-                player = Player(player_number=form.cleaned_data.get("player_number"),
-                                first_name=form.cleaned_data.get("first_name"),
-                                last_name=form.cleaned_data.get("last_name"),
-                                position=form.cleaned_data.get("position"),
-                                team=scorebook.visiting_coach.roster)
+                player = Player(
+                    player_number=form.cleaned_data.get("player_number"),
+                    first_name=form.cleaned_data.get("first_name"),
+                    last_name=form.cleaned_data.get("last_name"),
+                    position=form.cleaned_data.get("position"),
+                    team=scorebook.visiting_coach.roster)
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
@@ -228,9 +237,187 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 scorebook_context.pop("scorebook")
                 return HttpResponseRedirect('/create-scorebook/')
 
+    # Handle all data modification if a GET request is sent via Ajax.
+    elif request.method == "GET":
+        # What is the model's ID?
+        id = request.GET.get('id', '')
+        # Does the user want to 'edit' or 'delete' the model?
+        type = request.GET.get('type', '')
+        # Which model does the user want to modify?
+        model = request.GET.get('model', '')
+
+        print(id, type, model)
+
     scorebook_context["scorebook"] = scorebook
-    print(scorebook)
     return render(request, "scorebook.html", scorebook_context)
+
+
+@login_required
+def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
+    score = Score.objects.get(id=score_id)
+    initial = {
+        "quarter": score.quarter,
+        "goal_jersey": score.goal_number,
+        "assist_jersey": score.assist_number,
+    }
+
+    if score is not None:
+        if request.method == "POST":
+            form = ScorebookScoreForm(request.POST)
+            if form.is_valid():
+                score.quarter = form.cleaned_data.get("quarter")
+                score.goal_number = form.cleaned_data.get("goal_jersey")
+                score.assist_number = form.cleaned_data.get("assist_jersey")
+                score.save()
+                return HttpResponseRedirect("/edit-scorebook/")
+
+        form = ScorebookScoreForm(initial=initial)
+        return render(request, "edit_score.html",
+                      {"form": form, "id": score.id})
+    else:
+        return HttpResponse("Running Score Not Found")
+
+
+@login_required
+def scorebook_edit_personal_foul(request: HttpRequest,
+                                 penalty_id: int) -> HttpResponse:
+    penalty = Penalty.objects.get(id=penalty_id)
+    initial = {
+        "player_number": penalty.player_number,
+        "infraction": penalty.infraction,
+        "quarter": penalty.quarter,
+    }
+
+    if penalty is not None:
+        if request.method == "POST":
+            form = ScorebookPersonalFoulForm(request.POST)
+            if form.is_valid():
+                penalty.player_number = form.cleaned_data.get("player_number")
+                penalty.infraction = form.cleaned_data.get("infraction")
+                penalty.quarter = form.cleaned_data.get("quarter")
+                penalty.save()
+                return HttpResponseRedirect("/edit-scorebook/")
+
+        form = ScorebookPersonalFoulForm(initial=initial)
+        return render(request, "edit_personal_foul.html",
+                      {"form": form, "id": penalty.id})
+    else:
+        return HttpResponse("Penalty Not Found")
+
+
+@login_required
+def scorebook_edit_technical_foul(request: HttpRequest,
+                                  penalty_id: int) -> HttpResponse:
+    penalty = Penalty.objects.get(id=penalty_id)
+    initial = {
+        "player_number": penalty.player_number,
+        "infraction": penalty.infraction,
+        "quarter": penalty.quarter,
+    }
+
+    if penalty is not None:
+        if request.method == "POST":
+            form = ScorebookTechnicalFoulFormForm(request.POST)
+            if form.is_valid():
+                penalty.player_number = form.cleaned_data.get("player_number")
+                penalty.infraction = form.cleaned_data.get("infraction")
+                penalty.quarter = form.cleaned_data.get("quarter")
+                penalty.save()
+                return HttpResponseRedirect("/edit-scorebook/")
+
+        form = ScorebookTechnicalFoulFormForm(initial=initial)
+        return render(request, "edit_technical_foul.html",
+                      {"form": form, "id": penalty.id})
+    else:
+        return HttpResponse("Penalty Not Found")
+
+
+@login_required
+def scorebook_edit_timeout(request: HttpRequest,
+                           timeout_id: int) -> HttpResponse:
+    timeout = Timeout.objects.get(id=timeout_id)
+    initial = {
+        "quarter": timeout.quarter,
+    }
+
+    if timeout is not None:
+        if request.method == "POST":
+            form = ScorebookTimeoutForm(request.POST)
+            if form.is_valid():
+                timeout.quarter = form.cleaned_data.get("quarter")
+                timeout.save()
+                return HttpResponseRedirect("/edit-scorebook/")
+
+        form = ScorebookTimeoutForm(initial=initial)
+        return render(request, "edit_timeout.html",
+                      {"form": form, "id": timeout.id})
+    else:
+        return HttpResponse("Penalty Not Found")
+
+
+@login_required
+def scorebook_edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
+    player = Player.objects.get(id=player_id)
+    initial = {
+        "player_number": player.player_number,
+        "first_name": player.first_name,
+        "last_name": player.last_name,
+        "position": player.position,
+    }
+
+    if player is not None:
+        if request.method == "POST":
+            form = ScorebookPlayerForm(request.POST)
+            if form.is_valid():
+                player.player_number = form.cleaned_data.get("player_number")
+                player.first_name = form.cleaned_data.get("first_name")
+                player.last_name = form.cleaned_data.get("last_name")
+                player.position = form.cleaned_data.get("position")
+                player.save()
+                return HttpResponseRedirect("/edit-scorebook/")
+
+        form = ScorebookPlayerForm(initial=initial)
+        return render(request, "edit_scorebook_player.html",
+                      {"form": form, "id": player.id})
+    else:
+        return HttpResponse("Player Not Found")
+
+
+@login_required
+def scorebook_delete_score(request: HttpRequest, score_id: int) -> HttpResponse:
+    score = Score.objects.filter(id=score_id)[0]
+    if score is not None:
+        score.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Score Not Found")
+
+@login_required
+def scorebook_delete_penalty(request: HttpRequest, penalty_id: int) -> HttpResponse:
+    penalty = Penalty.objects.filter(id=penalty_id)[0]
+    if penalty is not None:
+        penalty.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Penalty Not Found")
+
+@login_required
+def scorebook_delete_timeout(request: HttpRequest, timeout_id: int) -> HttpResponse:
+    timeout = Timeout.objects.filter(id=timeout_id)[0]
+    if timeout is not None:
+        timeout.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Timeout Not Found")
+
+@login_required
+def scorebook_delete_player(request: HttpRequest, player_id: int) -> HttpResponse:
+    player = Player.objects.filter(id=player_id)[0]
+    if player is not None:
+        player.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Player Not Found")
 
 
 @login_required
@@ -256,10 +443,13 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                 roster.save()
                 coach.roster = roster
                 coach.save()
-                return render(request, "roster.html", {"form": PlayerEntryForm(), "has_roster": True, "roster": roster})
+                return render(request, "roster.html",
+                              {"form": PlayerEntryForm(), "has_roster": True,
+                               "roster": roster})
 
         print("test")
-        return render(request, "roster.html", {"form": RosterEntryForm(), "has_roster": False})
+        return render(request, "roster.html",
+                      {"form": RosterEntryForm(), "has_roster": False})
 
     # Otherwise, the Coach has established a Roster, so display it.
     else:
@@ -288,7 +478,9 @@ def view_roster(request: HttpRequest) -> HttpResponse:
 
         form = PlayerEntryForm()
         players = coach.roster.player_set.all()
-        return render(request, "roster.html", {"form": form, "has_roster": True, "players": players, "roster": coach.roster})
+        return render(request, "roster.html",
+                      {"form": form, "has_roster": True, "players": players,
+                       "roster": coach.roster})
 
 
 @login_required
@@ -326,9 +518,11 @@ def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
                 return HttpResponseRedirect("/roster/")
 
         form = PlayerEntryForm(initial=initial)
-        return render(request, "edit_player.html", {"form": form, "id": player.id})
+        return render(request, "edit_player.html",
+                      {"form": form, "id": player.id})
     else:
         return HttpResponse("Player Not Found")
+
 
 @login_required
 def delete_player(request: HttpRequest, player_id: int) -> HttpResponse:

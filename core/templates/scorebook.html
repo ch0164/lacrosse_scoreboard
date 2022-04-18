@@ -67,6 +67,7 @@
                             <th>Qtr</th>
                             <th>Goal #</th>
                             <th>Assist #</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -76,6 +77,14 @@
                                 <td>{{ score.quarter }}</td>
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
+                                <td>
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -96,6 +105,7 @@
                             <th>Qtr</th>
                             <th>Goal #</th>
                             <th>Assist #</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -105,6 +115,14 @@
                                 <td>{{ score.quarter }}</td>
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
+                                <td>
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -124,12 +142,12 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby=dropdownMenu1>
                             <li>
-                                <button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Fowl
+                                <button class="dropdown-item" id="homePersonalFoulButton" type="button">Personal Foul
                                 </button>
                             </li>
                             <li>
                                 <button class="dropdown-item" id="homeTechnicalFoulButton" type="button">Technical
-                                    Fowl
+                                    Foul
                                 </button>
                             </li>
                         </div>
@@ -144,6 +162,7 @@
                             <th>Infraction</th>
                             <th>Qtr</th>
                             <th>Time</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -158,6 +177,23 @@
                                 <td>{{ penalty.infraction }}</td>
                                 <td>{{ penalty.quarter }}</td>
                                 <td>{{ penalty.time }}</td>
+                                <td>
+                                    {% if penalty.personal_foul == True %}
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% else %}
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -177,6 +213,7 @@
                         <tr>
                             <th>Time</th>
                             <th>Qtr</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -184,6 +221,14 @@
                             <tr>
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
+                                <td>
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -202,12 +247,12 @@
                         <div class="dropdown-menu" aria-labelledby=dropdownMenu2>
                             <li>
                                 <button class="dropdown-item" id="visitingPersonalFoulButton" type="button">Personal
-                                    Fowl
+                                    Foul
                                 </button>
                             </li>
                             <li>
                                 <button class="dropdown-item" id="visitingTechnicalFoulButton" type="button">Technical
-                                    Fowl
+                                    Foul
                                 </button>
                             </li>
                         </div>
@@ -222,6 +267,7 @@
                             <th>Infraction</th>
                             <th>Qtr</th>
                             <th>Time</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -236,6 +282,23 @@
                                 <td>{{ penalty.infraction }}</td>
                                 <td>{{ penalty.quarter }}</td>
                                 <td>{{ penalty.time }}</td>
+                                <td>
+                                    {% if penalty.personal_foul == True %}
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% else %}
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                            <span class="glyphicon glyphicon-pencil"></span>
+                                        </a>
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -254,6 +317,7 @@
                         <tr>
                             <th>Time</th>
                             <th>Qtr</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -261,6 +325,14 @@
                             <tr>
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
+                                <td>
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -270,7 +342,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <h1 class="bg_black">
                     <b>Home Roster</b>
                     <button id="homeAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
@@ -288,6 +360,7 @@
                             <th>Goals</th>
                             <th>Assists</th>
                             <th>Ground Balls</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -298,32 +371,33 @@
                                 <td>{{ player.position }}</td>
                                 <td>{{ player.last_name }}, {{ player.first_name }}</td>
                                 <td>
-                                        <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterI{{ player.id }}">
-                                            <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
-                                        </span>
+                                    <span class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                               id="quarterI{{ player.id }}">
+                                        <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterII{{ player.id }}">
                                             <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
-                                        </span>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIII{{ player.id }}">
                                             <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
-                                        </span>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterIV{{ player.id }}">
                                             <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
-                                        </span>
+                                    </span>
                                     <span class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="quarterOT{{ player.id }}">
                                             <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
-                                        </span>
+                                    </span>
                                 </td>
+                                {#                                TODO: Wrap all of these number input fields in a form and add a "Save" button. #}
                                 <td>
                                     <input type="number" class="form-control" min="0" id="input1" placeholder="0">
                                 </td>
@@ -336,7 +410,78 @@
                                 <td>
                                     <input type="number" class="form-control" min="0" id="input4" placeholder="0">
                                 </td>
+                                <td>
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Goalies & Saves</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput1_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput2_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput3_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput4_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInputOT_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td name="goalTotal"><b>0</b></td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -345,7 +490,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <h1 class="bg_black">
                     <b>Visiting Roster</b>
                     <button id="visitingAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
@@ -363,6 +508,7 @@
                             <th>Goals</th>
                             <th>Assists</th>
                             <th>Ground Balls</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -410,7 +556,78 @@
                                 <td>
                                     <input type="number" class="form-control" min="0" id="input4" placeholder="0">
                                 </td>
+                                <td>
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
                             </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Goalies & Saves</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput1_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput2_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput3_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput4_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInputOT_{{ player.id }}" placeholder="0">
+                                    </td>
+                                    <td name="goalTotal"><b>0</b></td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -418,6 +635,7 @@
             </div>
         </div>
     </div>
+
 
     <div id="publishScorebookModal" class="modal">
         <div class="modal-content">
@@ -601,6 +819,12 @@
 {% block custom_js %}
     <script type="text/javascript">
 
+        /* Initialize the page with JavaScript before loading it using jQuery ready event. */
+        $(document).ready(function () {
+            /* Ensure goal totals are updated correctly. */
+            updateGoalTotals();
+        });
+
         /* Get publish/clear scorebook buttons. */
         let publishScorebookButton = document.getElementById("publishScorebookButton");
         let clearScorebookButton = document.getElementById("clearScorebookButton");
@@ -626,7 +850,7 @@
         let visitingImportRosterButton = document.getElementById("visitingImportRosterButton");
 
         /* Assign event handlers to all main view buttons to open corresponding modal. */
-        let buttons = [
+        let modalButtons = [
             publishScorebookButton, clearScorebookButton,
             homeScoreButton, visitingScoreButton,
             homePersonalFoulButton, homeTechnicalFoulButton,
@@ -635,7 +859,7 @@
             homeAddPlayerButton, homeImportRosterButton,
             visitingAddPlayerButton, visitingImportRosterButton,
         ];
-        buttons.forEach((button) => {
+        modalButtons.forEach((button) => {
             let modalId = button.id.split("Button")[0] + "Modal";
             button.addEventListener("click", function () {
                 let modal = document.getElementById(modalId);
@@ -652,6 +876,21 @@
             })
         });
 
+        /* Add home goalies' totals. */
+        function updateGoalTotals() {
+            let goalTotals = document.getElementsByName("goalTotal");
+            goalTotals.forEach((total) => {
+                let row = total.parentNode;
+                let quarters = Array.from(row.children).slice(1, -1);
+                let totalGoalsSaved = 0;
+                quarters.forEach((quarter) => {
+                    let goalsSaved = parseInt(quarter.children[0].value);
+                    totalGoalsSaved += goalsSaved;
+                })
+                total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
+            });
+        }
+
         //Refresh Handled Timer
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
@@ -666,7 +905,7 @@
                 if (--timer < 0) {
                     timer = duration;
                 }
-                console.log(parseInt(seconds))
+                //console.log(parseInt(seconds))
                 window.localStorage.setItem("seconds", seconds)
                 window.localStorage.setItem("minutes", minutes)
             }, 1000);
