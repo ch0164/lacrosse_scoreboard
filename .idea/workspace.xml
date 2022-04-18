@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0f0f661-779b-4316-aced-8a3a0d8efb59" name="Changes" comment="">
+    <list default="true" id="a0f0f661-779b-4316-aced-8a3a0d8efb59" name="Changes" comment="Added 4 modals, two for each penalty for each team. But cannot get modal to display.&#10;&#10;&#10;&#10;Uncaught TypeError: Cannot read properties of null (reading 'style')&#10;    at HTMLButtonElement.&lt;anonymous&gt;  ((index):727:23)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/published_scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/published_scorebook.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
