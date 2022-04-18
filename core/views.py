@@ -375,7 +375,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         print(str(request.POST))
 
+    # TODO: Get these from the function sent earlier.
+    # Note: Need to ensure these rosters have at least three players
+    home_top_three = None
+    visiting_top_three = None
+    
     scorebook_context["scorebook"] = scorebook
+    scorebook_context["home_top_three"] = home_top_three
+    scorebook_context["visiting_top_three"] = visiting_top_three
     return render(request, "scorebook.html", scorebook_context)
 
 
