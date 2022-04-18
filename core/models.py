@@ -21,6 +21,33 @@ class Roster(models.Model):
         return f"{self.school} {self.team_name}"  # Example: "UAH Chargers"
 
 
+class PlayerStatistics(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    first_quarter = models.BooleanField(default=False)
+    second_quarter = models.BooleanField(default=False)
+    third_quarter = models.BooleanField(default=False)
+    fourth_quarter = models.BooleanField(default=False)
+    overtime = models.BooleanField(default=False)
+    shots = models.PositiveIntegerField(default=0)
+    goals = models.PositiveIntegerField(default=0)
+    assists = models.PositiveIntegerField(default=0)
+    ground_balls = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"S: {self.shots}, G: {self.goals}, A: {self.assists}, GB: {self.ground_balls}"
+
+
+class PlayerSaves(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    first_quarter = models.PositiveIntegerField(default=0)
+    second_quarter = models.PositiveIntegerField(default=0)
+    third_quarter = models.PositiveIntegerField(default=0)
+    fourth_quarter = models.PositiveIntegerField(default=0)
+    overtime = models.PositiveIntegerField(default=0)
+
+
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
@@ -41,6 +68,18 @@ class Player(models.Model):
     team = models.ForeignKey(Roster,
                              on_delete=models.CASCADE,
                              default=None)
+    statistics = models.ForeignKey(PlayerStatistics,
+                                   related_name="statistics",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
+    saves = models.ForeignKey(PlayerSaves,
+                              related_name="saves",
+                              on_delete=models.CASCADE,
+                              null=True,
+                              blank=True,
+                              default=None)
 
     def __str__(self):
         return f"{self.last_name}, {self.first_name} (#{self.player_number})"
@@ -55,70 +94,69 @@ class StartingLineup(models.Model):
     coach_last_name = models.CharField(max_length=50, default="")
     # Relationships
     attacker_1 = models.ForeignKey(Player,
-                                      related_name="attacker_1",
-                                      on_delete=models.CASCADE,
-                                      null=True,
-                                      blank=True,
-                                      default=None)
+                                   related_name="attacker_1",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
     attacker_2 = models.ForeignKey(Player,
-                                      related_name="attacker_2",
-                                      on_delete=models.CASCADE,
-                                      null=True,
-                                      blank=True,
-                                      default=None)
+                                   related_name="attacker_2",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
     attacker_3 = models.ForeignKey(Player,
-                                      related_name="attacker_3",
-                                      on_delete=models.CASCADE,
-                                      null=True,
-                                      blank=True,
-                                      default=None)
+                                   related_name="attacker_3",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
     midfielder_1 = models.ForeignKey(Player,
-                                        related_name="midfielder_1",
-                                        on_delete=models.CASCADE,
-                                        null=True,
-                                        blank=True,
-                                        default=None)
+                                     related_name="midfielder_1",
+                                     on_delete=models.CASCADE,
+                                     null=True,
+                                     blank=True,
+                                     default=None)
     midfielder_2 = models.ForeignKey(Player,
-                                        related_name="midfielder_2",
-                                        on_delete=models.CASCADE,
-                                        null=True,
-                                        blank=True,
-                                        default=None)
+                                     related_name="midfielder_2",
+                                     on_delete=models.CASCADE,
+                                     null=True,
+                                     blank=True,
+                                     default=None)
     midfielder_3 = models.ForeignKey(Player,
-                                        related_name="midfielder_3",
-                                        on_delete=models.CASCADE,
-                                        null=True,
-                                        blank=True,
-                                        default=None)
+                                     related_name="midfielder_3",
+                                     on_delete=models.CASCADE,
+                                     null=True,
+                                     blank=True,
+                                     default=None)
     defender_1 = models.ForeignKey(Player,
-                                      related_name="defender_1",
-                                      on_delete=models.CASCADE,
-                                      null=True,
-                                      blank=True,
-                                      default=None)
+                                   related_name="defender_1",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
     defender_2 = models.ForeignKey(Player,
-                                      related_name="defender_2",
-                                      on_delete=models.CASCADE,
-                                      null=True,
-                                      blank=True,
-                                      default=None)
+                                   related_name="defender_2",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
     defender_3 = models.ForeignKey(Player,
-                                      related_name="defender_3",
-                                      on_delete=models.CASCADE,
-                                      null=True,
-                                      blank=True,
-                                      default=None)
+                                   related_name="defender_3",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
     goalie = models.ForeignKey(Player,
-                                  related_name="goalie",
-                                  on_delete=models.CASCADE,
-                                  null=True,
-                                  blank=True,
-                                  default=None)
+                               related_name="goalie",
+                               on_delete=models.CASCADE,
+                               null=True,
+                               blank=True,
+                               default=None)
 
     def __str__(self):
-        return f"Head Coach: {self.coach_last_name}, {self.coach_first_name}\n"\
+        return f"Head Coach: {self.coach_last_name}, {self.coach_first_name}\n" \
                f"Team: {self.school} {self.team_name}"
-
 
 
 class Coach(models.Model):
@@ -140,11 +178,11 @@ class Coach(models.Model):
                                   on_delete=models.CASCADE,
                                   default=None)
     starting_lineup = models.OneToOneField(StartingLineup,
-                                  related_name="starting_lineup",
-                                  null=True,
-                                  blank=True,
-                                  on_delete=models.CASCADE,
-                                  default=None)
+                                           related_name="starting_lineup",
+                                           null=True,
+                                           blank=True,
+                                           on_delete=models.CASCADE,
+                                           default=None)
 
     def __str__(self):
         return f"{self.last_name}, {self.first_name}"
@@ -300,40 +338,3 @@ class Scorebook(models.Model):
         # return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
         #        f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
         return f"Scorebook Id: {self.id}"
-
-
-class PlayerStatistics(models.Model):
-    # Attributes
-    id = models.AutoField(primary_key=True)
-    first_quarter = models.BooleanField(default=False)
-    second_quarter = models.BooleanField(default=False)
-    third_quarter = models.BooleanField(default=False)
-    fourth_quarter = models.BooleanField(default=False)
-    overtime = models.BooleanField(default=False)
-    shots = models.PositiveIntegerField(default=0)
-    goals = models.PositiveIntegerField(default=0)
-    assists = models.PositiveIntegerField(default=0)
-    ground_balls = models.PositiveIntegerField(default=0)
-    # Relationships
-    player = models.OneToOneField(Player,
-                                  related_name="player_statistics",
-                                  on_delete=models.CASCADE,
-                                  default=None)
-
-    def __str__(self):
-        return f"{self.player} scored {self.shots} shots, {self.goals} goals, and {self.assists} assists"
-
-
-class PlayerSaves(models.Model):
-    # Attributes
-    id = models.AutoField(primary_key=True)
-    first_quarter = models.PositiveIntegerField(default=0)
-    second_quarter = models.PositiveIntegerField(default=0)
-    third_quarter = models.PositiveIntegerField(default=0)
-    fourth_quarter = models.PositiveIntegerField(default=0)
-    overtime = models.PositiveIntegerField(default=0)
-    # Relationships
-    player = models.OneToOneField(Player,
-                                  related_name="player_saves",
-                                  on_delete=models.CASCADE,
-                                  default=None)

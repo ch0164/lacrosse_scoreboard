@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, \
     HttpResponseRedirect
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from core.forms import *
 from core.models import *
@@ -80,6 +81,7 @@ def create_scorebook(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+# @csrf_exempt
 def edit_scorebook(request: HttpRequest) -> HttpResponse:
     global scorebook
     if scorebook is None:
@@ -192,12 +194,22 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         elif "homeAddPlayerModal" in str(request.POST):
             form = ScorebookPlayerForm(request.POST)
             if form.is_valid():
+                statistics = PlayerStatistics()
+                statistics.save()
+
                 player = Player(
                     player_number=form.cleaned_data.get("player_number"),
                     first_name=form.cleaned_data.get("first_name"),
                     last_name=form.cleaned_data.get("last_name"),
                     position=form.cleaned_data.get("position"),
-                    team=scorebook.home_coach.roster)
+                    team=scorebook.home_coach.roster,
+                    statistics=statistics)
+
+                if form.cleaned_data["position"] in "G":
+                    saves = PlayerSaves()
+                    saves.save()
+                    player.saves = saves
+
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
@@ -211,27 +223,55 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 roster.save()
 
                 lineup.attacker_1.team = roster
+                lineup.attacker_1.statistics = PlayerStatistics()
+                lineup.attacker_1.statistics.save()
                 lineup.attacker_1.save()
+
                 lineup.attacker_2.team = roster
+                lineup.attacker_2.statistics = PlayerStatistics()
+                lineup.attacker_2.statistics.save()
                 lineup.attacker_2.save()
+
                 lineup.attacker_3.team = roster
+                lineup.attacker_3.statistics = PlayerStatistics()
+                lineup.attacker_3.statistics.save()
                 lineup.attacker_3.save()
 
                 lineup.midfielder_1.team = roster
+                lineup.midfielder_1.statistics = PlayerStatistics()
+                lineup.midfielder_1.statistics.save()
                 lineup.midfielder_1.save()
+
                 lineup.midfielder_2.team = roster
+                lineup.midfielder_2.statistics = PlayerStatistics()
+                lineup.midfielder_2.statistics.save()
                 lineup.midfielder_2.save()
+
                 lineup.midfielder_3.team = roster
+                lineup.midfielder_3.statistics = PlayerStatistics()
+                lineup.midfielder_3.statistics.save()
                 lineup.midfielder_3.save()
 
                 lineup.defender_1.team = roster
+                lineup.defender_1.statistics = PlayerStatistics()
+                lineup.defender_1.statistics.save()
                 lineup.defender_1.save()
+
                 lineup.defender_2.team = roster
+                lineup.defender_2.statistics = PlayerStatistics()
+                lineup.defender_2.statistics.save()
                 lineup.defender_2.save()
+
                 lineup.defender_3.team = roster
+                lineup.defender_3.statistics = PlayerStatistics()
+                lineup.defender_3.statistics.save()
                 lineup.defender_3.save()
 
                 lineup.goalie.team = roster
+                lineup.goalie.statistics = PlayerStatistics()
+                lineup.goalie.statistics.save()
+                lineup.goalie.saves = PlayerSaves()
+                lineup.goalie.saves.save()
                 lineup.goalie.save()
 
                 # Overwrite the current roster with this new roster.
@@ -241,12 +281,22 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         elif "visitingAddPlayerModal" in str(request.POST):
             form = ScorebookPlayerForm(request.POST)
             if form.is_valid():
+                statistics = PlayerStatistics()
+                statistics.save()
+
                 player = Player(
                     player_number=form.cleaned_data.get("player_number"),
                     first_name=form.cleaned_data.get("first_name"),
                     last_name=form.cleaned_data.get("last_name"),
                     position=form.cleaned_data.get("position"),
-                    team=scorebook.visiting_coach.roster)
+                    team=scorebook.visiting_coach.roster,
+                    statistics=statistics)
+
+                if form.cleaned_data["position"] in "G":
+                    saves = PlayerSaves()
+                    saves.save()
+                    player.saves = saves
+
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
@@ -260,27 +310,55 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 roster.save()
 
                 lineup.attacker_1.team = roster
+                lineup.attacker_1.statistics = PlayerStatistics()
+                lineup.attacker_1.statistics.save()
                 lineup.attacker_1.save()
+
                 lineup.attacker_2.team = roster
+                lineup.attacker_2.statistics = PlayerStatistics()
+                lineup.attacker_2.statistics.save()
                 lineup.attacker_2.save()
+
                 lineup.attacker_3.team = roster
+                lineup.attacker_3.statistics = PlayerStatistics()
+                lineup.attacker_3.statistics.save()
                 lineup.attacker_3.save()
 
                 lineup.midfielder_1.team = roster
+                lineup.midfielder_1.statistics = PlayerStatistics()
+                lineup.midfielder_1.statistics.save()
                 lineup.midfielder_1.save()
+
                 lineup.midfielder_2.team = roster
+                lineup.midfielder_2.statistics = PlayerStatistics()
+                lineup.midfielder_2.statistics.save()
                 lineup.midfielder_2.save()
+
                 lineup.midfielder_3.team = roster
+                lineup.midfielder_3.statistics = PlayerStatistics()
+                lineup.midfielder_3.statistics.save()
                 lineup.midfielder_3.save()
 
                 lineup.defender_1.team = roster
+                lineup.defender_1.statistics = PlayerStatistics()
+                lineup.defender_1.statistics.save()
                 lineup.defender_1.save()
+
                 lineup.defender_2.team = roster
+                lineup.defender_2.statistics = PlayerStatistics()
+                lineup.defender_2.statistics.save()
                 lineup.defender_2.save()
+
                 lineup.defender_3.team = roster
+                lineup.defender_3.statistics = PlayerStatistics()
+                lineup.defender_3.statistics.save()
                 lineup.defender_3.save()
 
                 lineup.goalie.team = roster
+                lineup.goalie.statistics = PlayerStatistics()
+                lineup.goalie.statistics.save()
+                lineup.goalie.saves = PlayerSaves()
+                lineup.goalie.saves.save()
                 lineup.goalie.save()
 
                 # Overwrite the current roster with this new roster.
@@ -300,6 +378,31 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
     scorebook_context["scorebook"] = scorebook
     return render(request, "scorebook.html", scorebook_context)
 
+
+def update_stats(request: HttpRequest) -> HttpResponse:
+    # Parse GET request.
+    player_id = request.GET["id"]
+    stat = request.GET["stat"]
+    value = request.GET["value"]
+
+    # Get player.
+    player = Player.objects.filter(id=player_id)[0]
+
+    # Update corresponding statistic.
+    if stat in "Shots":
+        player.statistics.shots = value
+    elif stat in "Goals":
+        player.statistics.goals = value
+    elif stat in "Assists":
+        player.statistics.assists = value
+    elif stat in "GroundBalls":
+        player.statistics.ground_balls = value
+
+    player.statistics.save()
+
+    print(player.statistics)
+
+    return HttpResponseRedirect('/edit-scorebook/')
 
 @login_required
 def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
