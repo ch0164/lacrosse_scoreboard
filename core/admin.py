@@ -4,10 +4,11 @@ import core.models as core
 import user_registration.models as registration
 
 admin.site.register(core.Roster)
-admin.site.register(core.Coach)
-admin.site.register(core.Scorekeeper)
 admin.site.register(core.Player)
 admin.site.register(core.PlayerStatistics)
+admin.site.register(core.StartingLineup)
+admin.site.register(core.Coach)
+admin.site.register(core.Scorekeeper)
 
 admin.site.register(core.Scorebook)
 admin.site.register(core.Score)
