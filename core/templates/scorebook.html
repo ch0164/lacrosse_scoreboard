@@ -29,7 +29,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="bg_black">Metadata</h1>
+                <h1 class="bg_black">
+                <b>Metadata</b>
+                <button id="halftimeButton" type="button" class="btn btn-danger btn-md">Half Time</button>
+                </h1>
             </div>
             <div class="col-md-3">
                 <h1 class="bg_black"><b>Game Timer</b></h1>
@@ -813,6 +816,85 @@
         </div>
     </div>
 
+      <div id="halftimeModal" class="modal">
+        <div class="container">
+        <div class="row">
+{#        <div class="modal-content">#}
+
+           <div class="col-md-4">
+              <h1 class="bg_black"><b>Home Stats</b></h1>
+               <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Top Player 1</th>
+                <th>Top Player 2</th>
+                <th>Top Player 3</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                              <tr>
+                    <td>Mary</td>
+                    <td>Sue</td>
+                    <td>john@example.com</td>
+                  </tr>
+                              <tr>
+                    <td>Giga</td>
+                    <td>Chad</td>
+                    <td>john@example.com</td>
+                  </tr>
+            </tbody>
+               </table>
+           </div>
+           <div class="col-md-4">
+              <h1 class="bg_black"><b>Away Stats</b></h1>
+               <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Top Player 1</th>
+                <th>Top Player 2</th>
+                <th>Top Player 3</th>
+              </tr>
+            </thead>
+            <tbody>
+                  <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                  </tr>
+                              <tr>
+                    <td>Mary</td>
+                    <td>Sue</td>
+                    <td>john@example.com</td>
+                  </tr>
+                              <tr>
+                    <td>Giga</td>
+                    <td>Chad</td>
+                    <td>john@example.com</td>
+                  </tr>
+            </tbody>
+               </table>
+           </div>
+         </div>
+        </div>
+      </div>
+      </div>
+      </div>
+{#            <form action="" method="POST">#}
+{#                {% csrf_token %}#}
+{#                {{ import_roster_form|crispy }}#}
+{#                <input class="btn btn-primary btn-lg" type="submit" name="visitingImportRosterModalConfirm"#}
+{#                       value="Confirm">#}
+{#                <input class="btn btn-danger btn-lg" type="button" name="visitingImportRosterModalCancel"#}
+{#                       value="Cancel">#}
+{#            </form>#}
+        </div>
+    </div>
+
 
 {% endblock %}
 
@@ -849,6 +931,9 @@
         let visitingAddPlayerButton = document.getElementById("visitingAddPlayerButton");
         let visitingImportRosterButton = document.getElementById("visitingImportRosterButton");
 
+        /* Define Halftime Button. */
+        let halftimeButton = document.getElementById("halftimeButton");
+
         /* Assign event handlers to all main view buttons to open corresponding modal. */
         let modalButtons = [
             publishScorebookButton, clearScorebookButton,
@@ -858,6 +943,7 @@
             homeTimeoutButton, visitingTimeoutButton,
             homeAddPlayerButton, homeImportRosterButton,
             visitingAddPlayerButton, visitingImportRosterButton,
+            halftimeButton,
         ];
         modalButtons.forEach((button) => {
             let modalId = button.id.split("Button")[0] + "Modal";
