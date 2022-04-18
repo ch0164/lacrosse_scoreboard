@@ -61,14 +61,41 @@ class Scorekeeper(models.Model):
         return f"{self.last_name}, {self.first_name}"
 
 
+class PlayerStatistics(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    first_quarter = models.BooleanField(default=False)
+    second_quarter = models.BooleanField(default=False)
+    third_quarter = models.BooleanField(default=False)
+    fourth_quarter = models.BooleanField(default=False)
+    overtime = models.BooleanField(default=False)
+    shots = models.PositiveIntegerField(default=0)
+    goals = models.PositiveIntegerField(default=0)
+    assists = models.PositiveIntegerField(default=0)
+    ground_balls = models.PositiveIntegerField(default=0)
+
+
+class PlayerSaves(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+    first_quarter = models.PositiveIntegerField(default=0)
+    second_quarter = models.PositiveIntegerField(default=0)
+    third_quarter = models.PositiveIntegerField(default=0)
+    fourth_quarter = models.PositiveIntegerField(default=0)
+    overtime = models.PositiveIntegerField(default=0)
+
+
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
     player_number = models.PositiveIntegerField("Player Number", default=0)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
-    position = models.CharField("Position", max_length=4, choices=POSITION_CHOICES, default="ATT")
-    class_standing = models.CharField("Class", max_length=2, choices=CLASS_STANDING_CHOICES, default="FR")
+    position = models.CharField("Position", max_length=4,
+                                choices=POSITION_CHOICES, default="ATT")
+    class_standing = models.CharField("Class", max_length=2,
+                                      choices=CLASS_STANDING_CHOICES,
+                                      default="FR")
     weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0)
     height_feet = models.PositiveIntegerField("Height (feet)", default=0)
     height_inches = models.PositiveIntegerField("Height (inches)", default=0)
@@ -78,6 +105,18 @@ class Player(models.Model):
     team = models.ForeignKey(Roster,
                              on_delete=models.CASCADE,
                              default=None)
+    statistics = models.ForeignKey(PlayerStatistics,
+                                   related_name="statistics",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
+    saves = models.ForeignKey(PlayerStatistics,
+                              related_name="saves",
+                              on_delete=models.CASCADE,
+                              null=True,
+                              blank=True,
+                              default=None)
 
     def __str__(self):
         return f"{self.last_name}, {self.first_name} (#{self.player_number})"
@@ -216,40 +255,3 @@ class Scorebook(models.Model):
         # return f"Home Team: {self.home_coach.roster} -- Head Coach: {self.home_coach} -- Score: {self.home_score}\n" \
         #        f"Visiting Team: {self.visiting_coach.roster} -- Head Coach: {self.visiting_coach} -- Score: {self.visiting_score}"
         return f"Scorebook Id: {self.id}"
-
-
-class PlayerStatistics(models.Model):
-    # Attributes
-    id = models.AutoField(primary_key=True)
-    first_quarter = models.BooleanField(default=False)
-    second_quarter = models.BooleanField(default=False)
-    third_quarter = models.BooleanField(default=False)
-    fourth_quarter = models.BooleanField(default=False)
-    overtime = models.BooleanField(default=False)
-    shots = models.PositiveIntegerField(default=0)
-    goals = models.PositiveIntegerField(default=0)
-    assists = models.PositiveIntegerField(default=0)
-    ground_balls = models.PositiveIntegerField(default=0)
-    # Relationships
-    player = models.OneToOneField(Player,
-                                  related_name="player_statistics",
-                                  on_delete=models.CASCADE,
-                                  default=None)
-
-    def __str__(self):
-        return f"{self.player} scored {self.shots} shots, {self.goals} goals, and {self.assists} assists"
-
-
-class PlayerSaves(models.Model):
-    # Attributes
-    id = models.AutoField(primary_key=True)
-    first_quarter = models.PositiveIntegerField(default=0)
-    second_quarter = models.PositiveIntegerField(default=0)
-    third_quarter = models.PositiveIntegerField(default=0)
-    fourth_quarter = models.PositiveIntegerField(default=0)
-    overtime = models.PositiveIntegerField(default=0)
-    # Relationships
-    player = models.OneToOneField(Player,
-                                  related_name="player_saves",
-                                  on_delete=models.CASCADE,
-                                  default=None)

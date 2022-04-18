@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, \
     HttpResponseRedirect
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from core.forms import *
 from core.models import *
@@ -80,6 +81,7 @@ def create_scorebook(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+# @csrf_exempt
 def edit_scorebook(request: HttpRequest) -> HttpResponse:
     global scorebook
     if scorebook is None:
@@ -192,12 +194,22 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         elif "homeAddPlayerModal" in str(request.POST):
             form = ScorebookPlayerForm(request.POST)
             if form.is_valid():
+                statistics = PlayerStatistics()
+                statistics.save()
+
                 player = Player(
                     player_number=form.cleaned_data.get("player_number"),
                     first_name=form.cleaned_data.get("first_name"),
                     last_name=form.cleaned_data.get("last_name"),
                     position=form.cleaned_data.get("position"),
-                    team=scorebook.home_coach.roster)
+                    team=scorebook.home_coach.roster,
+                    statistics=statistics)
+
+                if form.cleaned_data["position"] in "G":
+                    saves = PlayerSaves()
+                    saves.save()
+                    player.saves = saves
+
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
@@ -212,12 +224,22 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         elif "visitingAddPlayerModal" in str(request.POST):
             form = ScorebookPlayerForm(request.POST)
             if form.is_valid():
+                statistics = PlayerStatistics()
+                statistics.save()
+
                 player = Player(
                     player_number=form.cleaned_data.get("player_number"),
                     first_name=form.cleaned_data.get("first_name"),
                     last_name=form.cleaned_data.get("last_name"),
                     position=form.cleaned_data.get("position"),
-                    team=scorebook.visiting_coach.roster)
+                    team=scorebook.visiting_coach.roster,
+                    statistics=statistics)
+
+                if form.cleaned_data["position"] in "G":
+                    saves = PlayerSaves()
+                    saves.save()
+                    player.saves = saves
+
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
@@ -237,20 +259,22 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 scorebook_context.pop("scorebook")
                 return HttpResponseRedirect('/create-scorebook/')
 
-    # Handle all data modification if a GET request is sent via Ajax.
-    elif request.method == "GET":
-        # What is the model's ID?
-        id = request.GET.get('id', '')
-        # Does the user want to 'edit' or 'delete' the model?
-        type = request.GET.get('type', '')
-        # Which model does the user want to modify?
-        model = request.GET.get('model', '')
-
-        print(id, type, model)
-
     scorebook_context["scorebook"] = scorebook
     return render(request, "scorebook.html", scorebook_context)
 
+
+def update_stats(request: HttpRequest) -> HttpResponse:
+    # Parse GET request.
+    player_id = request.GET["id"]
+    stat = request.GET["stat"]
+    team = request.GET["team"]
+    value = request.GET["value"]
+
+    # Get player.
+    player = Player.objects.filter(id=player_id)[0]
+
+
+    return HttpResponseRedirect('/edit-scorebook/')
 
 @login_required
 def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:

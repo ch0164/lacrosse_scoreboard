@@ -399,16 +399,28 @@
                                 </td>
                                 {#                                TODO: Wrap all of these number input fields in a form and add a "Save" button. #}
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input1" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="homeShotsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeShotsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeShotsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input2" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="homeGoalsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeGoalsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeGoalsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input3" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="homeAssistsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeAssistsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeAssistsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="homeGroundBallsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeGroundBallsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeGroundBallsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
                                     <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
@@ -545,16 +557,28 @@
                                         </span>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input1" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="visitingShotsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingShotsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingShotsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input2" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="visitingGoalsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingGoalsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingGoalsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input3" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="visitingAssistsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingAssistsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingAssistsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="input4" placeholder="0">
+                                    <input type="number" class="form-control" min="0" id="visitingGroundBallsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingGroundBallsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingGroundBallsInput')"
+                                           placeholder="0" value="0">
                                 </td>
                                 <td>
                                     <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
@@ -888,6 +912,33 @@
                     totalGoalsSaved += goalsSaved;
                 })
                 total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
+            });
+        }
+
+        /* Update the player's shots, goals, assists, or ground balls. */
+        function updatePlayerStatistics(playerId, statistic) {
+            let statisticInput = document.getElementById(statistic + playerId);
+            var stat = "";
+            var team = "";
+            if (statistic.includes("home")) {
+                let homeStatistic = statistic.split("Input")[0];
+                stat = homeStatistic.split("home")[1];
+                team = "home";
+            } else if (statistic.includes("visiting")) {
+                let visitingStatistic = statistic.split("Input")[0];
+                stat = visitingStatistic.split("visiting")[1];
+                team = "visiting";
+            }
+
+            $.ajax({
+                url: "http://127.0.0.1:8000/update-stats/",
+                type: "GET",
+                data: {"id": playerId, "stat": stat, "team": team, "value": statisticInput.value},
+            })
+            .done(function(response) {
+            })
+            .fail(function() {
+               console.log("Error Occurred");
             });
         }
 

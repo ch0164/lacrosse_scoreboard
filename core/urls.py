@@ -10,6 +10,7 @@ urlpatterns = [
     # Edit Scorebook views below.
     path('create-scorebook/', views.create_scorebook),
     path('edit-scorebook/', views.edit_scorebook),
+    path('update-stats/', views.update_stats),
     path('edit-score/<int:score_id>/',
          views.scorebook_edit_score, name="edit_score"),
     path('edit-personal-foul/<int:penalty_id>/',
