@@ -536,6 +536,8 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                 starting_lineup = StartingLineup(
                     school=coach.roster.school,
                     team_name=coach.roster.team_name,
+                    coach_first_name=coach.first_name,
+                    coach_last_name=coach.last_name,
                     attacker_1=form.cleaned_data["attackmen"][0],
                     attacker_2=form.cleaned_data["attackmen"][1],
                     attacker_3=form.cleaned_data["attackmen"][2],

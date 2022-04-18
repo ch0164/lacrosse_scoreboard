@@ -51,6 +51,8 @@ class StartingLineup(models.Model):
     id = models.AutoField(primary_key=True)
     school = models.CharField(max_length=100, default="")
     team_name = models.CharField(max_length=50, default="")
+    coach_first_name = models.CharField(max_length=50, default="")
+    coach_last_name = models.CharField(max_length=50, default="")
     # Relationships
     attacker_1 = models.ForeignKey(Player,
                                       related_name="attacker_1",
@@ -114,7 +116,8 @@ class StartingLineup(models.Model):
                                   default=None)
 
     def __str__(self):
-        return f"{self.school} {self.team_name}"
+        return f"Head Coach: {self.coach_last_name}, {self.coach_first_name}\n"\
+               f"Team: {self.school} {self.team_name}"
 
 
 
