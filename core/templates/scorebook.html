@@ -698,9 +698,11 @@
                let time = startingTime * 60;
                const countdownEl = document.getElementById('countdown');
 
-               setInterval(updateCountdown, 1000);
+               window.onload = function (){
+                   setInterval(updateCountdown, 1000);
+               }
 
-               function updateCountdown(){
+                   function updateCountdown(){
                    const minutes = Math.floor(time/60);
                    let seconds = time % 60;
                    seconds = seconds < 10 ? '0' + seconds:seconds;
@@ -708,6 +710,9 @@
                    countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
                    time++;
        }
+              window.unload = function (){
+                   clearInterval(time);
+               }
     
     </script>
 {% endblock %}
