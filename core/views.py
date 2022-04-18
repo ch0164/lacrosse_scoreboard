@@ -384,6 +384,43 @@ def scorebook_edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
 
 
 @login_required
+def scorebook_delete_score(request: HttpRequest, score_id: int) -> HttpResponse:
+    score = Score.objects.filter(id=score_id)[0]
+    if score is not None:
+        score.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Score Not Found")
+
+@login_required
+def scorebook_delete_penalty(request: HttpRequest, penalty_id: int) -> HttpResponse:
+    penalty = Penalty.objects.filter(id=penalty_id)[0]
+    if penalty is not None:
+        penalty.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Penalty Not Found")
+
+@login_required
+def scorebook_delete_timeout(request: HttpRequest, timeout_id: int) -> HttpResponse:
+    timeout = Timeout.objects.filter(id=timeout_id)[0]
+    if timeout is not None:
+        timeout.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Timeout Not Found")
+
+@login_required
+def scorebook_delete_player(request: HttpRequest, player_id: int) -> HttpResponse:
+    player = Player.objects.filter(id=player_id)[0]
+    if player is not None:
+        player.delete()
+        return HttpResponseRedirect("/edit-scorebook/")
+    else:
+        return HttpResponse("Player Not Found")
+
+
+@login_required
 def view_roster(request: HttpRequest) -> HttpResponse:
     # NOTE: Temporarily commented out (as well as contents of roster.html).
     # players = Player.objects.all()

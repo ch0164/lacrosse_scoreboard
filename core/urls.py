@@ -21,6 +21,16 @@ urlpatterns = [
     path('edit-scorebook-player/<int:player_id>/',
          views.scorebook_edit_player, name="edit_scorebook_player"),
 
+    # Delete Scorebook redirects below.
+    path('delete-score/<int:score_id>', views.scorebook_delete_score,
+         name="delete_score"),
+    path('delete-penalty/<int:penalty_id>', views.scorebook_delete_penalty,
+         name="delete_penalty"),
+    path('delete-timeout/<int:timeout_id>', views.scorebook_delete_timeout,
+         name="delete_timeout"),
+    path('delete-scorebook-player/<int:player_id>', views.scorebook_delete_player,
+         name="delete_scorebook_player"),
+
     # Roster view URLs below.
     path('edit-player/<int:player_id>/', views.edit_player, name="edit_player"),
     path('delete-player/<int:player_id>', views.delete_player,
