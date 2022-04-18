@@ -9,12 +9,12 @@ from core.models import *
 scorebook_context = {
     "running_score_form": ScorebookScoreForm(),
     "personal_foul_form": ScorebookPersonalFoulForm(),
-    "technical_foul_form": ScorebookTechnicalFoulFormForm(),
+    "technical_foul_form": ScorebookTechnicalFoulForm(),
     "timeout_form": ScorebookTimeoutForm(),
     "home_penalties_form": ScorebookPenaltyForm(),
     "visiting_penalties_form": ScorebookPenaltyForm(),
     "add_player_form": ScorebookPlayerForm(),
-    "import_roster_form": ScorebookImportRoster(),
+    "import_lineup_form": ScorebookImportLineup(),
 }
 
 scorebook = None
@@ -202,12 +202,41 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 return HttpResponseRedirect("/edit-scorebook/")
 
         # User selected a roster for the home team.
-        elif "homeImportRosterModal" in str(request.POST):
-            roster_id = request.POST.get("roster")
-            roster = Roster.objects.filter(id=roster_id)[0]
-            scorebook.home_coach.roster = roster
-            scorebook.save()
-            return HttpResponseRedirect('/edit-scorebook/')
+        elif "homeImportLineupModal" in str(request.POST):
+            form = ScorebookImportLineup(request.POST)
+            if form.is_valid():
+                lineup = form.cleaned_data["lineup"]
+                # Add players from the lineup to the roster.
+                roster = Roster()
+                roster.save()
+
+                lineup.attacker_1.team = roster
+                lineup.attacker_1.save()
+                lineup.attacker_2.team = roster
+                lineup.attacker_2.save()
+                lineup.attacker_3.team = roster
+                lineup.attacker_3.save()
+
+                lineup.midfielder_1.team = roster
+                lineup.midfielder_1.save()
+                lineup.midfielder_2.team = roster
+                lineup.midfielder_2.save()
+                lineup.midfielder_3.team = roster
+                lineup.midfielder_3.save()
+
+                lineup.defender_1.team = roster
+                lineup.defender_1.save()
+                lineup.defender_2.team = roster
+                lineup.defender_2.save()
+                lineup.defender_3.team = roster
+                lineup.defender_3.save()
+
+                lineup.goalie.team = roster
+                lineup.goalie.save()
+
+                # Overwrite the current roster with this new roster.
+                scorebook.home_coach.roster = roster
+                return HttpResponseRedirect('/edit-scorebook/')
 
         elif "visitingAddPlayerModal" in str(request.POST):
             form = ScorebookPlayerForm(request.POST)
@@ -221,13 +250,42 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        # User selected a roster for the home team.
-        elif "visitingImportRosterModal" in str(request.POST):
-            roster_id = request.POST.get("roster")
-            roster = Roster.objects.filter(id=roster_id)[0]
-            scorebook.visiting_coach.roster = roster
-            scorebook.save()
-            return HttpResponseRedirect('/edit-scorebook/')
+        # User selected a lineup for the visiting team.
+        elif "visitingImportLineupModal" in str(request.POST):
+            form = ScorebookImportLineup(request.POST)
+            if form.is_valid():
+                lineup = form.cleaned_data["lineup"]
+                # Add players from the lineup to the roster.
+                roster = Roster()
+                roster.save()
+
+                lineup.attacker_1.team = roster
+                lineup.attacker_1.save()
+                lineup.attacker_2.team = roster
+                lineup.attacker_2.save()
+                lineup.attacker_3.team = roster
+                lineup.attacker_3.save()
+
+                lineup.midfielder_1.team = roster
+                lineup.midfielder_1.save()
+                lineup.midfielder_2.team = roster
+                lineup.midfielder_2.save()
+                lineup.midfielder_3.team = roster
+                lineup.midfielder_3.save()
+
+                lineup.defender_1.team = roster
+                lineup.defender_1.save()
+                lineup.defender_2.team = roster
+                lineup.defender_2.save()
+                lineup.defender_3.team = roster
+                lineup.defender_3.save()
+
+                lineup.goalie.team = roster
+                lineup.goalie.save()
+
+                # Overwrite the current roster with this new roster.
+                scorebook.visiting_coach.roster = roster
+                return HttpResponseRedirect('/edit-scorebook/')
 
         # User selected to clear the roster.
         elif "clearScorebookModal" in str(request.POST):
@@ -237,16 +295,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 scorebook_context.pop("scorebook")
                 return HttpResponseRedirect('/create-scorebook/')
 
-    # Handle all data modification if a GET request is sent via Ajax.
-    elif request.method == "GET":
-        # What is the model's ID?
-        id = request.GET.get('id', '')
-        # Does the user want to 'edit' or 'delete' the model?
-        type = request.GET.get('type', '')
-        # Which model does the user want to modify?
-        model = request.GET.get('model', '')
-
-        print(id, type, model)
+        print(str(request.POST))
 
     scorebook_context["scorebook"] = scorebook
     return render(request, "scorebook.html", scorebook_context)
@@ -317,7 +366,7 @@ def scorebook_edit_technical_foul(request: HttpRequest,
 
     if penalty is not None:
         if request.method == "POST":
-            form = ScorebookTechnicalFoulFormForm(request.POST)
+            form = ScorebookTechnicalFoulForm(request.POST)
             if form.is_valid():
                 penalty.player_number = form.cleaned_data.get("player_number")
                 penalty.infraction = form.cleaned_data.get("infraction")
@@ -325,7 +374,7 @@ def scorebook_edit_technical_foul(request: HttpRequest,
                 penalty.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = ScorebookTechnicalFoulFormForm(initial=initial)
+        form = ScorebookTechnicalFoulForm(initial=initial)
         return render(request, "edit_technical_foul.html",
                       {"form": form, "id": penalty.id})
     else:
@@ -392,8 +441,10 @@ def scorebook_delete_score(request: HttpRequest, score_id: int) -> HttpResponse:
     else:
         return HttpResponse("Score Not Found")
 
+
 @login_required
-def scorebook_delete_penalty(request: HttpRequest, penalty_id: int) -> HttpResponse:
+def scorebook_delete_penalty(request: HttpRequest,
+                             penalty_id: int) -> HttpResponse:
     penalty = Penalty.objects.filter(id=penalty_id)[0]
     if penalty is not None:
         penalty.delete()
@@ -401,8 +452,10 @@ def scorebook_delete_penalty(request: HttpRequest, penalty_id: int) -> HttpRespo
     else:
         return HttpResponse("Penalty Not Found")
 
+
 @login_required
-def scorebook_delete_timeout(request: HttpRequest, timeout_id: int) -> HttpResponse:
+def scorebook_delete_timeout(request: HttpRequest,
+                             timeout_id: int) -> HttpResponse:
     timeout = Timeout.objects.filter(id=timeout_id)[0]
     if timeout is not None:
         timeout.delete()
@@ -410,8 +463,10 @@ def scorebook_delete_timeout(request: HttpRequest, timeout_id: int) -> HttpRespo
     else:
         return HttpResponse("Timeout Not Found")
 
+
 @login_required
-def scorebook_delete_player(request: HttpRequest, player_id: int) -> HttpResponse:
+def scorebook_delete_player(request: HttpRequest,
+                            player_id: int) -> HttpResponse:
     player = Player.objects.filter(id=player_id)[0]
     if player is not None:
         player.delete()
@@ -422,12 +477,9 @@ def scorebook_delete_player(request: HttpRequest, player_id: int) -> HttpRespons
 
 @login_required
 def view_roster(request: HttpRequest) -> HttpResponse:
-    # NOTE: Temporarily commented out (as well as contents of roster.html).
-    # players = Player.objects.all()
-    # return render(request, "roster.html", {"players": players})
+    # If an error is thrown, set this flag to True.
+    is_error = False
 
-    # TODO: Add players to the current coach's roster (not a temp one).
-    # TODO: Coach needs to create a roster first.
     # Since usernames are unique, find the coach's data from the QuerySet.
     coach = Coach.objects.filter(user=request.user)[0]
     # If the Coach is a new account with no established Roster, have them fill out some info first.
@@ -444,10 +496,12 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                 coach.roster = roster
                 coach.save()
                 return render(request, "roster.html",
-                              {"form": PlayerEntryForm(), "has_roster": True,
+                              {"player_entry_form": PlayerEntryForm(),
+                               "starting_lineup_form": starting_lineup_form_factory(
+                                   request),
+                               "has_roster": True,
                                "roster": roster})
 
-        print("test")
         return render(request, "roster.html",
                       {"form": RosterEntryForm(), "has_roster": False})
 
@@ -471,16 +525,49 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                     team=coach.roster,
                 )
                 player.save()
-                print(player)
 
                 # Redirect to the root roster page so that the GET request isn't sent again upon refreshing the page.
                 return HttpResponseRedirect("/roster/")
 
-        form = PlayerEntryForm()
+        elif request.method == "POST":
+            form = starting_lineup_form_factory(request)
+            if form.is_valid():
+                is_error = False
+                starting_lineup = StartingLineup(
+                    school=coach.roster.school,
+                    team_name=coach.roster.team_name,
+                    coach_first_name=coach.first_name,
+                    coach_last_name=coach.last_name,
+                    attacker_1=form.cleaned_data["attackmen"][0],
+                    attacker_2=form.cleaned_data["attackmen"][1],
+                    attacker_3=form.cleaned_data["attackmen"][2],
+                    midfielder_1=form.cleaned_data["midfielders"][0],
+                    midfielder_2=form.cleaned_data["midfielders"][1],
+                    midfielder_3=form.cleaned_data["midfielders"][2],
+                    defender_1=form.cleaned_data["defensemen"][0],
+                    defender_2=form.cleaned_data["defensemen"][1],
+                    defender_3=form.cleaned_data["defensemen"][2],
+                    goalie=form.cleaned_data["goalie"],
+                )
+                starting_lineup.save()
+                coach.starting_lineup = starting_lineup
+                coach.save()
+
+                return HttpResponseRedirect("/roster/")
+            else:
+                is_error = True
+
+        player_entry_form = PlayerEntryForm()
+        starting_lineup_form = starting_lineup_form_factory(request)
         players = coach.roster.player_set.all()
         return render(request, "roster.html",
-                      {"form": form, "has_roster": True, "players": players,
-                       "roster": coach.roster})
+                      {"player_entry_form": player_entry_form,
+                       "starting_lineup_form": starting_lineup_form,
+                       "has_roster": True,
+                       "players": players,
+                       "roster": coach.roster,
+                       "starting_lineup": coach.starting_lineup,
+                       "is_error": is_error,})
 
 
 @login_required
