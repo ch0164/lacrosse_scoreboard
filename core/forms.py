@@ -24,24 +24,21 @@ class RosterEntryForm(forms.Form):
 
 
 # Define Scorebook modal forms below.
-class CreateScorebook(forms.Form):
+class CreateScorebookForm(forms.Form):
     pass
     # time_created = forms.TimeField()
 
 
 
-class ScorebookAddScore(forms.Form):
+class ScorebookScoreForm(forms.Form):
     # time = forms.TimeField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
     goal_jersey = forms.IntegerField(min_value=0)
     assist_jersey = forms.IntegerField(min_value=0)
 
-    def __str__(self):
-        return "This is a test"
-
 
 # Abstract Penalty Form.
-class ScorebookPenalty(forms.Form):
+class ScorebookPenaltyForm(forms.Form):
     player_number = forms.IntegerField(min_value=0)
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
     # time = forms.TimeField()
@@ -49,16 +46,16 @@ class ScorebookPenalty(forms.Form):
 
 
 # Personal Foul Penalty Form.
-class ScorebookPersonalFoul(ScorebookPenalty):
+class ScorebookPersonalFoulForm(ScorebookPenaltyForm):
     infraction = forms.CharField(widget=forms.Select(choices=PERSONAL_FOULS))
 
 
 # Technical Foul Penalty Form
-class ScorebookTechnicalFoul(ScorebookPenalty):
+class ScorebookTechnicalFoulFormForm(ScorebookPenaltyForm):
     infraction = forms.CharField(widget=forms.Select(choices=TECHNICAL_FOULS))
 
 
-class ScorebookTimeout(forms.Form):
+class ScorebookTimeoutForm(forms.Form):
     # time = forms.TimeField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
 
@@ -69,7 +66,7 @@ class ScorebookTimeout(forms.Form):
     #penalties = forms.CharField(widget=forms.Select(choices=Penalties_Away))
 
 
-class ScorebookAddPlayer(forms.Form):
+class ScorebookPlayerForm(forms.Form):
     player_number = forms.IntegerField(min_value=0)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
