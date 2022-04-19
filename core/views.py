@@ -29,6 +29,22 @@ def login(request: HttpRequest) -> HttpResponse:
     return render(request, "login.html")
 
 
+def get_top_three(roster):
+    if len(list(roster.player_set.all())) >= 3:
+
+        players = list(roster.player_set.all())
+
+        def player_average(player) -> float:
+            return player.statistics.goals + 0.5 * player.statistics.assists
+
+        # Sort players by descending player average.
+        players.sort(reverse=True, key=player_average)
+        return players[0:3]
+
+    else:
+        return None
+
+
 # Registration view is defined in user_registration/views.py.
 
 def view_scorebook(request: HttpRequest) -> HttpResponse:
@@ -375,11 +391,11 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         print(str(request.POST))
 
-    # TODO: Get these from the function sent earlier.
-    # Note: Need to ensure these rosters have at least three players
-    home_top_three = None
-    visiting_top_three = None
-    
+    home_top_three = get_top_three(scorebook.home_coach.roster)
+    print(scorebook.home_coach.roster.player_set.all())
+    print(home_top_three)
+    visiting_top_three = get_top_three(scorebook.visiting_coach.roster)
+
     scorebook_context["scorebook"] = scorebook
     scorebook_context["home_top_three"] = home_top_three
     scorebook_context["visiting_top_three"] = visiting_top_three
@@ -410,6 +426,7 @@ def update_stats(request: HttpRequest) -> HttpResponse:
     print(player.statistics)
 
     return HttpResponseRedirect('/edit-scorebook/')
+
 
 @login_required
 def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
@@ -677,7 +694,7 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                        "players": players,
                        "roster": coach.roster,
                        "starting_lineup": coach.starting_lineup,
-                       "is_error": is_error,})
+                       "is_error": is_error, })
 
 
 @login_required
