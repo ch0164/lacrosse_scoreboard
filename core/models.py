@@ -51,6 +51,7 @@ class PlayerSaves(models.Model):
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
+    profile_image = models.ImageField(upload_to="profile_pictures/", default="media/default.jpg")
     player_number = models.PositiveIntegerField("Player Number", default=0)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
@@ -62,7 +63,7 @@ class Player(models.Model):
     weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0)
     height_feet = models.PositiveIntegerField("Height (feet)", default=0)
     height_inches = models.PositiveIntegerField("Height (inches)", default=0)
-    major = models.CharField("Major", max_length=100, default="")
+    major = models.CharField("Major", max_length=100, default="", blank=True)
     hometown = models.CharField("Hometown", max_length=100, default="")
     # Relationships
     team = models.ForeignKey(Roster,

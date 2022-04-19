@@ -1,5 +1,7 @@
 from django.urls import path
 import core.views as views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     # View scorebook views below.
@@ -37,4 +39,4 @@ urlpatterns = [
     path('delete-player/<int:player_id>', views.delete_player,
          name="delete_player"),
     path('roster/', views.view_roster),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -611,10 +611,11 @@ def view_roster(request: HttpRequest) -> HttpResponse:
     # Otherwise, the Coach has established a Roster, so display it.
     else:
         # When the coach enters the player data, handle it here.
-        if request.method == "GET":
-            form = PlayerEntryForm(request.GET)
+        if request.method == "POST":
+            form = PlayerEntryForm(request.POST, request.FILES)
             if form.is_valid():
                 player = Player(
+                    profile_image=form.cleaned_data["profile_image"],
                     player_number=form.cleaned_data.get("player_number"),
                     first_name=form.cleaned_data.get("first_name"),
                     last_name=form.cleaned_data.get("last_name"),
@@ -628,11 +629,12 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                     team=coach.roster,
                 )
                 player.save()
+                print("Player profile pic: ", form.cleaned_data["profile_image"])
 
                 # Redirect to the root roster page so that the GET request isn't sent again upon refreshing the page.
                 return HttpResponseRedirect("/roster/")
 
-        elif request.method == "POST":
+        elif request.method == "GET":
             form = starting_lineup_form_factory(request)
             if form.is_valid():
                 is_error = False
@@ -678,6 +680,7 @@ def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
     player = Player.objects.get(id=player_id)
     print(player)
     initial = {
+        "profile_image": player.profile_image,
         "player_number": player.player_number,
         "first_name": player.first_name,
         "last_name": player.last_name,
@@ -692,8 +695,15 @@ def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
 
     if player is not None:
         if request.method == "POST":
-            form = PlayerEntryForm(request.POST)
+            form = PlayerEntryForm(request.POST, request.FILES)
             if form.is_valid():
+                if form.cleaned_data["profile_image"] is not None:
+                    player.profile_image = form.cleaned_data["profile_image"]
+                elif player.profile_image is not None:
+                    pass
+                else:
+                    player.profile_image = "default.jpg"
+
                 player.player_number = form.cleaned_data.get("player_number")
                 player.first_name = form.cleaned_data.get("first_name")
                 player.last_name = form.cleaned_data.get("last_name")
