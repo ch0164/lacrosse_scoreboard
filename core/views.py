@@ -703,7 +703,7 @@ def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
                     pass
                 else:
                     player.profile_image = "default.jpg"
-                    
+
                 player.player_number = form.cleaned_data.get("player_number")
                 player.first_name = form.cleaned_data.get("first_name")
                 player.last_name = form.cleaned_data.get("last_name")
