@@ -3,6 +3,17 @@
 
 {% block title %}Roster{% endblock %}
 
+{% block custom_css %}
+    <style>
+        div.rosterScroll {
+            height: 800px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="custom-block col-md-12 col-sm-12">
@@ -17,7 +28,7 @@
                             {#                            <span class="close">&times;</span>#}
                             <h1>Establish New Roster</h1>
                         </div>
-                        <form action="" method="GET">
+                        <form action="" method="GET" enctype="multipart/form-data">
                             {{ form|crispy }}
                             <input class="btn btn-primary btn-lg" type="submit" value="Create">
                             <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
@@ -31,114 +42,121 @@
                     <p><b>Team Name</b>: {{ roster.team_name }}</p>
                     <div class="col-lg-8">
                         <h1 class="bg_black">Players</h1>
-                        <table class="table table-bordered table-light table-striped">
-                            <tr>
-                                <th>Player #</th>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Class</th>
-                                <th>Weight (lbs)</th>
-                                <th>Height (ft in)</th>
-                                <th>Major</th>
-                                <th>Hometown</th>
-                                <th>Action</th>
-                            </tr>
-                            {% for player in players %}
+                        <div class="rosterScroll">
+                            <table class="table table-bordered table-light table-striped">
                                 <tr>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="player_number">{{ player.player_number }}</td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="position">{{ player.position }}</td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="class_standing">{{ player.class_standing }}</td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="weight_pounds">{{ player.weight_pounds }}</td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
-                                    </td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="major">{{ player.major }}</td>
-                                    <td class="editable" data-id="{{ player.id }}"
-                                        data-type="hometown">{{ player.hometown }}</td>
-                                    <td>
-                                        <a href="/edit-player/{{ player.id }}" class="btn btn-success btn-sm"><span
-                                                class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="/delete-player/{{ player.id }}" class="btn btn-danger btn-sm"><span
-                                                class="glyphicon glyphicon-trash"></span></a>
-                                    </td>
+                                    <th>Profile</th>
+                                    <th>Player #</th>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Class</th>
+                                    <th>Weight (lbs)</th>
+                                    <th>Height (ft in)</th>
+                                    <th>Major</th>
+                                    <th>Hometown</th>
+                                    <th>Action</th>
                                 </tr>
-                            {% endfor %}
-                        </table>
+                                {% for player in players %}
+                                    <tr>
+                                        <td><img src="{{ MEDIA_URL }}{{ player.profile_image }}"
+                                                 style="width:200px;height:250px"></td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="player_number">{{ player.player_number }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="position">{{ player.position }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="class_standing">{{ player.class_standing }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="weight_pounds">{{ player.weight_pounds }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
+                                        </td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="major">{{ player.major }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="hometown">{{ player.hometown }}</td>
+                                        <td>
+                                            <a href="/edit-player/{{ player.id }}" class="btn btn-success btn-sm"><span
+                                                    class="glyphicon glyphicon-pencil"></span></a>
+                                            <a href="/delete-player/{{ player.id }}" class="btn btn-danger btn-sm"><span
+                                                    class="glyphicon glyphicon-trash"></span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                         <button class="btn btn-primary btn-lg" id="buttonElement">Add Player</button>
                     </div>
 
                     <div class="col-lg-4">
                         <h1 class="bg_black">Starting Lineup</h1>
-                        <table class="table table-bordered table-light table-striped">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Player #</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% if starting_lineup != None %}
-                            <tr>
-                                <td>{{ starting_lineup.attacker_1.last_name }}, {{ starting_lineup.attacker_1.first_name }}</td>
-                                <td>{{ starting_lineup.attacker_1.position }}</td>
-                                <td>{{ starting_lineup.attacker_1.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.attacker_2.last_name }}, {{ starting_lineup.attacker_2.first_name }}</td>
-                                <td>{{ starting_lineup.attacker_2.position }}</td>
-                                <td>{{ starting_lineup.attacker_2.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.attacker_3.last_name }}, {{ starting_lineup.attacker_3.first_name }}</td>
-                                <td>{{ starting_lineup.attacker_3.position }}</td>
-                                <td>{{ starting_lineup.attacker_3.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.midfielder_1.last_name }}, {{ starting_lineup.midfielder_1.first_name }}</td>
-                                <td>{{ starting_lineup.midfielder_1.position }}</td>
-                                <td>{{ starting_lineup.midfielder_1.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.midfielder_2.last_name }}, {{ starting_lineup.midfielder_2.first_name }}</td>
-                                <td>{{ starting_lineup.midfielder_2.position }}</td>
-                                <td>{{ starting_lineup.midfielder_2.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.midfielder_3.last_name }}, {{ starting_lineup.midfielder_3.first_name }}</td>
-                                <td>{{ starting_lineup.midfielder_3.position }}</td>
-                                <td>{{ starting_lineup.midfielder_3.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.defender_1.last_name }}, {{ starting_lineup.defender_1.first_name }}</td>
-                                <td>{{ starting_lineup.defender_1.position }}</td>
-                                <td>{{ starting_lineup.defender_1.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.defender_2.last_name }}, {{ starting_lineup.defender_2.first_name }}</td>
-                                <td>{{ starting_lineup.defender_2.position }}</td>
-                                <td>{{ starting_lineup.defender_2.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.defender_3.last_name }}, {{ starting_lineup.defender_3.first_name }}</td>
-                                <td>{{ starting_lineup.defender_3.position }}</td>
-                                <td>{{ starting_lineup.defender_3.player_number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ starting_lineup.goalie.last_name }}, {{ starting_lineup.goalie.first_name }}</td>
-                                <td>{{ starting_lineup.goalie.position }}</td>
-                                <td>{{ starting_lineup.goalie.player_number }}</td>
-                            </tr>
-                            {% endif %}
-                            </tbody>
-                        </table>
+                        <div class="rosterScroll">
+                            <table class="table table-bordered table-light table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Player #</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if starting_lineup != None %}
+                                    <tr>
+                                        <td>{{ starting_lineup.attacker_1.last_name }}, {{ starting_lineup.attacker_1.first_name }}</td>
+                                        <td>{{ starting_lineup.attacker_1.position }}</td>
+                                        <td>{{ starting_lineup.attacker_1.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.attacker_2.last_name }}, {{ starting_lineup.attacker_2.first_name }}</td>
+                                        <td>{{ starting_lineup.attacker_2.position }}</td>
+                                        <td>{{ starting_lineup.attacker_2.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.attacker_3.last_name }}, {{ starting_lineup.attacker_3.first_name }}</td>
+                                        <td>{{ starting_lineup.attacker_3.position }}</td>
+                                        <td>{{ starting_lineup.attacker_3.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.midfielder_1.last_name }}, {{ starting_lineup.midfielder_1.first_name }}</td>
+                                        <td>{{ starting_lineup.midfielder_1.position }}</td>
+                                        <td>{{ starting_lineup.midfielder_1.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.midfielder_2.last_name }}, {{ starting_lineup.midfielder_2.first_name }}</td>
+                                        <td>{{ starting_lineup.midfielder_2.position }}</td>
+                                        <td>{{ starting_lineup.midfielder_2.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.midfielder_3.last_name }}, {{ starting_lineup.midfielder_3.first_name }}</td>
+                                        <td>{{ starting_lineup.midfielder_3.position }}</td>
+                                        <td>{{ starting_lineup.midfielder_3.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.defender_1.last_name }}, {{ starting_lineup.defender_1.first_name }}</td>
+                                        <td>{{ starting_lineup.defender_1.position }}</td>
+                                        <td>{{ starting_lineup.defender_1.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.defender_2.last_name }}, {{ starting_lineup.defender_2.first_name }}</td>
+                                        <td>{{ starting_lineup.defender_2.position }}</td>
+                                        <td>{{ starting_lineup.defender_2.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.defender_3.last_name }}, {{ starting_lineup.defender_3.first_name }}</td>
+                                        <td>{{ starting_lineup.defender_3.position }}</td>
+                                        <td>{{ starting_lineup.defender_3.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.goalie.last_name }}, {{ starting_lineup.goalie.first_name }}</td>
+                                        <td>{{ starting_lineup.goalie.position }}</td>
+                                        <td>{{ starting_lineup.goalie.player_number }}</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
                         {% if is_error %}
                             <p style="color: red; font-size: 20px;">
                                 Could not edit starting lineup: invalid amount of players selected.

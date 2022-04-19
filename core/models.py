@@ -51,6 +51,7 @@ class PlayerSaves(models.Model):
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
+    profile_image = models.ImageField(upload_to="profile_pictures/", default="media/default.jpg")
     player_number = models.PositiveIntegerField("Player Number", default=0)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
