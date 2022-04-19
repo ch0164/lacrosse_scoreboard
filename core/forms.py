@@ -25,7 +25,13 @@ class RosterEntryForm(forms.Form):
 
 # Define Scorebook modal forms below.
 class CreateScorebookForm(forms.Form):
-    pass
+    home_school = forms.CharField(max_length=100)
+    home_team_name = forms.CharField(max_length=50)
+    home_coach = forms.CharField(max_length=50)
+    visitor_school = forms.CharField(max_length=100)
+    visitor_team_name = forms.CharField(max_length=50)
+    visiting_coach = forms.CharField(max_length=50)
+#school name, team name, coach name of both teams
     # time_created = forms.TimeField()
 
 

@@ -21,7 +21,7 @@ scorebook = None
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    return render(request, "home.html", {"scorebooks": Scorebook.objects.all()})
+    return render(request, "home.html", {"scorebooks": Scorebook.objects.filter(is_published = True)})
 
 
 def login(request: HttpRequest) -> HttpResponse:
@@ -70,7 +70,11 @@ def create_scorebook(request: HttpRequest) -> HttpResponse:
                                   visiting_coach=visiting_coach,
                                   running_score=running_score,
                                   timeouts=timeouts,
-                                  penalties=penalties)
+                                  penalties=penalties,
+                                  #home_coach.first_name=form.cleaned_data["home_coach_first_name"],
+                                  #home_coach.roster.team_name=form.cleaned_data["home_roster_team_name"],
+                                  #home_school=form.cleaned_data["home_school"],
+                                  )
             scorebook.save()
 
             # Save scorebook to context.
