@@ -77,7 +77,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650305220837</updated>
-      <workItem from="1650305222397" duration="27822000" />
+      <workItem from="1650305222397" duration="28994000" />
     </task>
     <task id="LOCAL-00001" summary="Created half-time function with two tables for home and away teams. Styling needs work">
       <created>1650315025364</created>
@@ -100,7 +100,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650340579965</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fixed player # not showing and styling, and moved cancel button">
+      <created>1650343130720</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1650343130720</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -121,6 +128,7 @@
     <MESSAGE value="Created half-time function with two tables for home and away teams. Styling needs work" />
     <MESSAGE value="Fixed some styling with the tables. Styling still needs work" />
     <MESSAGE value="Got halftime modal to display with player statistics. Fixed some formatting and added exit button" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got halftime modal to display with player statistics. Fixed some formatting and added exit button" />
+    <MESSAGE value="Fixed player # not showing and styling, and moved cancel button" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed player # not showing and styling, and moved cancel button" />
   </component>
 </project>

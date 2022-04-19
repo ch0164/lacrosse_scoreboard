@@ -977,6 +977,9 @@
         /* Define Halftime Button. */
         let halftimeButton = document.getElementById("halftimeButton");
 
+        /* Define Timer Button. */
+        let timerButton = document.getElementById("stopTimerButton");
+
         /* Assign event handlers to all main view buttons to open corresponding modal. */
         let modalButtons = [
             publishScorebookButton, clearScorebookButton,
@@ -1064,25 +1067,11 @@
             }, 1000);
         }
 
-        //onload - object has been loaded or created
-        window.onload = function () {
-            let sixtyMinutes;
-            sec = parseInt(window.localStorage.getItem("seconds"))
-            min = parseInt(window.localStorage.getItem("minutes"))
 
-            if (parseInt(min * sec)) {
-                sixtyMinutes = (parseInt(min * 60) + sec);
-            } else {
-                sixtyMinutes = 60 * 60;
-            }
-            //var sixtyMinutes = 60 * 60;
-            display = document.querySelector('#countdown');
-            startTimer(sixtyMinutes, display);
-        };
 
 
         //EASY TIMER
-        /*       const startingTime = 0;
+               const startingTime = 0;
                let time = startingTime * 60;
                const countdownEl = document.getElementById('countdown');
 
@@ -1094,8 +1083,14 @@
                    seconds = seconds < 10 ? '0' + seconds:seconds;
 
                    countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
+                   if ()
+                   var currentTime = countdownEl.innerHTML
                    time++;
+
+                   timerButton.addEventListener("click", function () {
+                    countdownEl.innerHTML = currentTime;
+                })
        }
-       */
+
     </script>
 {% endblock %}
