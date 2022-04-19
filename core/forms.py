@@ -5,6 +5,7 @@ from core.models import Coach, Roster, StartingLineup
 
 
 class PlayerEntryForm(forms.Form):
+    profile_image = forms.ImageField(required=False, )
     player_number = forms.IntegerField(min_value=0)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
@@ -79,8 +80,8 @@ def starting_lineup_form_factory(request):
                     "You must select exactly three defensemen."))
             return defensemen
 
-    if request.method == "POST":
-        form = StartingLineupForm(request.POST)
+    if request.method == "GET":
+        form = StartingLineupForm(request.GET)
     else:
         form = StartingLineupForm()
 
