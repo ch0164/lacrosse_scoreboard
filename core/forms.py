@@ -80,8 +80,8 @@ def starting_lineup_form_factory(request):
                     "You must select exactly three defensemen."))
             return defensemen
 
-    if request.method == "POST":
-        form = StartingLineupForm(request.POST)
+    if request.method == "GET":
+        form = StartingLineupForm(request.GET)
     else:
         form = StartingLineupForm()
 

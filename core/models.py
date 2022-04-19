@@ -63,7 +63,7 @@ class Player(models.Model):
     weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0)
     height_feet = models.PositiveIntegerField("Height (feet)", default=0)
     height_inches = models.PositiveIntegerField("Height (inches)", default=0)
-    major = models.CharField("Major", max_length=100, default="")
+    major = models.CharField("Major", max_length=100, default="", blank=True)
     hometown = models.CharField("Hometown", max_length=100, default="")
     # Relationships
     team = models.ForeignKey(Roster,

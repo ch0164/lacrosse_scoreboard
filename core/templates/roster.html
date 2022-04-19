@@ -174,7 +174,8 @@
                         <div class="modal-header">
                             <h2 style="text-align: center;">Add Player</h2>
                         </div>
-                        <form action="" method="GET">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
                             {{ player_entry_form|crispy }}
                             <input class="btn btn-primary btn-lg" type="submit" id="" value="Add">
                             <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
@@ -187,8 +188,7 @@
                         <div class="modal-header">
                             <h2 style="text-align: center;">Starting Lineup</h2>
                         </div>
-                        <form action="" method="POST">
-                            {% csrf_token %}
+                        <form action="" method="GET">
                             {{ starting_lineup_form|crispy }}
                             <input class="btn btn-primary btn-lg" type="submit" id="" value="Edit">
                             <input class="btn btn-danger btn-lg" onclick="cancelStartingLineup()" type="button" id=""
