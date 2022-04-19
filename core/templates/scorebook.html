@@ -856,12 +856,15 @@
     <div id="halftimeModal" class="modal">
         <div class="modal-content">
         <div class="container-fluid">
+        <div class="row">
+                {#        <div class="modal-content">#}
+                <div class="col-md-12">
+                    <h1 class="bg_black"><b>Game Statistics</b></h1>
+
             <div class="row">
                 {#        <div class="modal-content">#}
-
                 <div class="col-md-6">
                     <h1 class="bg_black"><b>Home Stats</b></h1>
-                    <h2 class="bg_black"><b>Top Home Players</b></h2>
                     <table class="table table-light table-striped table-bordered">
                         <thead>
                         <tr>
@@ -880,7 +883,7 @@
 
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ player.last_name }}, {{ player.first_name }}</td>
-                                    <td>{{ player.number }}</td>
+                                    <td>{{ player.player_number }}</td>
                                     <td>{{ player.position }}</td>
                                     <td>{{ player.statistics.goals }}</td>
                                     <td>{{ player.statistics.assists }}</td>
@@ -890,9 +893,9 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="col-md-6">
-                    <h1 class="bg_black"><b>Away Stats</b></h1>
-                    <h2 class="bg_black"><b>Top Away Players</b></h2>
+                    <h1 class="bg_black"><b>Visiting Stats</b></h1>
                      <table class="table table-light table-striped table-bordered">
                         <thead>
                         <tr>
@@ -910,7 +913,7 @@
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ player.last_name }}, {{ player.first_name }}</td>
-                                    <td>{{ player.number }}</td>
+                                    <td>{{ player.player_number }}</td>
                                     <td>{{ player.position }}</td>
                                     <td>{{ player.statistics.goals }}</td>
                                     <td>{{ player.statistics.assists }}</td>
@@ -919,9 +922,9 @@
                         {% endif %}
                         </tbody>
                     </table>
-                            <input class="btn btn-danger btn-lg" type="button" name="halftimeModalCancel" value="Cancel">
                 </div>
             </div>
+        <input class="btn btn-danger btn-lg" type="button" name="halftimeModalCancel" value="Cancel">
         </div>
         </div>
     </div>

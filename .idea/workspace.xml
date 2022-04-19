@@ -4,7 +4,6 @@
     <list default="true" id="3f53a422-6eb7-4f4f-8252-f2f1af6dd0a3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +77,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650305220837</updated>
-      <workItem from="1650305222397" duration="25281000" />
+      <workItem from="1650305222397" duration="27822000" />
     </task>
     <task id="LOCAL-00001" summary="Created half-time function with two tables for home and away teams. Styling needs work">
       <created>1650315025364</created>
@@ -94,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650317198222</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Got halftime modal to display with player statistics. Fixed some formatting and added exit button">
+      <created>1650340579965</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1650340579965</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,6 +120,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Created half-time function with two tables for home and away teams. Styling needs work" />
     <MESSAGE value="Fixed some styling with the tables. Styling still needs work" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed some styling with the tables. Styling still needs work" />
+    <MESSAGE value="Got halftime modal to display with player statistics. Fixed some formatting and added exit button" />
+    <option name="LAST_COMMIT_MESSAGE" value="Got halftime modal to display with player statistics. Fixed some formatting and added exit button" />
   </component>
 </project>
