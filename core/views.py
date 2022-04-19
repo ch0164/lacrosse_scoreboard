@@ -22,7 +22,8 @@ scorebook = None
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    return render(request, "home.html", {"scorebooks": Scorebook.objects.all()})
+    return render(request, "home.html",
+                  {"scorebooks": Scorebook.objects.filter(is_published=True)})
 
 
 def login(request: HttpRequest) -> HttpResponse:
@@ -31,8 +32,16 @@ def login(request: HttpRequest) -> HttpResponse:
 
 # Registration view is defined in user_registration/views.py.
 
-def view_scorebook(request: HttpRequest) -> HttpResponse:
-    return render(request, "published_scorebook.html")
+def view_scorebook(request: HttpRequest, scorebook_id: int) -> HttpResponse:
+    scorebook = Scorebook.objects.filter(id=scorebook_id)[0]
+    if scorebook is not None:
+        print(scorebook.home_coach)
+        print(scorebook.visiting_coach)
+        print(scorebook.home_coach.roster)
+        print(scorebook.home_coach.roster.player_set.all())
+        return render(request, "view_scorebook.html", {"scorebook": scorebook})
+    else:
+        return HttpResponse("Scorebook does not exist!")
 
 
 @login_required
@@ -43,9 +52,12 @@ def create_scorebook(request: HttpRequest) -> HttpResponse:
         form = CreateScorebookForm(request.POST)
         if form.is_valid():
             # Create rosters.
-            home_roster = Roster()
+            home_roster = Roster(school=form.cleaned_data["home_school"],
+                                 team_name=form.cleaned_data["home_team_name"])
             home_roster.save()
-            visiting_roster = Roster()
+            visiting_roster = Roster(
+                school=form.cleaned_data["visiting_school"],
+                team_name=form.cleaned_data["visiting_team_name"])
             visiting_roster.save()
 
             # Create coaches.
@@ -219,8 +231,12 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             if form.is_valid():
                 lineup = form.cleaned_data["lineup"]
                 # Add players from the lineup to the roster.
-                roster = Roster()
-                roster.save()
+                # Check if empty.
+                if not scorebook.home_coach.roster:
+                    roster = Roster()
+                    roster.save()
+                else:
+                    roster = scorebook.home_coach.roster
 
                 lineup.attacker_1.team = roster
                 lineup.attacker_1.statistics = PlayerStatistics()
@@ -276,6 +292,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
                 # Overwrite the current roster with this new roster.
                 scorebook.home_coach.roster = roster
+                scorebook.home_coach.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
         elif "visitingAddPlayerModal" in str(request.POST):
@@ -306,8 +323,12 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             if form.is_valid():
                 lineup = form.cleaned_data["lineup"]
                 # Add players from the lineup to the roster.
-                roster = Roster()
-                roster.save()
+                # Check if empty.
+                if not scorebook.visiting_coach.roster:
+                    roster = Roster()
+                    roster.save()
+                else:
+                    roster = scorebook.visiting_coach.roster
 
                 lineup.attacker_1.team = roster
                 lineup.attacker_1.statistics = PlayerStatistics()
@@ -363,7 +384,33 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
                 # Overwrite the current roster with this new roster.
                 scorebook.visiting_coach.roster = roster
+                scorebook.visiting_coach.save()
                 return HttpResponseRedirect('/edit-scorebook/')
+
+        elif "publishScorebookModal" in str(request.POST):
+            if scorebook is not None:
+                home_score_count = len(list(scorebook.running_score.home.all()))
+                visiting_score_count = len(
+                    list(scorebook.running_score.visiting.all()))
+                scorebook.home_score = home_score_count
+                scorebook.visiting_score = visiting_score_count
+
+                scorebook.is_published = True
+                scorebook.home_coach.roster.save()
+                scorebook.visiting_coach.roster.save()
+                for player in scorebook.home_coach.roster.player_set.iterator():
+                    player.team = scorebook.home_coach.roster
+                    player.save()
+                    print(player)
+                for player in scorebook.visiting_coach.roster.player_set.iterator():
+                    player.team = scorebook.visiting_coach.roster
+                    player.save()
+
+                scorebook.save()
+                scorebook = None
+                scorebook_context.pop("scorebook")
+                return HttpResponseRedirect('/')
+
 
         # User selected to clear the roster.
         elif "clearScorebookModal" in str(request.POST):
@@ -403,6 +450,7 @@ def update_stats(request: HttpRequest) -> HttpResponse:
     print(player.statistics)
 
     return HttpResponseRedirect('/edit-scorebook/')
+
 
 @login_required
 def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
@@ -670,7 +718,7 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                        "players": players,
                        "roster": coach.roster,
                        "starting_lineup": coach.starting_lineup,
-                       "is_error": is_error,})
+                       "is_error": is_error, })
 
 
 @login_required

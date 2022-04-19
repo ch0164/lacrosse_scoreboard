@@ -4,8 +4,8 @@ import core.views as views
 urlpatterns = [
     # View scorebook views below.
     path('', views.home),
-    path('published-scorebooks/', views.view_scorebook),
-    path('scorebook/', views.view_scorebook),
+    path('view-scorebook/<int:scorebook_id>', views.view_scorebook,
+         name="view_scorebook"),
 
     # Edit Scorebook views below.
     path('create-scorebook/', views.create_scorebook),
@@ -29,7 +29,8 @@ urlpatterns = [
          name="delete_penalty"),
     path('delete-timeout/<int:timeout_id>', views.scorebook_delete_timeout,
          name="delete_timeout"),
-    path('delete-scorebook-player/<int:player_id>', views.scorebook_delete_player,
+    path('delete-scorebook-player/<int:player_id>',
+         views.scorebook_delete_player,
          name="delete_scorebook_player"),
 
     # Roster view URLs below.

@@ -1,0 +1,566 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Scorebook{% endblock %}
+
+{% block custom_css %}
+    <style>
+        div.scrollWrapper {
+            height: 200px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+
+        div.rosterScroll {
+            height: 500px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+    </style>
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="bg_black">Game Information</h1>
+                <ul class="list-group" style="font-size: 30px;">
+                    <li class="list-group-item"><b>Home
+                        Team</b>: {{ scorebook.home_coach.roster.school }} {{ scorebook.home_coach.roster.team_name }}
+                    </li>
+                    <li class="list-group-item"><b>Visiting
+                        Team</b>: {{ scorebook.visiting_coach.roster.school }} {{ scorebook.visiting_coach.roster.team_name }}
+                    </li>
+                    <li class="list-group-item"><b>Final Score</b>:
+                        {% if scorebook.home_score > scorebook.visiting_score %}
+                            <span style="color:green;">
+                                        <b>{{ scorebook.home_score }}</b>
+                                    </span>
+                            ---
+                            <span style="color:red;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                        {% elif scorebook.home_score < scorebook.visiting_score %}
+                            <span style="color:red;">
+                                        <b>{{ scorebook.home_score }}</b>
+                                    </span>
+                            ---
+                            <span style="color:green;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                        {% else %}
+                            <span style="color:orange;">
+                                        <b>{{ scorebook.home_score }}</b>
+                                    </span>
+                            ---
+                            <span style="color:orange;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="bg_black">
+                    <b>Home Running Scores</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-striped table-light table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                            <th>Goal #</th>
+                            <th>Assist #</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for score in scorebook.running_score.home.all %}
+                            <tr>
+                                <td>{{ score.time }}</td>
+                                <td>{{ score.quarter }}</td>
+                                <td>{{ score.goal_number }}</td>
+                                <td>{{ score.assist_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h1 class="bg_black">
+                    <b>Visiting Running Scores</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-striped table-light table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                            <th>Goal #</th>
+                            <th>Assist #</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for score in scorebook.running_score.visiting.all %}
+                            <tr>
+                                <td>{{ score.time }}</td>
+                                <td>{{ score.quarter }}</td>
+                                <td>{{ score.goal_number }}</td>
+                                <td>{{ score.assist_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Penalties</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>P/T</th>
+                            <th>#</th>
+                            <th>Infraction</th>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for penalty in scorebook.penalties.home.all %}
+                            <tr>
+                                {% if penalty.personal_foul == True %}
+                                    <td>P</td>
+                                {% else %}
+                                    <td>T</td>
+                                {% endif %}
+                                <td>{{ penalty.player_number }}</td>
+                                <td>{{ penalty.infraction }}</td>
+                                <td>{{ penalty.quarter }}</td>
+                                <td>{{ penalty.time }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Timeouts</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for timeout in scorebook.timeouts.home.all %}
+                            <tr>
+                                <td>{{ timeout.time }}</td>
+                                <td>{{ timeout.quarter }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Penalties</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>P/T</th>
+                            <th>#</th>
+                            <th>Infraction</th>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for penalty in scorebook.penalties.visiting.all %}
+                            <tr>
+                                {% if penalty.personal_foul == True %}
+                                    <td>P</td>
+                                {% else %}
+                                    <td>T</td>
+                                {% endif %}
+                                <td>{{ penalty.player_number }}</td>
+                                <td>{{ penalty.infraction }}</td>
+                                <td>{{ penalty.quarter }}</td>
+                                <td>{{ penalty.time }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Timeouts</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for timeout in scorebook.timeouts.visiting.all %}
+                            <tr>
+                                <td>{{ timeout.time }}</td>
+                                <td>{{ timeout.quarter }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="bg_black">
+                    <b>Home Roster</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Quarters</th>
+                            <th>Shots</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Ground Balls</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            <tr>
+                                <td>{{ player.player_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                <td>
+                                    <span class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                               id="quarterI{{ player.id }}" readonly>
+                                        <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterII{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIII{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIV{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterOT{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
+                                    </span>
+                                </td>
+                                {#                                TODO: Wrap all of these number input fields in a form and add a "Save" button. #}
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="homeShotsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeShotsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeShotsInput')"
+                                           placeholder="0" value="{{ player.statistics.shots }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0" id="homeGoalsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeGoalsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeGoalsInput')"
+                                           placeholder="0" value="{{ player.statistics.goals }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0"
+                                           id="homeAssistsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeAssistsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeAssistsInput')"
+                                           placeholder="0" value="{{ player.statistics.assists }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0"
+                                           id="homeGroundBallsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'homeGroundBallsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'homeGroundBallsInput')"
+                                           placeholder="0" value="{{ player.statistics.ground_balls }}" readonly>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Goalies & Saves</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput1_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput2_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput3_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInput4_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="homeGoalInputOT_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td name="goalTotal"><b>0</b></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="bg_black">
+                    <b>Visiting Roster</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Quarters</th>
+                            <th>Shots</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Ground Balls</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            <tr>
+                                <td>{{ player.player_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                <td>
+                                        <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterI{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                        </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterII{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
+                                        </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIII{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
+                                        </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterIV{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
+                                        </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="quarterOT{{ player.id }}" readonly>
+                                            <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
+                                        </span>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingShotsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingShotsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingShotsInput')"
+                                           placeholder="0" value="{{ player.statistics.shots }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingGoalsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingGoalsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingGoalsInput')"
+                                           placeholder="0" value="{{ player.statistics.goals }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingAssistsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingAssistsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingAssistsInput')"
+                                           placeholder="0" value="{{ player.statistics.assists }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingGroundBallsInput{{ player.id }}"
+                                           onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingGroundBallsInput')"
+                                           onclick="updatePlayerStatistics({{ player.id }}, 'visitingGroundBallsInput')"
+                                           placeholder="0" value="{{ player.statistics.ground_balls }}" readonly>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Goalies & Saves</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput1_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput2_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput3_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInput4_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" min="0" value="0"
+                                               onclick="updateGoalTotals();"
+                                               onkeyup="updateGoalTotals()"
+                                               id="visitingGoalInputOT_{{ player.id }}" placeholder="0" readonly>
+                                    </td>
+                                    <td name="goalTotal"><b>0</b></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+
+        /* Add home goalies' totals. */
+        function updateGoalTotals() {
+            let goalTotals = document.getElementsByName("goalTotal");
+            goalTotals.forEach((total) => {
+                let row = total.parentNode;
+                let quarters = Array.from(row.children).slice(1, -1);
+                let totalGoalsSaved = 0;
+                quarters.forEach((quarter) => {
+                    let goalsSaved = parseInt(quarter.children[0].value);
+                    totalGoalsSaved += goalsSaved;
+                })
+                total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
+            });
+        }
+
+
+    </script>
+{% endblock %}

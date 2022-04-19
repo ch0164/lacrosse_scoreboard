@@ -216,7 +216,7 @@ class Score(models.Model):
     time = models.TimeField(auto_now=True)
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     goal_number = models.PositiveIntegerField("Goal Jersey", default=0)
-    assist_number = models.PositiveIntegerField("Assist Jersey", default=0)
+    assist_number = models.PositiveIntegerField("Assist Jersey", blank=True)
     # Relationships
     home_score = models.ForeignKey(RunningScore,
                                    related_name="home",

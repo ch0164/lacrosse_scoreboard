@@ -14,7 +14,7 @@ class PlayerEntryForm(forms.Form):
     weight_pounds = forms.IntegerField(min_value=0)
     height_feet = forms.IntegerField(min_value=0)
     height_inches = forms.IntegerField(min_value=0)
-    major = forms.CharField(max_length=100)
+    major = forms.CharField(max_length=100, required=False)
     hometown = forms.CharField(max_length=100)
 
 
@@ -89,7 +89,10 @@ def starting_lineup_form_factory(request):
 
 # Define Scorebook modal forms below.
 class CreateScorebookForm(forms.Form):
-    pass
+    home_school = forms.CharField(max_length=100)
+    home_team_name = forms.CharField(max_length=50)
+    visiting_school = forms.CharField(max_length=100)
+    visiting_team_name = forms.CharField(max_length=50)
     # time_created = forms.TimeField()
 
 
@@ -97,7 +100,7 @@ class ScorebookScoreForm(forms.Form):
     # time = forms.TimeField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
     goal_jersey = forms.IntegerField(min_value=0)
-    assist_jersey = forms.IntegerField(min_value=0)
+    assist_jersey = forms.IntegerField(min_value=0, required=False)
 
 
 # Abstract Penalty Form.
