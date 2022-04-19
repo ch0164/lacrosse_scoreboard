@@ -59,12 +59,12 @@ class Player(models.Model):
                                 choices=POSITION_CHOICES, default="ATT")
     class_standing = models.CharField("Class", max_length=2,
                                       choices=CLASS_STANDING_CHOICES,
-                                      default="FR")
-    weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0)
-    height_feet = models.PositiveIntegerField("Height (feet)", default=0)
-    height_inches = models.PositiveIntegerField("Height (inches)", default=0)
-    major = models.CharField("Major", max_length=100, default="", blank=True)
-    hometown = models.CharField("Hometown", max_length=100, default="")
+                                      default="")
+    weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0, blank=True, null=True)
+    height_feet = models.PositiveIntegerField("Height (feet)", default=0, blank=True, null=True)
+    height_inches = models.PositiveIntegerField("Height (inches)", default=0, blank=True, null=True)
+    major = models.CharField("Major", max_length=100, default="", blank=True, null=True)
+    hometown = models.CharField("Hometown", max_length=100, default="", blank=True, null=True)
     # Relationships
     team = models.ForeignKey(Roster,
                              on_delete=models.CASCADE,
@@ -217,7 +217,8 @@ class Score(models.Model):
     time = models.TimeField(auto_now=True)
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     goal_number = models.PositiveIntegerField("Goal Jersey", default=0)
-    assist_number = models.PositiveIntegerField("Assist Jersey", blank=True)
+    assist_number = models.PositiveIntegerField("Assist Jersey", blank=True,
+                                                null=True)
     # Relationships
     home_score = models.ForeignKey(RunningScore,
                                    related_name="home",

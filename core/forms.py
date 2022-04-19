@@ -5,18 +5,18 @@ from core.models import Coach, Roster, StartingLineup
 
 
 class PlayerEntryForm(forms.Form):
-    profile_image = forms.ImageField(required=False, )
+    profile_image = forms.ImageField(required=False)
     player_number = forms.IntegerField(min_value=0)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     position = forms.CharField(widget=forms.Select(choices=POSITION_CHOICES))
     class_standing = forms.CharField(
-        widget=forms.Select(choices=CLASS_STANDING_CHOICES))
-    weight_pounds = forms.IntegerField(min_value=0)
-    height_feet = forms.IntegerField(min_value=0)
-    height_inches = forms.IntegerField(min_value=0)
+        widget=forms.Select(choices=CLASS_STANDING_CHOICES), required=False)
+    weight_pounds = forms.IntegerField(min_value=0, required=False)
+    height_feet = forms.IntegerField(min_value=0, required=False)
+    height_inches = forms.IntegerField(min_value=0, required=False)
     major = forms.CharField(max_length=100, required=False)
-    hometown = forms.CharField(max_length=100)
+    hometown = forms.CharField(max_length=100, required=False)
 
 
 class RosterEntryForm(forms.Form):

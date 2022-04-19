@@ -708,7 +708,8 @@ def view_roster(request: HttpRequest) -> HttpResponse:
 
                 return HttpResponseRedirect("/roster/")
             else:
-                is_error = True
+                # Todo: this is just weird
+                is_error = False
 
         player_entry_form = PlayerEntryForm()
         starting_lineup_form = starting_lineup_form_factory(request)
@@ -720,7 +721,7 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                        "players": players,
                        "roster": coach.roster,
                        "starting_lineup": coach.starting_lineup,
-                       "is_error": is_error, })
+                       "is_error": is_error})
 
 
 @login_required
