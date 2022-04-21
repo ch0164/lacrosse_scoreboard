@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, \
     HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from core.forms import *
@@ -9,6 +9,7 @@ from core.models import *
 from core.utilities import copy_player
 
 scorebook_context = {
+    "scorebook": None,
     "running_score_form": ScorebookScoreForm(),
     "personal_foul_form": ScorebookPersonalFoulForm(),
     "technical_foul_form": ScorebookTechnicalFoulForm(),
@@ -30,16 +31,11 @@ def home(request: HttpRequest) -> HttpResponse:
 def login(request: HttpRequest) -> HttpResponse:
     return render(request, "login.html")
 
-
 # Registration view is defined in user_registration/views.py.
 
 def view_scorebook(request: HttpRequest, scorebook_id: int) -> HttpResponse:
     scorebook = Scorebook.objects.filter(id=scorebook_id)[0]
     if scorebook is not None:
-        print(scorebook.home_coach)
-        print(scorebook.visiting_coach)
-        print(scorebook.home_coach.roster)
-        print(scorebook.home_coach.roster.player_set.all())
         return render(request, "view_scorebook.html", {"scorebook": scorebook})
     else:
         return HttpResponse("Scorebook does not exist!")
@@ -330,14 +326,13 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 for player in scorebook.home_coach.roster.player_set.iterator():
                     player.team = scorebook.home_coach.roster
                     player.save()
-                    print(player)
                 for player in scorebook.visiting_coach.roster.player_set.iterator():
                     player.team = scorebook.visiting_coach.roster
                     player.save()
 
                 scorebook.save()
                 scorebook = None
-                scorebook_context.pop("scorebook")
+                scorebook_context["scorebook"] = None
                 return HttpResponseRedirect('/')
 
 
@@ -346,10 +341,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             if scorebook is not None:
                 scorebook.delete()
                 scorebook = None
-                scorebook_context.pop("scorebook")
+                scorebook_context["scorebook"] = None
                 return HttpResponseRedirect('/create-scorebook/')
-
-        print(str(request.POST))
 
     scorebook_context["scorebook"] = scorebook
     return render(request, "scorebook.html", scorebook_context)
@@ -359,8 +352,6 @@ def update_stats(request: HttpRequest) -> HttpResponse:
     # Parse GET request.
     player_id = request.GET["id"]
     stat_type = str(request.GET["stat_type"])
-
-    print(request.GET)
 
     # Get player.
     player = Player.objects.filter(id=player_id)[0]
@@ -390,7 +381,6 @@ def update_stats(request: HttpRequest) -> HttpResponse:
             player.statistics.ground_balls = stat_value
 
         player.statistics.save()
-        print(player.statistics)
 
     elif stat_type in "goalie_saves":
         quarter = int(str(request.GET["quarter"]))
@@ -409,9 +399,7 @@ def update_stats(request: HttpRequest) -> HttpResponse:
 
         player.saves.save()
 
-        print(player.saves)
-
-    return HttpResponseRedirect('/edit-scorebook/')
+    return redirect(edit_scorebook)
 
 
 @login_required
@@ -700,7 +688,6 @@ def view_roster(request: HttpRequest) -> HttpResponse:
 @login_required
 def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
     player = Player.objects.get(id=player_id)
-    print(player)
     initial = {
         "profile_image": player.profile_image,
         "player_number": player.player_number,

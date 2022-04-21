@@ -1,5 +1,20 @@
 from core.models import *
 
+def get_top_three(roster):
+    if len(list(roster.player_set.all())) >= 3:
+
+        players = list(roster.player_set.all())
+
+        def player_average(player) -> float:
+            return player.statistics.goals + 0.5 * player.statistics.assists
+
+        # Sort players by descending player average.
+        players.sort(reverse=True, key=player_average)
+        return players[0:3]
+
+    else:
+        return None
+
 
 def copy_player(player: Player) -> Player:
     statistics = PlayerStatistics()
