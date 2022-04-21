@@ -33,10 +33,42 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5">
-                <h1 class="bg_black">
-                    <b>Metadata</b>
-                    <button id="halftimeButton" type="button" class="btn btn-danger btn-md">Half Time</button>
-                </h1>
+                <h1 class="bg_black">Game Information</h1>
+                <ul class="list-group" style="font-size: 30px;">
+                    <li class="list-group-item"><b>Home
+                        Team</b>: {{ scorebook.home_coach.roster.school }} {{ scorebook.home_coach.roster.team_name }}
+                    </li>
+                    <li class="list-group-item"><b>Visiting
+                        Team</b>: {{ scorebook.visiting_coach.roster.school }} {{ scorebook.visiting_coach.roster.team_name }}
+                    </li>
+                    <li class="list-group-item"><b>Current Score</b>:
+                        {% if scorebook.running_score.home.count > scorebook.running_score.visiting.count %}
+                            <span style="color:green;">
+                                        <b>{{ scorebook.running_score.home.count }}</b>
+                                    </span>
+                            ---
+                            <span style="color:red;">
+                                        <b>{{ scorebook.running_score.visiting.count }}</b>
+                                    </span>
+                        {% elif scorebook.running_score.home.count < scorebook.running_score.visiting.count %}
+                            <span style="color:red;">
+                                        <b>{{ scorebook.running_score.home.count }}</b>
+                                    </span>
+                            ---
+                            <span style="color:green;">
+                                        <b>{{ scorebook.running_score.visiting.count }}</b>
+                                    </span>
+                        {% else %}
+                            <span style="color:orange;">
+                                        <b>{{ scorebook.running_score.home.count }}</b>
+                                    </span>
+                            ---
+                            <span style="color:orange;">
+                                        <b>{{ scorebook.running_score.visiting.count }}</b>
+                                    </span>
+                        {% endif %}
+                    </li>
+                </ul>
             </div>
 
             <div class="col-md-4">
@@ -92,6 +124,7 @@
                     <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg btn-block">&ensp;Clear
                         Scorebook&ensp;
                     </button>
+                    <button id="halftimeButton" type="button" class="btn btn-primary btn-lg btn-block">Game Statistics</button>
                 </h1>
             </div>
         </div>
