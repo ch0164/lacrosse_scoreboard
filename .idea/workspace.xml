@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3f53a422-6eb7-4f4f-8252-f2f1af6dd0a3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/create_scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/create_scorebook.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

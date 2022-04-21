@@ -32,27 +32,58 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <h1 class="bg_black">
                     <b>Metadata</b>
                     <button id="halftimeButton" type="button" class="btn btn-danger btn-md">Half Time</button>
                 </h1>
             </div>
-            <div class="col-md-3">
-                <h1 class="bg_black"><b>Game Timer</b><p id="countdown"></p></h1>
-                <button id="startTimerButton" type="button" class="btn btn-success" data-toggle="tooltip" data-html="true" title="Start Timer">
-                    <span class="glyphicon glyphicon-play"></span>
-                </button>
-                <button id="stopTimerButton" type="button" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="Stop Timer" onclick="stopTimer()">
-                    <span class="glyphicon glyphicon-pause"></span>
-                </button>
-                <button id="incrementTimerButton" type="button" class="btn btn-danger" type="button" class="btn btn-success" data-toggle="tooltip" data-html="true" title="Increment Timer">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </button>
-                <button id="decrementTimerButton" type="button" class="btn btn-danger" data-toggle="tooltip" data-html="true" title="Decrement Timer">
-                    <span class="glyphicon glyphicon-minus"></span>
-                </button>
+
+            <div class="col-md-4">
+                <h1 class="bg_black"><b>Game Timer</b></h1>
+                <p id="countdown">/60:00</p>
+                <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button id="startTimerButton" type="button" class="btn btn-success btn-lg" data-toggle="tooltip"
+                                data-html="true" title="Start Timer">
+                            <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                        <button id="pauseTimerButton" type="button" class="btn btn-primary btn-lg" data-toggle="tooltip"
+                                data-html="true" title="Pause Timer" onclick="pauseTimer()">
+                            <span class="glyphicon glyphicon-pause"></span>
+                        </button>
+                        <button id="stopTimerButton" type="button" class="btn btn-danger btn-lg" data-toggle="tooltip"
+                                data-html="true" title="Stop Timer" onclick="pauseTimer()">
+                            <span class="glyphicon glyphicon-stop"></span>
+                        </button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
+                                data-toggle="tooltip"
+                                data-html="true" title="+5s">
+                            <span class="glyphicon glyphicon-plus"></span> 5s
+                        </button>
+                        <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
+                                data-toggle="tooltip"
+                                title="-5s">
+                            <span class="glyphicon glyphicon-minus"></span> 5s
+                        </button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
+                                data-toggle="tooltip"
+                                data-html="true" title="+1m">
+                            <span class="glyphicon glyphicon-plus"></span> 1m
+                        </button>
+                        <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
+                                data-toggle="tooltip"
+                                title="-1m">
+                            <span class="glyphicon glyphicon-minus"></span> 1m
+                        </button>
+                    </div>
+                </div>
             </div>
+
             <div class="col-md-3">
                 <h1 class="bg_black">
                     <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg btn-block">Publish
@@ -1185,6 +1216,7 @@
 
         //Refresh Handled Timer
         var timerID;
+
         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
             timerID = setInterval(function () {
@@ -1221,40 +1253,9 @@
         };
 
 
-        function stopTimer() {
+        function pauseTimer() {
             clearInterval(timerID);
         }
-
-
-    //     //EASY TIMER
-    //            const startingTime = 0;
-    //            let time = startingTime * 60;
-    //            const countdownEl = document.getElementById('countdown');
-
-    //            window.onload = function (){
-    //                setInterval(updateCountdown, 1000);
-    //            }
-
-    //                function updateCountdown(){
-    //                const minutes = Math.floor(time/60);
-    //                let seconds = time % 60;
-    //                seconds = seconds < 10 ? '0' + seconds:seconds;
-
-    //                countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
-    //                time++;
-    //    }
-    //           window.unload = function (){
-    //                clearInterval(time);
-    //            }
-
-
-        // const button = document.getElementById("incrementTimerButton");
-        // const textHolder = document.getElementById("time");
-        // textHolder.innerHTML = time;
-
-        // button.addEventListener("click", function() {
-        // textHolder.innerHTML = timer = time + 30;
-        // });
 
     </script>
 {% endblock %}
