@@ -11,10 +11,13 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" value="Create">
-                <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
             </form>
         </div>
     </div>
-
-
 {% endblock %}
+
+
+{% block custom_js %}
+    <script>
+    </script>
+{% endblock custom_js %}
