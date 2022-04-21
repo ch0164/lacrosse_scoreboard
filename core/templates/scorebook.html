@@ -346,7 +346,8 @@
                 <h1 class="bg_black">
                     <b>Home Roster</b>
                     <button id="homeAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
-                    <button id="homeImportLineupButton" type="button" class="btn btn-primary">Import Starting Lineup</button>
+                    <button id="homeImportLineupButton" type="button" class="btn btn-primary">Import Starting Lineup
+                    </button>
                 </h1>
                 <div class="rosterScroll">
                     <table class="table table-light table-striped table-bordered">
@@ -372,32 +373,41 @@
                                 <td>{{ player.last_name }}, {{ player.first_name }}</td>
                                 <td>
                                     <span class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                               id="quarterI{{ player.id }}">
-                                        <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                        <input class="form-check-input" type="checkbox"
+                                               value="{{ player.statistics.first_quarter }}"
+                                               onclick="updatePlayerStatistics({{ player.id }}, 'homeQ1Input')"
+                                               id="homeQ1Input{{ player.id }}">
+                                        <label class="form-check-label" for="homeQ1Input{{ player.id }}">I</label>
                                     </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterII{{ player.id }}">
-                                            <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.second_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'homeQ2Input')"
+                                                   id="homeQ2Input{{ player.id }}">
+                                            <label class="form-check-label" for="homeQ2Input{{ player.id }}">II</label>
                                     </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterIII{{ player.id }}">
-                                            <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.third_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'homeQ3Input')"
+                                                   id="homeQ3Input{{ player.id }}">
+                                            <label class="form-check-label" for="homeQ3Input{{ player.id }}">III</label>
                                     </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterIV{{ player.id }}">
-                                            <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.fourth_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'homeQ4Input')"
+                                                   id="homeQ4Input{{ player.id }}">
+                                            <label class="form-check-label" for="homeQ4Input{{ player.id }}">IV</label>
                                     </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterOT{{ player.id }}">
-                                            <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.overtime }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'homeOTInput')"
+                                                   id="homeOTInput{{ player.id }}">
+                                            <label class="form-check-label" for="homeOTInput{{ player.id }}">OT</label>
                                     </span>
                                 </td>
-                                {#                                TODO: Wrap all of these number input fields in a form and add a "Save" button. #}
                                 <td>
                                     <input type="number" class="form-control" min="0" id="homeShotsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'homeShotsInput')"
@@ -411,13 +421,15 @@
                                            placeholder="0" value="{{ player.statistics.goals }}">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="homeAssistsInput{{ player.id }}"
+                                    <input type="number" class="form-control" min="0"
+                                           id="homeAssistsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'homeAssistsInput')"
                                            onclick="updatePlayerStatistics({{ player.id }}, 'homeAssistsInput')"
                                            placeholder="0" value="{{ player.statistics.assists }}">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="homeGroundBallsInput{{ player.id }}"
+                                    <input type="number" class="form-control" min="0"
+                                           id="homeGroundBallsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'homeGroundBallsInput')"
                                            onclick="updatePlayerStatistics({{ player.id }}, 'homeGroundBallsInput')"
                                            placeholder="0" value="{{ player.statistics.ground_balls }}">
@@ -462,36 +474,41 @@
                                         {{ player.player_number }}
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.first_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 0, 'homeGoalInput', true)"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 0, 'homeGoalInput', true)"
                                                id="homeGoalInput1_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.second_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 1, 'homeGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 1, 'homeGoalInput', true)"
                                                id="homeGoalInput2_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.third_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 2, 'homeGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 2, 'homeGoalInput', true)"
                                                id="homeGoalInput3_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.fourth_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 3, 'homeGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 3, 'homeGoalInput', true)"
                                                id="homeGoalInput4_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.overtime }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 4, 'homeGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 4, 'homeGoalInput', true)"
                                                id="homeGoalInputOT_{{ player.id }}" placeholder="0">
                                     </td>
-                                    <td name="goalTotal"><b>0</b></td>
+                                    <td name="homeGoalInput"><b>0</b></td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
@@ -506,7 +523,9 @@
                 <h1 class="bg_black">
                     <b>Visiting Roster</b>
                     <button id="visitingAddPlayerButton" type="button" class="btn btn-success">Add Player</button>
-                    <button id="visitingImportLineupButton" type="button" class="btn btn-primary">Import Starting Lineup</button>
+                    <button id="visitingImportLineupButton" type="button" class="btn btn-primary">Import Starting
+                        Lineup
+                    </button>
                 </h1>
                 <div class="rosterScroll">
                     <table class="table table-light table-striped table-bordered">
@@ -531,51 +550,70 @@
                                 <td>{{ player.last_name }}, {{ player.first_name }}</td>
                                 <td>
                                         <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterI{{ player.id }}">
-                                            <label class="form-check-label" for="quarterI{{ player.id }}">I</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.first_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'visitingQ1Input')"
+                                                   id="visitingQ1Input{{ player.id }}">
+                                            <label class="form-check-label"
+                                                   for="visitingQ1Input{{ player.id }}">I</label>
                                         </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterII{{ player.id }}">
-                                            <label class="form-check-label" for="quarterII{{ player.id }}">II</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.second_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'visitingQ2Input')"
+                                                   id="visitingQ2Input{{ player.id }}">
+                                            <label class="form-check-label"
+                                                   for="visitingQ2Input{{ player.id }}">II</label>
                                         </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterIII{{ player.id }}">
-                                            <label class="form-check-label" for="quarterIII{{ player.id }}">III</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.third_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'visitingQ3Input')"
+                                                   id="visitingQ3Input{{ player.id }}">
+                                            <label class="form-check-label"
+                                                   for="visitingQ3Input{{ player.id }}">III</label>
                                         </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterIV{{ player.id }}">
-                                            <label class="form-check-label" for="quarterIV{{ player.id }}">IV</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.fourth_quarter }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'visitingQ4Input')"
+                                                   id="visitingQ4Input{{ player.id }}">
+                                            <label class="form-check-label"
+                                                   for="visitingQ4Input{{ player.id }}">IV</label>
                                         </span>
                                     <span class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="quarterOT{{ player.id }}">
-                                            <label class="form-check-label" for="quarterOT{{ player.id }}">OT</label>
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.overtime }}"
+                                                   onclick="updatePlayerStatistics({{ player.id }}, 'visitingOTInput')"
+                                                   id="visitingOTInput{{ player.id }}">
+                                            <label class="form-check-label"
+                                                   for="visitingOTInput{{ player.id }}">OT</label>
                                         </span>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="visitingShotsInput{{ player.id }}"
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingShotsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingShotsInput')"
                                            onclick="updatePlayerStatistics({{ player.id }}, 'visitingShotsInput')"
                                            placeholder="0" value="{{ player.statistics.shots }}">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="visitingGoalsInput{{ player.id }}"
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingGoalsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingGoalsInput')"
                                            onclick="updatePlayerStatistics({{ player.id }}, 'visitingGoalsInput')"
                                            placeholder="0" value="{{ player.statistics.goals }}">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="visitingAssistsInput{{ player.id }}"
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingAssistsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingAssistsInput')"
                                            onclick="updatePlayerStatistics({{ player.id }}, 'visitingAssistsInput')"
                                            placeholder="0" value="{{ player.statistics.assists }}">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control" min="0" id="visitingGroundBallsInput{{ player.id }}"
+                                    <input type="number" class="form-control" min="0"
+                                           id="visitingGroundBallsInput{{ player.id }}"
                                            onkeyup="updatePlayerStatistics({{ player.id }}, 'visitingGroundBallsInput')"
                                            onclick="updatePlayerStatistics({{ player.id }}, 'visitingGroundBallsInput')"
                                            placeholder="0" value="{{ player.statistics.ground_balls }}">
@@ -614,44 +652,49 @@
                         </thead>
                         <tbody>
                         {% for player in scorebook.visiting_coach.roster.player_set.all %}
-                            {% if "G" in player.position %}
-                                <tr>
+                            <tr>
+                                {% if "G" in player.position %}
                                     <td>
                                         {{ player.player_number }}
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.first_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 0, 'visitingGoalInput', true)"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 0, 'visitingGoalInput', true)"
                                                id="visitingGoalInput1_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.second_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 1, 'visitingGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 1, 'visitingGoalInput', true)"
                                                id="visitingGoalInput2_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.third_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 2, 'visitingGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 2, 'visitingGoalInput', true)"
                                                id="visitingGoalInput3_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.fourth_quarter }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 3, 'visitingGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 3, 'visitingGoalInput', true)"
                                                id="visitingGoalInput4_{{ player.id }}" placeholder="0">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" min="0" value="0"
-                                               onclick="updateGoalTotals();"
-                                               onkeyup="updateGoalTotals()"
+                                        <input type="number" class="form-control" min="0"
+                                               value="{{ player.saves.overtime }}"
+                                               onclick="updateGoalTotals({{ player.id }}, 4, 'visitingGoalInput', true);"
+                                               onkeyup="updateGoalTotals({{ player.id }}, 4, 'visitingGoalInput', true)"
                                                id="visitingGoalInputOT_{{ player.id }}" placeholder="0">
                                     </td>
-                                    <td name="goalTotal"><b>0</b></td>
-                                </tr>
-                            {% endif %}
+                                    <td name="visitingGoalInput"><b>0</b></td>
+                                    </tr>
+                                {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -846,7 +889,13 @@
         /* Initialize the page with JavaScript before loading it using jQuery ready event. */
         $(document).ready(function () {
             /* Ensure goal totals are updated correctly. */
-            updateGoalTotals();
+            updateGoalTotals(null, null, null, false);
+
+            /* Check all the quarter checkboxes if they're selected. */
+            let checkboxes = Array.from(document.getElementsByClassName("form-check-input"));
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = checkbox.value === "True";
+            })
         });
 
         /* Get publish/clear scorebook buttons. */
@@ -901,8 +950,18 @@
         });
 
         /* Add home goalies' totals. */
-        function updateGoalTotals() {
-            let goalTotals = document.getElementsByName("goalTotal");
+        function updateGoalTotals(playerId, quarter, goalInput, sendToServer) {
+            let goalTotals;
+            if (!sendToServer) {
+                goalTotals = [
+                    Array.from(document.getElementsByName("homeGoalInput")),
+                    Array.from(document.getElementsByName("visitingGoalInput"))
+                ].flat();
+                console.log(goalTotals);
+            } else {
+                goalTotals = document.getElementsByName(goalInput);
+            }
+            let quarterGoalsSaved = [];
             goalTotals.forEach((total) => {
                 let row = total.parentNode;
                 let quarters = Array.from(row.children).slice(1, -1);
@@ -910,9 +969,30 @@
                 quarters.forEach((quarter) => {
                     let goalsSaved = parseInt(quarter.children[0].value);
                     totalGoalsSaved += goalsSaved;
+                    quarterGoalsSaved.push(goalsSaved);
                 })
                 total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
             });
+
+            /* Then update the goalie's new saves to the database. */
+            if (sendToServer) {
+                $.ajax({
+                    url: "http://127.0.0.1:8000/update-stats/",
+                    type: "GET",
+                    data: {
+                        "id": playerId,
+                        "stat_type": "goalie_saves",
+                        "stat": null,
+                        "stat_value": null,
+                        "quarter": quarter,
+                        "saves_value": quarterGoalsSaved[quarter]
+                    }
+                }).done(function (response) {
+                })
+                    .fail(function () {
+                        console.log("Error Occurred");
+                    });
+            }
         }
 
         /* Update the player's shots, goals, assists, or ground balls. */
@@ -927,16 +1007,32 @@
                 stat = visitingStatistic.split("visiting")[1];
             }
 
+            if (statisticInput.type === "checkbox") {
+                value = statisticInput.checked;
+            } else {
+                value = statisticInput.value;
+            }
+
+            console.log(value);
+            console.log(stat);
+
             $.ajax({
                 url: "http://127.0.0.1:8000/update-stats/",
                 type: "GET",
-                data: {"id": playerId, "stat": stat, "value": statisticInput.value},
+                data: {
+                    "id": playerId,
+                    "stat_type": "player_statistics",
+                    "stat": stat,
+                    "stat_value": value,
+                    "quarter": null,
+                    "saves_value": null
+                }
             })
-            .done(function(response) {
-            })
-            .fail(function() {
-               console.log("Error Occurred");
-            });
+                .done(function (response) {
+                })
+                .fail(function () {
+                    console.log("Error Occurred");
+                });
         }
 
         //Refresh Handled Timer

@@ -67,16 +67,22 @@
                                         <td class="editable" data-id="{{ player.id }}"
                                             data-type="position">{{ player.position }}</td>
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="class_standing">{{ player.class_standing }}</td>
+                                            data-type="class_standing">{{ player.class_standing|default:"N/A"}}</td>
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="weight_pounds">{{ player.weight_pounds }}</td>
+                                            data-type="weight_pounds">{{ player.weight_pounds|default:"N/A"}}</td>
+                                        {% if player.height_feet == None or player.height_inches == None %}
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="height">N/A
+                                        </td>
+                                        {% else %}
                                         <td class="editable" data-id="{{ player.id }}"
                                             data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
                                         </td>
+                                        {% endif %}
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="major">{{ player.major }}</td>
+                                            data-type="major">{{ player.major|default:"N/A"}}</td>
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="hometown">{{ player.hometown }}</td>
+                                            data-type="hometown">{{ player.hometown|default:"N/A"}}</td>
                                         <td>
                                             <a href="/edit-player/{{ player.id }}" class="btn btn-success btn-sm"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
@@ -217,10 +223,6 @@
         cancelButton.onclick = function () {
             modalElement.style.display = "none";
         }
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modalElement.style.display = "none";
-        }
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function (event) {
             if (event.target === modalElement) {
@@ -235,56 +237,5 @@
         function cancelStartingLineup() {
             startingLineupModal.style.display = "none";
         }
-
-
-        {#$(document).ready(function() {#}
-        {#    $(document).on("dblclick", ".editable", function(){#}
-        {#        var value = $(this).text();#}
-        {#        var data_type = $(this).data("type");#}
-        {#        var input_type = "text";#}
-        {#        var input = "<input type='" + input_type + "' class='input-data' value='" + value + "' class='form-control'>";#}
-        {#        $(this).html(input);#}
-        {#        $(this).removeClass("editable")#}
-        {#    });#}
-        {##}
-        {#    {% comment %} $(document).on("blur", ".input-data", function(){#}
-        {#        var value = $(this).val();#}
-        {#        var td = $(this).parent("td");#}
-        {#        $(this).remove();#}
-        {#        td.html(value);#}
-        {#        td.addClass("editable");#}
-        {#        var type = td.data("type");#}
-        {#        sendToServer(td.data("id"), value, type);#}
-        {#    }); {% endcomment %}#}
-        {#    $(document).on("keypress", ".input-data", function(e){#}
-        {#        var key = e.which;#}
-        {#        if (key === 13) {#}
-        {#            var value = $(this).val();#}
-        {#            var td = $(this).parent("td");#}
-        {#            $(this).remove();#}
-        {#            td.html(value);#}
-        {#            td.addClass("editable");#}
-        {#           var type = td.data("type");#}
-        {#           sendToServer(td.data("id"), value,type);#}
-        {#        }#}
-        {#    });#}
-        {##}
-        {#    function sendToServer(id, value, type) {#}
-        {#        console.log(id);#}
-        {#        console.log(value);#}
-        {#        console.log(type);#}
-        {#        $.ajax({#}
-        {#            url: "http://127.0.0.1:8000/update-player/",#}
-        {#            type: "GET",#}
-        {#            data: {id: id, type: type, value: value},#}
-        {#        })#}
-        {#        .done(function(response) {#}
-        {#            console.log(response);#}
-        {#        })#}
-        {#        .fail(function() {#}
-        {#           console.log("Error Occured");#}
-        {#        });#}
-        {##}
-        {#    }#}
     </script>
 {% endblock custom_js %}

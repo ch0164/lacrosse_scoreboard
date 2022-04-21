@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from core.forms import *
 from core.models import *
+from core.utilities import copy_player
 
 scorebook_context = {
     "running_score_form": ScorebookScoreForm(),
@@ -208,6 +209,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             if form.is_valid():
                 statistics = PlayerStatistics()
                 statistics.save()
+                saves = PlayerSaves()
+                saves.save()
 
                 player = Player(
                     player_number=form.cleaned_data.get("player_number"),
@@ -215,12 +218,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     last_name=form.cleaned_data.get("last_name"),
                     position=form.cleaned_data.get("position"),
                     team=scorebook.home_coach.roster,
-                    statistics=statistics)
-
-                if form.cleaned_data["position"] in "G":
-                    saves = PlayerSaves()
-                    saves.save()
-                    player.saves = saves
+                    statistics=statistics,
+                    saves=saves)
 
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
@@ -235,60 +234,27 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 if not scorebook.home_coach.roster:
                     roster = Roster()
                     roster.save()
+
+                # Otherwise, just use the Roster that the coach has.
                 else:
                     roster = scorebook.home_coach.roster
 
-                lineup.attacker_1.team = roster
-                lineup.attacker_1.statistics = PlayerStatistics()
-                lineup.attacker_1.statistics.save()
-                lineup.attacker_1.save()
-
-                lineup.attacker_2.team = roster
-                lineup.attacker_2.statistics = PlayerStatistics()
-                lineup.attacker_2.statistics.save()
-                lineup.attacker_2.save()
-
-                lineup.attacker_3.team = roster
-                lineup.attacker_3.statistics = PlayerStatistics()
-                lineup.attacker_3.statistics.save()
-                lineup.attacker_3.save()
-
-                lineup.midfielder_1.team = roster
-                lineup.midfielder_1.statistics = PlayerStatistics()
-                lineup.midfielder_1.statistics.save()
-                lineup.midfielder_1.save()
-
-                lineup.midfielder_2.team = roster
-                lineup.midfielder_2.statistics = PlayerStatistics()
-                lineup.midfielder_2.statistics.save()
-                lineup.midfielder_2.save()
-
-                lineup.midfielder_3.team = roster
-                lineup.midfielder_3.statistics = PlayerStatistics()
-                lineup.midfielder_3.statistics.save()
-                lineup.midfielder_3.save()
-
-                lineup.defender_1.team = roster
-                lineup.defender_1.statistics = PlayerStatistics()
-                lineup.defender_1.statistics.save()
-                lineup.defender_1.save()
-
-                lineup.defender_2.team = roster
-                lineup.defender_2.statistics = PlayerStatistics()
-                lineup.defender_2.statistics.save()
-                lineup.defender_2.save()
-
-                lineup.defender_3.team = roster
-                lineup.defender_3.statistics = PlayerStatistics()
-                lineup.defender_3.statistics.save()
-                lineup.defender_3.save()
-
-                lineup.goalie.team = roster
-                lineup.goalie.statistics = PlayerStatistics()
-                lineup.goalie.statistics.save()
-                lineup.goalie.saves = PlayerSaves()
-                lineup.goalie.saves.save()
-                lineup.goalie.save()
+                players = [
+                    lineup.attacker_1,
+                    lineup.attacker_2,
+                    lineup.attacker_3,
+                    lineup.midfielder_1,
+                    lineup.midfielder_2,
+                    lineup.midfielder_3,
+                    lineup.defender_1,
+                    lineup.defender_2,
+                    lineup.defender_3,
+                    lineup.goalie,
+                ]
+                for player in players:
+                    player_copy = copy_player(player)
+                    player_copy.team = roster
+                    player_copy.save()
 
                 # Overwrite the current roster with this new roster.
                 scorebook.home_coach.roster = roster
@@ -300,6 +266,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
             if form.is_valid():
                 statistics = PlayerStatistics()
                 statistics.save()
+                saves = PlayerSaves()
+                saves.save()
 
                 player = Player(
                     player_number=form.cleaned_data.get("player_number"),
@@ -307,12 +275,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     last_name=form.cleaned_data.get("last_name"),
                     position=form.cleaned_data.get("position"),
                     team=scorebook.visiting_coach.roster,
-                    statistics=statistics)
-
-                if form.cleaned_data["position"] in "G":
-                    saves = PlayerSaves()
-                    saves.save()
-                    player.saves = saves
+                    statistics=statistics,
+                    saves=saves)
 
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
@@ -330,57 +294,22 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 else:
                     roster = scorebook.visiting_coach.roster
 
-                lineup.attacker_1.team = roster
-                lineup.attacker_1.statistics = PlayerStatistics()
-                lineup.attacker_1.statistics.save()
-                lineup.attacker_1.save()
-
-                lineup.attacker_2.team = roster
-                lineup.attacker_2.statistics = PlayerStatistics()
-                lineup.attacker_2.statistics.save()
-                lineup.attacker_2.save()
-
-                lineup.attacker_3.team = roster
-                lineup.attacker_3.statistics = PlayerStatistics()
-                lineup.attacker_3.statistics.save()
-                lineup.attacker_3.save()
-
-                lineup.midfielder_1.team = roster
-                lineup.midfielder_1.statistics = PlayerStatistics()
-                lineup.midfielder_1.statistics.save()
-                lineup.midfielder_1.save()
-
-                lineup.midfielder_2.team = roster
-                lineup.midfielder_2.statistics = PlayerStatistics()
-                lineup.midfielder_2.statistics.save()
-                lineup.midfielder_2.save()
-
-                lineup.midfielder_3.team = roster
-                lineup.midfielder_3.statistics = PlayerStatistics()
-                lineup.midfielder_3.statistics.save()
-                lineup.midfielder_3.save()
-
-                lineup.defender_1.team = roster
-                lineup.defender_1.statistics = PlayerStatistics()
-                lineup.defender_1.statistics.save()
-                lineup.defender_1.save()
-
-                lineup.defender_2.team = roster
-                lineup.defender_2.statistics = PlayerStatistics()
-                lineup.defender_2.statistics.save()
-                lineup.defender_2.save()
-
-                lineup.defender_3.team = roster
-                lineup.defender_3.statistics = PlayerStatistics()
-                lineup.defender_3.statistics.save()
-                lineup.defender_3.save()
-
-                lineup.goalie.team = roster
-                lineup.goalie.statistics = PlayerStatistics()
-                lineup.goalie.statistics.save()
-                lineup.goalie.saves = PlayerSaves()
-                lineup.goalie.saves.save()
-                lineup.goalie.save()
+                players = [
+                    lineup.attacker_1,
+                    lineup.attacker_2,
+                    lineup.attacker_3,
+                    lineup.midfielder_1,
+                    lineup.midfielder_2,
+                    lineup.midfielder_3,
+                    lineup.defender_1,
+                    lineup.defender_2,
+                    lineup.defender_3,
+                    lineup.goalie,
+                ]
+                for player in players:
+                    player_copy = copy_player(player)
+                    player_copy.team = roster
+                    player_copy.save()
 
                 # Overwrite the current roster with this new roster.
                 scorebook.visiting_coach.roster = roster
@@ -429,25 +358,58 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 def update_stats(request: HttpRequest) -> HttpResponse:
     # Parse GET request.
     player_id = request.GET["id"]
-    stat = request.GET["stat"]
-    value = request.GET["value"]
+    stat_type = str(request.GET["stat_type"])
+
+    print(request.GET)
 
     # Get player.
     player = Player.objects.filter(id=player_id)[0]
 
     # Update corresponding statistic.
-    if stat in "Shots":
-        player.statistics.shots = value
-    elif stat in "Goals":
-        player.statistics.goals = value
-    elif stat in "Assists":
-        player.statistics.assists = value
-    elif stat in "GroundBalls":
-        player.statistics.ground_balls = value
+    if stat_type in "player_statistics":
+        stat = str(request.GET["stat"])
+        stat_value = request.GET["stat_value"]
 
-    player.statistics.save()
+        if stat in "Q1":
+            player.statistics.first_quarter = stat_value == "true"
+        elif stat in "Q2":
+            player.statistics.second_quarter = stat_value == "true"
+        elif stat in "Q3":
+            player.statistics.third_quarter = stat_value == "true"
+        elif stat in "Q4":
+            player.statistics.fourth_quarter = stat_value == "true"
+        elif stat in "OT":
+            player.statistics.overtime = stat_value == "true"
+        elif stat in "Shots":
+            player.statistics.shots = stat_value
+        elif stat in "Goals":
+            player.statistics.goals = stat_value
+        elif stat in "Assists":
+            player.statistics.assists = stat_value
+        elif stat in "GroundBalls":
+            player.statistics.ground_balls = stat_value
 
-    print(player.statistics)
+        player.statistics.save()
+        print(player.statistics)
+
+    elif stat_type in "goalie_saves":
+        quarter = int(str(request.GET["quarter"]))
+        saves_value = request.GET["saves_value"]
+
+        if quarter == 0:
+            player.saves.first_quarter = saves_value
+        elif quarter == 1:
+            player.saves.second_quarter = saves_value
+        elif quarter == 2:
+            player.saves.third_quarter = saves_value
+        elif quarter == 3:
+            player.saves.fourth_quarter = saves_value
+        elif quarter == 4:
+            player.saves.overtime = saves_value
+
+        player.saves.save()
+
+        print(player.saves)
 
     return HttpResponseRedirect('/edit-scorebook/')
 
@@ -662,8 +624,18 @@ def view_roster(request: HttpRequest) -> HttpResponse:
         if request.method == "POST":
             form = PlayerEntryForm(request.POST, request.FILES)
             if form.is_valid():
+                statistics = PlayerStatistics()
+                statistics.save()
+                saves = PlayerSaves()
+                saves.save()
+
+                if form.cleaned_data["profile_image"]:
+                    profile_image = form.cleaned_data["profile_image"]
+                else:
+                    profile_image = "profile_pictures/default.jpg"
+
                 player = Player(
-                    profile_image=form.cleaned_data["profile_image"],
+                    profile_image=profile_image,
                     player_number=form.cleaned_data.get("player_number"),
                     first_name=form.cleaned_data.get("first_name"),
                     last_name=form.cleaned_data.get("last_name"),
@@ -675,9 +647,10 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                     major=form.cleaned_data.get("major"),
                     hometown=form.cleaned_data.get("hometown"),
                     team=coach.roster,
+                    statistics=statistics,
+                    saves=saves
                 )
                 player.save()
-                print("Player profile pic: ", form.cleaned_data["profile_image"])
 
                 # Redirect to the root roster page so that the GET request isn't sent again upon refreshing the page.
                 return HttpResponseRedirect("/roster/")
