@@ -374,7 +374,7 @@
                         <tbody>
                         {% for player in scorebook.home_coach.roster.player_set.all %}
                             {# TODO: Update IDs for home/visiting roster checkboxes/text fields.#}
-                            <tr>
+                            <tr name="homePlayer">
                                 <td>{{ player.player_number }}</td>
                                 <td>{{ player.position }}</td>
                                 <td>{{ player.last_name }}, {{ player.first_name }}</td>
@@ -551,7 +551,7 @@
                         </thead>
                         <tbody>
                         {% for player in scorebook.visiting_coach.roster.player_set.all %}
-                            <tr>
+                            <tr name="visitingPlayer">
                                 <td>{{ player.player_number }}</td>
                                 <td>{{ player.position }}</td>
                                 <td>{{ player.last_name }}, {{ player.first_name }}</td>
@@ -889,87 +889,58 @@
 
     <div id="halftimeModal" class="modal">
         <div class="modal-content">
-        <div class="container-fluid">
-        <div class="row">
-                {#        <div class="modal-content">#}
-                <div class="col-md-12">
-                    <h1 class="bg_black"><b>Game Statistics</b></h1>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="bg_black"><b>Game Statistics</b></h1>
 
-            <div class="row">
-                {#        <div class="modal-content">#}
-                <div class="col-md-6">
-                    <h1 class="bg_black"><b>Home Stats</b></h1>
-                    <table class="table table-light table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Ranking</th>
-                            <th>Name</th>
-                            <th>Player #</th>
-                            <th>Position</th>
-                            <th>Goals</th>
-                            <th>Assists</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% if home_top_three != None %}
-                            {% for player in home_top_three %}
-                                <tr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1 class="bg_black"><b>Home Stats</b></h1>
+                                <div class="rosterScroll">
+                                    <table class="table table-light table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>Ranking</th>
+                                            <th>Name</th>
+                                            <th>Player #</th>
+                                            <th>Position</th>
+                                            <th>Goals</th>
+                                            <th>Assists</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="homeGameStatistics">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ player.last_name }}, {{ player.first_name }}</td>
-                                    <td>{{ player.player_number }}</td>
-                                    <td>{{ player.position }}</td>
-                                    <td>{{ player.statistics.goals }}</td>
-                                    <td>{{ player.statistics.assists }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="col-md-6">
-                    <h1 class="bg_black"><b>Visiting Stats</b></h1>
-                     <table class="table table-light table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Ranking</th>
-                            <th>Name</th>
-                            <th>Player #</th>
-                            <th>Position</th>
-                            <th>Goals</th>
-                            <th>Assists</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% if visiting_top_three != None %}
-                            {% for player in visiting_top_three %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ player.last_name }}, {{ player.first_name }}</td>
-                                    <td>{{ player.player_number }}</td>
-                                    <td>{{ player.position }}</td>
-                                    <td>{{ player.statistics.goals }}</td>
-                                    <td>{{ player.statistics.assists }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                        </tbody>
-                    </table>
+                            <div class="col-md-6">
+                                <h1 class="bg_black"><b>Visiting Stats</b></h1>
+                                <div class="rosterScroll">
+                                    <table class="table table-light table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>Ranking</th>
+                                            <th>Name</th>
+                                            <th>Player #</th>
+                                            <th>Position</th>
+                                            <th>Goals</th>
+                                            <th>Assists</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="visitingGameStatistics">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="btn btn-danger btn-lg" type="button" name="halftimeModalCancel" value="Cancel">
+                    </div>
                 </div>
             </div>
-        <input class="btn btn-danger btn-lg" type="button" name="halftimeModalCancel" value="Cancel">
-        </div>
         </div>
     </div>
-    {#            <form action="" method="POST">#}
-    {#                {% csrf_token %}#}
-    {#                {{ import_roster_form|crispy }}#}
-    {#                <input class="btn btn-primary btn-lg" type="submit" name="visitingImportRosterModalConfirm"#}
-    {#                       value="Confirm">#}
-    {#                <input class="btn btn-danger btn-lg" type="button" name="visitingImportRosterModalCancel"#}
-    {#                       value="Cancel">#}
-    {#            </form>#}
 
 
 
@@ -1034,16 +1005,59 @@
                 let modal = document.getElementById(modalId);
                 let cancelButton = document.getElementsByName(modalId + "Cancel")[0];
 
+                /* If the game statistics button is clicked, update the tables with the top three players. */
+                if (modalId.includes("halftime")) {
+                    updateGameStatistics();
+                }
+
                 modal.style.display = "block";
 
                 cancelButton.addEventListener("click", function () {
                     modal.style.display = "none";
                 })
-                // console.log(modal.id);
-                // console.log(confirmButton.id);
-                // console.log(cancelButton.id);
             })
         });
+
+        function updateGameStatistics() {
+            function sortPlayers(player1, player2) {
+                let player1Goals = player1.children[5].children[0].value;
+                let player2Goals = player2.children[5].children[0].value;
+                let player1Assists = player1.children[6].children[0].value;
+                let player2Assists = player2.children[6].children[0].value;
+
+                return (player2Goals + 0.5 * player2Assists) - (player1Goals + 0.5 * player1Assists);
+            }
+
+            function getStatsBody(teamPlayers) {
+                let teamStatsBody = "";
+                teamPlayers.forEach((player, index) => {
+                    let playerName = player.children[2].innerHTML;
+                    let playerNumber = player.children[0].innerHTML;
+                    let playerPosition = player.children[1].innerHTML;
+                    let playerGoals = player.children[5].children[0].value;
+                    let playerAssists = player.children[6].children[0].value;
+
+                    teamStatsBody += "<tr>" +
+                        `<td>${index + 1}</td>` +
+                        `<td>${playerName}</td>` +
+                        `<td>${playerNumber}</td>` +
+                        `<td>${playerPosition}</td>` +
+                        `<td>${playerGoals}</td>` +
+                        `<td>${playerAssists}</td>` +
+                        "</tr>"
+                })
+                return teamStatsBody;
+            }
+
+            let homePlayers = Array.from(document.getElementsByName("homePlayer")).sort(sortPlayers);
+            let visitingPlayers = Array.from(document.getElementsByName("visitingPlayer")).sort(sortPlayers);
+
+            let homeStatsBody = document.getElementById("homeGameStatistics");
+            homeStatsBody.innerHTML = getStatsBody(homePlayers);
+
+            let visitingStatsBody = document.getElementById("visitingGameStatistics");
+            visitingStatsBody.innerHTML = getStatsBody(visitingPlayers);
+        }
 
         /* Add home goalies' totals. */
         function updateGoalTotals(playerId, quarter, goalInput, sendToServer) {
@@ -1166,23 +1180,5 @@
             display = document.querySelector('#countdown');
             startTimer(sixtyMinutes, display);
         };
-
-
-        //EASY TIMER
-        /*       const startingTime = 0;
-               let time = startingTime * 60;
-               const countdownEl = document.getElementById('countdown');
-
-               setInterval(updateCountdown, 1000);
-
-               function updateCountdown(){
-                   const minutes = Math.floor(time/60);
-                   let seconds = time % 60;
-                   seconds = seconds < 10 ? '0' + seconds:seconds;
-
-                   countdownEl.innerHTML = `${minutes}:${seconds}` + "/60:00";
-                   time++;
-       }
-       */
     </script>
 {% endblock %}
