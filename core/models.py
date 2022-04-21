@@ -59,7 +59,8 @@ class PlayerSaves(models.Model):
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    profile_image = models.ImageField(upload_to="profile_pictures/", default="profile_pictures/default.jpg")
+    profile_image = models.ImageField(upload_to="profile_pictures/",
+                                      default="profile_pictures/default.jpg")
     player_number = models.PositiveIntegerField("Player Number", default=0)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
@@ -68,11 +69,16 @@ class Player(models.Model):
     class_standing = models.CharField("Class", max_length=2,
                                       choices=CLASS_STANDING_CHOICES,
                                       default="N/A")
-    weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0, blank=True, null=True)
-    height_feet = models.PositiveIntegerField("Height (feet)", default=0, blank=True, null=True)
-    height_inches = models.PositiveIntegerField("Height (inches)", default=0, blank=True, null=True)
-    major = models.CharField("Major", max_length=100, default="N/A", blank=True, null=True)
-    hometown = models.CharField("Hometown", max_length=100, default="N/A", blank=True, null=True)
+    weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0,
+                                                blank=True, null=True)
+    height_feet = models.PositiveIntegerField("Height (feet)", default=0,
+                                              blank=True, null=True)
+    height_inches = models.PositiveIntegerField("Height (inches)", default=0,
+                                                blank=True, null=True)
+    major = models.CharField("Major", max_length=100, default="N/A", blank=True,
+                             null=True)
+    hometown = models.CharField("Hometown", max_length=100, default="N/A",
+                                blank=True, null=True)
     # Relationships
     team = models.ForeignKey(Roster,
                              on_delete=models.CASCADE,
@@ -222,7 +228,7 @@ class RunningScore(models.Model):
 class Score(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    time = models.TimeField(auto_now=True)
+    time = models.DurationField()
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     goal_number = models.PositiveIntegerField("Goal Jersey", default=0)
     assist_number = models.PositiveIntegerField("Assist Jersey", blank=True,
@@ -257,7 +263,7 @@ class Penalty(models.Model):
     player_number = models.PositiveIntegerField(default=0)
     infraction = models.CharField(max_length=50, default="")
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
-    time = models.TimeField(auto_now=True)
+    time = models.DurationField()
     # Relationships
     home_penalties = models.ForeignKey(PenaltySet,
                                        related_name="home",
@@ -285,7 +291,7 @@ class TimeoutSet(models.Model):
 class Timeout(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
-    time = models.TimeField(auto_now=True)
+    time = models.DurationField()
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     # Relationships
     home_timeouts = models.ForeignKey(TimeoutSet,
@@ -308,7 +314,8 @@ class Scorebook(models.Model):
     home_score = models.PositiveIntegerField(default=0)
     visiting_score = models.PositiveIntegerField(default=0)
     is_published = models.BooleanField(default=False)
-    time_remaining = models.TimeField(auto_now=True)
+    time_elapsed = models.DurationField(
+        default=datetime.timedelta(minutes=0, seconds=0))
     date_published = models.DateTimeField(auto_now=True)
     # Relationships
     home_coach = models.OneToOneField(Coach,

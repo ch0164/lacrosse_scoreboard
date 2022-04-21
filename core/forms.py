@@ -53,9 +53,12 @@ def starting_lineup_form_factory(request):
     # Create the form using the created querysets.
     # A lacrosse team can only have ten players on the field.
     class StartingLineupForm(forms.Form):
-        attackmen = forms.ModelMultipleChoiceField(queryset=attack_set, help_text="Select 3 Attackmen")
-        midfielders = forms.ModelMultipleChoiceField(queryset=mid_set, help_text="Select 3 Midfielders")
-        defensemen = forms.ModelMultipleChoiceField(queryset=defend_set, help_text="Select 3 Defensemen")
+        attackmen = forms.ModelMultipleChoiceField(queryset=attack_set,
+                                                   help_text="Select 3 Attackmen")
+        midfielders = forms.ModelMultipleChoiceField(queryset=mid_set,
+                                                     help_text="Select 3 Midfielders")
+        defensemen = forms.ModelMultipleChoiceField(queryset=defend_set,
+                                                    help_text="Select 3 Defensemen")
         goalie = forms.ModelChoiceField(widget=forms.Select,
                                         queryset=goalie_set)
 
@@ -94,22 +97,84 @@ class CreateScorebookForm(forms.Form):
     home_team_name = forms.CharField(max_length=50)
     visiting_school = forms.CharField(max_length=100)
     visiting_team_name = forms.CharField(max_length=50)
+
     # time_created = forms.TimeField()
 
 
 class ScorebookScoreForm(forms.Form):
-    # time = forms.TimeField()
-    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
+    minutes = forms.IntegerField(min_value=0, max_value=90)
+    seconds = forms.IntegerField(min_value=0, max_value=59)
+    quarter = forms.CharField(widget=forms.HiddenInput(), required=False)
     goal_jersey = forms.IntegerField(min_value=0)
     assist_jersey = forms.IntegerField(min_value=0, required=False)
+
+    def clean_quarter(self):
+        if self.cleaned_data["minutes"] < 15:
+            return "I"
+        elif self.cleaned_data["minutes"] < 30:
+            return "II"
+        elif self.cleaned_data["minutes"] < 45:
+            return "II"
+        elif self.cleaned_data["minutes"] < 60:
+            return "IV"
+        else:
+            return "OT"
+
+
+def running_score_form_factory(request, roster, **kwargs):
+    player_numbers = [player.player_number for player in
+                      roster.player_set.iterator()]
+
+    class __ScorebookScoreForm(ScorebookScoreForm):
+        def clean_quarter(self):
+            if self.cleaned_data:
+                if self.cleaned_data["minutes"] < 15:
+                    self.quarter = "I"
+                elif self.cleaned_data["minutes"] < 30:
+                    self.quarter = "II"
+                elif self.cleaned_data["minutes"] < 45:
+                    self.quarter = "II"
+                elif self.cleaned_data["minutes"] < 60:
+                    self.quarter = "IV"
+                else:
+                    self.quarter = "OT"
+
+        def clean_goal_jersey(self):
+            if self.cleaned_data["goal_jersey"] not in player_numbers:
+                print("GOAL JERSEY ERROR")
+                self.add_error("goal_jersey", forms.ValidationError(
+                    "Goal jersey is not in the selected roster!"))
+
+        def clean_assist_jersey(self):
+            print(self.cleaned_data["assist_jersey"])
+            print(player_numbers)
+            if self.cleaned_data["assist_jersey"] is not None:
+                print("NOT NONE")
+                if self.cleaned_data["assist_jersey"] not in player_numbers:
+                    print("ASSIST JERSEY ERROR")
+                    self.add_error("assist_jersey", forms.ValidationError(
+                        "Assist jersey is not in the selected roster!"))
+
+    if request.method == "POST":
+        print("POST")
+        print(request.POST)
+        return __ScorebookScoreForm(request.POST, **kwargs)
+    elif request.method == "GET":
+        print("GET")
+        return __ScorebookScoreForm(request.GET, **kwargs)
+    else:
+        print("FORM")
+        return __ScorebookScoreForm(**kwargs)
 
 
 # Abstract Penalty Form.
 class ScorebookPenaltyForm(forms.Form):
+    minutes = forms.IntegerField(min_value=0, max_value=90)
+    seconds = forms.IntegerField(min_value=0, max_value=59)
     player_number = forms.IntegerField(min_value=0)
+    infraction = forms.CharField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
     # time = forms.TimeField()
-    infraction = forms.CharField()
 
 
 # Personal Foul Penalty Form.
@@ -123,7 +188,8 @@ class ScorebookTechnicalFoulForm(ScorebookPenaltyForm):
 
 
 class ScorebookTimeoutForm(forms.Form):
-    # time = forms.TimeField()
+    minutes = forms.IntegerField(min_value=0, max_value=90)
+    seconds = forms.IntegerField(min_value=0, max_value=59)
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
 
 
