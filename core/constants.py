@@ -1,6 +1,7 @@
 """This file defines constants for the scoreboard."""
 
 CLASS_STANDING_CHOICES = (
+    ("", ""),
     ("FR", "Freshman"),
     ("SO", "Sophomore"),
     ("JR", "Junior"),

@@ -3,88 +3,206 @@
 
 {% block title %}Roster{% endblock %}
 
+{% block custom_css %}
+    <style>
+        div.rosterScroll {
+            height: 800px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
-    <div class="custom-block col-md-12 col-sm-12">
-        <h1 class="bg_black">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}'s Roster</h1>
-        {% if has_roster is False %}
-            <p>No roster has been established yet. Click below to establish a roster.</p>
-            <!-- Roster Modal -->
-            <button id="buttonElement" class="btn btn-primary btn-lg">Establish Roster</button>
-            <div id="modalElement" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header" style="text-align: center;">
-                        {#                            <span class="close">&times;</span>#}
-                        <h1>Establish New Roster</h1>
+        <div class="custom-block col-md-12 col-sm-12">
+            <h1 class="bg_black">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}'s Roster</h1>
+            {% if has_roster is False %}
+                <p>No roster has been established yet. Click below to establish a roster.</p>
+                <!-- Roster Modal -->
+                <button id="buttonElement" class="btn btn-primary btn-lg">Establish Roster</button>
+                <div id="modalElement" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header" style="text-align: center;">
+                            {#                            <span class="close">&times;</span>#}
+                            <h1>Establish New Roster</h1>
+                        </div>
+                        <form action="" method="GET" enctype="multipart/form-data">
+                            {{ form|crispy }}
+                            <input class="btn btn-primary btn-lg" type="submit" value="Create">
+                            <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+                        </form>
                     </div>
-                    <form action="" method="GET">
-                        {{ form|crispy }}
-                        <input class="btn btn-primary btn-lg" type="submit" value="Create">
-                        <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
-                    </form>
                 </div>
-            </div>
-            </div>
-        {% else %}
-            <p><b>School</b>: {{ roster.school }}</p>
-            <p><b>Team Name</b>: {{ roster.team_name }}</p>
-            <div class="row">
-                <div class="col-lg-12">
-                    <table class="table table-bordered table-light table-striped">
-                        <tr>
-                            <th>Player #</th>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Class</th>
-                            <th>Weight (lbs)</th>
-                            <th>Height (ft in)</th>
-                            <th>Major</th>
-                            <th>Hometown</th>
-                            <th>Action</th>
-                        </tr>
-                        {% for player in players %}
-                            <tr>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="player_number">{{ player.player_number }}</td>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="position">{{ player.position }}</td>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="class_standing">{{ player.class_standing }}</td>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="weight_pounds">{{ player.weight_pounds }}</td>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
-                                </td>
-                                <td class="editable" data-id="{{ player.id }}" data-type="major">{{ player.major }}</td>
-                                <td class="editable" data-id="{{ player.id }}"
-                                    data-type="hometown">{{ player.hometown }}</td>
-                                <td>
-                                    <a href="/edit-player/{{ player.id }}" class="btn btn-success btn-sm"><span
-                                            class="glyphicon glyphicon-pencil"></span></a>
-                                    <a href="/delete-player/{{ player.id }}" class="btn btn-danger btn-sm"><span
-                                            class="glyphicon glyphicon-trash"></span></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
                 </div>
-            </div>
-            <button class="btn btn-primary btn-lg" id="buttonElement">Add Player</button>
-            <div id="modalElement" class="modal">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 style="text-align: center;">Add Player</h2>
+            {% else %}
+                <div class="row">
+                    <p><b>School</b>: {{ roster.school }}</p>
+                    <p><b>Team Name</b>: {{ roster.team_name }}</p>
+                    <div class="col-lg-8">
+                        <h1 class="bg_black">Players</h1>
+                        <div class="rosterScroll">
+                            <table class="table table-bordered table-light table-striped">
+                                <tr>
+                                    <th>Profile</th>
+                                    <th>Player #</th>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Class</th>
+                                    <th>Weight (lbs)</th>
+                                    <th>Height (ft in)</th>
+                                    <th>Major</th>
+                                    <th>Hometown</th>
+                                    <th>Action</th>
+                                </tr>
+                                {% for player in players %}
+                                    <tr>
+                                        <td><img src="{{ MEDIA_URL }}{{ player.profile_image }}"
+                                                 style="width:200px;height:250px"></td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="player_number">{{ player.player_number }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="name">{{ player.first_name }} {{ player.last_name }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="position">{{ player.position }}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="class_standing">{{ player.class_standing|default:"N/A"}}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="weight_pounds">{{ player.weight_pounds|default:"N/A"}}</td>
+                                        {% if player.height_feet == None or player.height_inches == None %}
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="height">N/A
+                                        </td>
+                                        {% else %}
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
+                                        </td>
+                                        {% endif %}
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="major">{{ player.major|default:"N/A"}}</td>
+                                        <td class="editable" data-id="{{ player.id }}"
+                                            data-type="hometown">{{ player.hometown|default:"N/A"}}</td>
+                                        <td>
+                                            <a href="/edit-player/{{ player.id }}" class="btn btn-success btn-sm"><span
+                                                    class="glyphicon glyphicon-pencil"></span></a>
+                                            <a href="/delete-player/{{ player.id }}" class="btn btn-danger btn-sm"><span
+                                                    class="glyphicon glyphicon-trash"></span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <button class="btn btn-primary btn-lg" id="buttonElement">Add Player</button>
                     </div>
-                    <form action="" method="GET">
-                        {{ form|crispy }}
-                        <input class="btn btn-primary btn-lg" type="submit" id="" value="Add">
-                        <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
-                    </form>
+
+                    <div class="col-lg-4">
+                        <h1 class="bg_black">Starting Lineup</h1>
+                        <div class="rosterScroll">
+                            <table class="table table-bordered table-light table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Player #</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if starting_lineup != None %}
+                                    <tr>
+                                        <td>{{ starting_lineup.attacker_1.last_name }}, {{ starting_lineup.attacker_1.first_name }}</td>
+                                        <td>{{ starting_lineup.attacker_1.position }}</td>
+                                        <td>{{ starting_lineup.attacker_1.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.attacker_2.last_name }}, {{ starting_lineup.attacker_2.first_name }}</td>
+                                        <td>{{ starting_lineup.attacker_2.position }}</td>
+                                        <td>{{ starting_lineup.attacker_2.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.attacker_3.last_name }}, {{ starting_lineup.attacker_3.first_name }}</td>
+                                        <td>{{ starting_lineup.attacker_3.position }}</td>
+                                        <td>{{ starting_lineup.attacker_3.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.midfielder_1.last_name }}, {{ starting_lineup.midfielder_1.first_name }}</td>
+                                        <td>{{ starting_lineup.midfielder_1.position }}</td>
+                                        <td>{{ starting_lineup.midfielder_1.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.midfielder_2.last_name }}, {{ starting_lineup.midfielder_2.first_name }}</td>
+                                        <td>{{ starting_lineup.midfielder_2.position }}</td>
+                                        <td>{{ starting_lineup.midfielder_2.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.midfielder_3.last_name }}, {{ starting_lineup.midfielder_3.first_name }}</td>
+                                        <td>{{ starting_lineup.midfielder_3.position }}</td>
+                                        <td>{{ starting_lineup.midfielder_3.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.defender_1.last_name }}, {{ starting_lineup.defender_1.first_name }}</td>
+                                        <td>{{ starting_lineup.defender_1.position }}</td>
+                                        <td>{{ starting_lineup.defender_1.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.defender_2.last_name }}, {{ starting_lineup.defender_2.first_name }}</td>
+                                        <td>{{ starting_lineup.defender_2.position }}</td>
+                                        <td>{{ starting_lineup.defender_2.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.defender_3.last_name }}, {{ starting_lineup.defender_3.first_name }}</td>
+                                        <td>{{ starting_lineup.defender_3.position }}</td>
+                                        <td>{{ starting_lineup.defender_3.player_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ starting_lineup.goalie.last_name }}, {{ starting_lineup.goalie.first_name }}</td>
+                                        <td>{{ starting_lineup.goalie.position }}</td>
+                                        <td>{{ starting_lineup.goalie.player_number }}</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if is_error == True %}
+                            <p style="color: red; font-size: 20px;">
+                                Could not edit starting lineup: invalid amount of players selected.
+                                Please try again.
+                            </p>
+                        {% endif %}
+                        <button class="btn btn-primary btn-lg" onclick="editStartingLineup()">Edit Starting Lineup
+                        </button>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+                </div>
+
+                <div id="modalElement" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 style="text-align: center;">Add Player</h2>
+                        </div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ player_entry_form|crispy }}
+                            <input class="btn btn-primary btn-lg" type="submit" id="" value="Add">
+                            <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+                        </form>
+                    </div>
+                </div>
+
+                <div id="startingLineupModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 style="text-align: center;">Starting Lineup</h2>
+                        </div>
+                        <form action="" method="GET">
+                            {{ starting_lineup_form|crispy }}
+                            <input class="btn btn-primary btn-lg" type="submit" id="" value="Edit">
+                            <input class="btn btn-danger btn-lg" onclick="cancelStartingLineup()" type="button" id=""
+                                   value="Cancel">
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
 {% endblock %}
 
 
@@ -95,15 +213,14 @@
         var buttonElement = document.getElementById("buttonElement");
         var cancelButton = document.getElementById("cancelButton");
         var span = document.getElementsByClassName("close")[0];
+
+        var startingLineupModal = document.getElementById("startingLineupModal");
+        var startingLineupCancelButton = document.getElementById("startingLineupCancelButton");
         // When the user clicks on the button, open the modal
         buttonElement.onclick = function () {
             modalElement.style.display = "block";
         }
         cancelButton.onclick = function () {
-            modalElement.style.display = "none";
-        }
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
             modalElement.style.display = "none";
         }
         // When the user clicks anywhere outside of the modal, close it
@@ -113,54 +230,12 @@
             }
         }
 
-        // {#$(document).ready(function() {#}
-        // {#    $(document).on("dblclick", ".editable", function(){#}
-        // {#        var value = $(this).text();#}
-        // {#        var data_type = $(this).data("type");#}
-        // {#        var input_type = "text";#}
-        // {#        var input = "<input type='" + input_type + "' class='input-data' value='" + value + "' class='form-control'>";#}
-        // {#        $(this).html(input);#}
-        // {#        $(this).removeClass("editable")#}
-        // {#    });#}
-        // {##}
-        // {#    {% comment %} $(document).on("blur", ".input-data", function(){#}
-        // {#        var value = $(this).val();#}
-        // {#        var td = $(this).parent("td");#}
-        // {#        $(this).remove();#}
-        // {#        td.html(value);#}
-        // {#        td.addClass("editable");#}
-        // {#        var type = td.data("type");#}
-        // {#        sendToServer(td.data("id"), value, type);#}
-        // {#    }); {% endcomment %}#}
-        // {#    $(document).on("keypress", ".input-data", function(e){#}
-        // {#        var key = e.which;#}
-        // {#        if (key === 13) {#}
-        // {#            var value = $(this).val();#}
-        // {#            var td = $(this).parent("td");#}
-        // {#            $(this).remove();#}
-        // {#            td.html(value);#}
-        // {#            td.addClass("editable");#}
-        // {#           var type = td.data("type");#}
-        // {#           sendToServer(td.data("id"), value,type);#}
-        // {#        }#}
-        // {#    });#}
-        // {##}
-        // {#    function sendToServer(id, value, type) {#}
-        // {#        console.log(id);#}
-        // {#        console.log(value);#}
-        // {#        console.log(type);#}
-        // {#        $.ajax({#}
-        // {#            url: "http://127.0.0.1:8000/update-player/",#}
-        // {#            type: "GET",#}
-        // {#            data: {id: id, type: type, value: value},#}
-        // {#        })#}
-        // {#        .done(function(response) {#}
-        // {#            console.log(response);#}
-        // {#        })#}
-        // {#        .fail(function() {#}
-        // {#           console.log("Error Occured");#}
-        // {#        });#}
-        // {##}
-        // {#    }#}
+        function editStartingLineup() {
+            startingLineupModal.style.display = "block";
+        }
+
+        function cancelStartingLineup() {
+            startingLineupModal.style.display = "none";
+        }
     </script>
 {% endblock custom_js %}

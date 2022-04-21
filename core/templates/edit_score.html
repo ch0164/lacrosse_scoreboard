@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Edit Player{% endblock title %}
+{% block title %}Edit Running Score{% endblock title %}
 
 
 {% block content %}
@@ -9,13 +9,13 @@
 <div class="container">
     <div id="content" name="content" class="register">
         <div class="custom-block col-md-8 col-sm-8">
-            <h1 class="bg_black">Edit Player</h1>
+            <h1 class="bg_black">Edit Running Score</h1>
             <hr class="ml-auto mr-auto mt-auto mb-auto">
-            <form method="POST" class="form-group" action="/edit-player/{{id}}/" enctype="multipart/form-data">
+            <form method="POST" class="form-group" action="/edit-score/{{id}}/">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" class="btn btn-success">Save Changes</button>
-                <a href="/roster/" class="btn btn-danger">Discard Changes</a>
+                <a href="/edit-scorebook/" class="btn btn-danger">Discard Changes</a>
             </form>
         </div>
     </div>
