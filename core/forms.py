@@ -5,17 +5,18 @@ from core.models import Coach, Roster, StartingLineup
 
 
 class PlayerEntryForm(forms.Form):
+    profile_image = forms.ImageField(required=False)
     player_number = forms.IntegerField(min_value=0)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     position = forms.CharField(widget=forms.Select(choices=POSITION_CHOICES))
     class_standing = forms.CharField(
-        widget=forms.Select(choices=CLASS_STANDING_CHOICES))
-    weight_pounds = forms.IntegerField(min_value=0)
-    height_feet = forms.IntegerField(min_value=0)
-    height_inches = forms.IntegerField(min_value=0)
-    major = forms.CharField(max_length=100)
-    hometown = forms.CharField(max_length=100)
+        widget=forms.Select(choices=CLASS_STANDING_CHOICES), required=False)
+    weight_pounds = forms.IntegerField(min_value=0, required=False)
+    height_feet = forms.IntegerField(min_value=0, required=False)
+    height_inches = forms.IntegerField(min_value=0, required=False)
+    major = forms.CharField(max_length=100, required=False)
+    hometown = forms.CharField(max_length=100, required=False)
 
 
 class RosterEntryForm(forms.Form):
@@ -79,8 +80,8 @@ def starting_lineup_form_factory(request):
                     "You must select exactly three defensemen."))
             return defensemen
 
-    if request.method == "POST":
-        form = StartingLineupForm(request.POST)
+    if request.method == "GET":
+        form = StartingLineupForm(request.GET)
     else:
         form = StartingLineupForm()
 
@@ -89,7 +90,10 @@ def starting_lineup_form_factory(request):
 
 # Define Scorebook modal forms below.
 class CreateScorebookForm(forms.Form):
-    pass
+    home_school = forms.CharField(max_length=100)
+    home_team_name = forms.CharField(max_length=50)
+    visiting_school = forms.CharField(max_length=100)
+    visiting_team_name = forms.CharField(max_length=50)
     # time_created = forms.TimeField()
 
 
@@ -97,7 +101,7 @@ class ScorebookScoreForm(forms.Form):
     # time = forms.TimeField()
     quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
     goal_jersey = forms.IntegerField(min_value=0)
-    assist_jersey = forms.IntegerField(min_value=0)
+    assist_jersey = forms.IntegerField(min_value=0, required=False)
 
 
 # Abstract Penalty Form.

@@ -35,7 +35,10 @@ class PlayerStatistics(models.Model):
     ground_balls = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"S: {self.shots}, G: {self.goals}, A: {self.assists}, GB: {self.ground_balls}"
+        return f"I: {self.first_quarter}, II: {self.second_quarter}, " \
+               f"III: {self.third_quarter}, IV: {self.fourth_quarter}, " \
+               f"OT: {self.overtime}\n" \
+               f"S: {self.shots}, G: {self.goals}, A: {self.assists}, GB: {self.ground_balls}"
 
 
 class PlayerSaves(models.Model):
@@ -47,10 +50,16 @@ class PlayerSaves(models.Model):
     fourth_quarter = models.PositiveIntegerField(default=0)
     overtime = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return f"I: {self.first_quarter}, II: {self.second_quarter}, " \
+               f"III: {self.third_quarter}, IV: {self.fourth_quarter}, " \
+               f"OT: {self.overtime}"
+
 
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
+    profile_image = models.ImageField(upload_to="profile_pictures/", default="profile_pictures/default.jpg")
     player_number = models.PositiveIntegerField("Player Number", default=0)
     first_name = models.CharField("First Name", max_length=30, default="")
     last_name = models.CharField("Last Name", max_length=30, default="")
@@ -58,12 +67,12 @@ class Player(models.Model):
                                 choices=POSITION_CHOICES, default="ATT")
     class_standing = models.CharField("Class", max_length=2,
                                       choices=CLASS_STANDING_CHOICES,
-                                      default="FR")
-    weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0)
-    height_feet = models.PositiveIntegerField("Height (feet)", default=0)
-    height_inches = models.PositiveIntegerField("Height (inches)", default=0)
-    major = models.CharField("Major", max_length=100, default="")
-    hometown = models.CharField("Hometown", max_length=100, default="")
+                                      default="N/A")
+    weight_pounds = models.PositiveIntegerField("Weight (pounds)", default=0, blank=True, null=True)
+    height_feet = models.PositiveIntegerField("Height (feet)", default=0, blank=True, null=True)
+    height_inches = models.PositiveIntegerField("Height (inches)", default=0, blank=True, null=True)
+    major = models.CharField("Major", max_length=100, default="N/A", blank=True, null=True)
+    hometown = models.CharField("Hometown", max_length=100, default="N/A", blank=True, null=True)
     # Relationships
     team = models.ForeignKey(Roster,
                              on_delete=models.CASCADE,
@@ -216,7 +225,8 @@ class Score(models.Model):
     time = models.TimeField(auto_now=True)
     quarter = models.CharField(max_length=8, choices=QUARTERS, default="")
     goal_number = models.PositiveIntegerField("Goal Jersey", default=0)
-    assist_number = models.PositiveIntegerField("Assist Jersey", default=0)
+    assist_number = models.PositiveIntegerField("Assist Jersey", blank=True,
+                                                null=True)
     # Relationships
     home_score = models.ForeignKey(RunningScore,
                                    related_name="home",

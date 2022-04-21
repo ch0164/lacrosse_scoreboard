@@ -4,12 +4,17 @@
 {% block title %}Create Scorebook{% endblock %}
 
 {% block content %}
-<form action="" method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input class="btn btn-primary btn-lg" type="submit" value="Create">
-    <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
-</form>
+    <div class="container-fluid">
+        <div class="custom-block col-md-12 col-sm-12">
+            <h1 class="bg_black">Create Scorebook</h1>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input class="btn btn-primary btn-lg" type="submit" value="Create">
+                <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
+            </form>
+        </div>
+    </div>
 
 
 {% endblock %}

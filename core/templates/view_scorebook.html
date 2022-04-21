@@ -1,0 +1,543 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Scorebook{% endblock %}
+
+{% block custom_css %}
+    <style>
+        div.scrollWrapper {
+            height: 200px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+
+        div.rosterScroll {
+            height: 500px;
+            width: 100%;
+            overflow-y: scroll;
+        }
+    </style>
+{% endblock custom_css %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="bg_black">Game Information</h1>
+                <ul class="list-group" style="font-size: 30px;">
+                    <li class="list-group-item"><b>Home
+                        Team</b>: {{ scorebook.home_coach.roster.school }} {{ scorebook.home_coach.roster.team_name }}
+                    </li>
+                    <li class="list-group-item"><b>Visiting
+                        Team</b>: {{ scorebook.visiting_coach.roster.school }} {{ scorebook.visiting_coach.roster.team_name }}
+                    </li>
+                    <li class="list-group-item"><b>Final Score</b>:
+                        {% if scorebook.home_score > scorebook.visiting_score %}
+                            <span style="color:green;">
+                                        <b>{{ scorebook.home_score }}</b>
+                                    </span>
+                            ---
+                            <span style="color:red;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                        {% elif scorebook.home_score < scorebook.visiting_score %}
+                            <span style="color:red;">
+                                        <b>{{ scorebook.home_score }}</b>
+                                    </span>
+                            ---
+                            <span style="color:green;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                        {% else %}
+                            <span style="color:orange;">
+                                        <b>{{ scorebook.home_score }}</b>
+                                    </span>
+                            ---
+                            <span style="color:orange;">
+                                        <b>{{ scorebook.visiting_score }}</b>
+                                    </span>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="bg_black">
+                    <b>Home Running Scores</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-striped table-light table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                            <th>Goal #</th>
+                            <th>Assist #</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for score in scorebook.running_score.home.all %}
+                            <tr>
+                                <td>{{ score.time }}</td>
+                                <td>{{ score.quarter }}</td>
+                                <td>{{ score.goal_number }}</td>
+                                <td>{{ score.assist_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h1 class="bg_black">
+                    <b>Visiting Running Scores</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-striped table-light table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                            <th>Goal #</th>
+                            <th>Assist #</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for score in scorebook.running_score.visiting.all %}
+                            <tr>
+                                <td>{{ score.time }}</td>
+                                <td>{{ score.quarter }}</td>
+                                <td>{{ score.goal_number }}</td>
+                                <td>{{ score.assist_number }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Penalties</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>P/T</th>
+                            <th>#</th>
+                            <th>Infraction</th>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for penalty in scorebook.penalties.home.all %}
+                            <tr>
+                                {% if penalty.personal_foul == True %}
+                                    <td>P</td>
+                                {% else %}
+                                    <td>T</td>
+                                {% endif %}
+                                <td>{{ penalty.player_number }}</td>
+                                <td>{{ penalty.infraction }}</td>
+                                <td>{{ penalty.quarter }}</td>
+                                <td>{{ penalty.time }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Timeouts</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for timeout in scorebook.timeouts.home.all %}
+                            <tr>
+                                <td>{{ timeout.time }}</td>
+                                <td>{{ timeout.quarter }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Penalties</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>P/T</th>
+                            <th>#</th>
+                            <th>Infraction</th>
+                            <th>Qtr</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for penalty in scorebook.penalties.visiting.all %}
+                            <tr>
+                                {% if penalty.personal_foul == True %}
+                                    <td>P</td>
+                                {% else %}
+                                    <td>T</td>
+                                {% endif %}
+                                <td>{{ penalty.player_number }}</td>
+                                <td>{{ penalty.infraction }}</td>
+                                <td>{{ penalty.quarter }}</td>
+                                <td>{{ penalty.time }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Timeouts</b>
+                </h1>
+                <div class="scrollWrapper">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Qtr</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for timeout in scorebook.timeouts.visiting.all %}
+                            <tr>
+                                <td>{{ timeout.time }}</td>
+                                <td>{{ timeout.quarter }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="bg_black">
+                    <b>Home Roster</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Quarters</th>
+                            <th>Shots</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Ground Balls</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            <tr>
+                                <td>{{ player.player_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                <td>
+                                    <span class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox"
+                                               value="{{ player.statistics.first_quarter }}"
+                                               id="homeQ1Input{{ player.id }}" disabled>
+                                        <label class="form-check-label" for="homeQ1Input{{ player.id }}">I</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.second_quarter }}"
+                                                   id="homeQ2Input{{ player.id }}" disabled>
+                                            <label class="form-check-label" for="homeQ2Input{{ player.id }}">II</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.third_quarter }}"
+                                                   id="homeQ3Input{{ player.id }}" disabled>
+                                            <label class="form-check-label" for="homeQ3Input{{ player.id }}">III</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.fourth_quarter }}"
+                                                   id="homeQ4Input{{ player.id }}" disabled>
+                                            <label class="form-check-label" for="homeQ4Input{{ player.id }}">IV</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.overtime }}"
+                                                   id="homeOTInput{{ player.id }}" disabled>
+                                            <label class="form-check-label" for="homeOTInput{{ player.id }}">OT</label>
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ player.statistics.shots }}
+                                </td>
+                                <td>
+                                    {{ player.statistics.goals }}
+                                </td>
+                                <td>
+                                    {{ player.statistics.assists }}
+                                </td>
+                                <td>
+                                    {{ player.statistics.ground_balls }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Home Goalies & Saves</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.home_coach.roster.player_set.all %}
+                            {% if "G" in player.position %}
+                                <tr>
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.first_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.second_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.third_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.fourth_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.overtime }}
+                                    </td>
+                                    <td name="homeGoalInput"><b>0</b></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+                <h1 class="bg_black">
+                    <b>Visiting Roster</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Quarters</th>
+                            <th>Shots</th>
+                            <th>Goals</th>
+                            <th>Assists</th>
+                            <th>Ground Balls</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            <tr>
+                                <td>{{ player.player_number }}</td>
+                                <td>{{ player.position }}</td>
+                                <td>{{ player.last_name }}, {{ player.first_name }}</td>
+                                <td>
+                                    <span class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox"
+                                               value="{{ player.statistics.first_quarter }}"
+                                               id="visitingQ1Input{{ player.id }}" disabled>
+                                        <label class="form-check-label" for="visitingQ1Input{{ player.id }}">I</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.second_quarter }}"
+                                                   id="visitingQ2Input{{ player.id }}" disabled>
+                                            <label class="form-check-label"
+                                                   for="visitingQ2Input{{ player.id }}">II</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.third_quarter }}"
+                                                   id="visitingQ3Input{{ player.id }}" disabled>
+                                            <label class="form-check-label"
+                                                   for="visitingQ3Input{{ player.id }}">III</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.fourth_quarter }}"
+                                                   id="visitingQ4Input{{ player.id }}" disabled>
+                                            <label class="form-check-label"
+                                                   for="visitingQ4Input{{ player.id }}">IV</label>
+                                    </span>
+                                    <span class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox"
+                                                   value="{{ player.statistics.overtime }}"
+                                                   id="visitingOTInput{{ player.id }}" disabled>
+                                            <label class="form-check-label"
+                                                   for="visitingOTInput{{ player.id }}">OT</label>
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ player.statistics.shots }}
+                                </td>
+                                <td>
+                                    {{ player.statistics.goals }}
+                                </td>
+                                <td>
+                                    {{ player.statistics.assists }}
+                                </td>
+                                <td>
+                                    {{ player.statistics.ground_balls }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <h1 class="bg_black">
+                    <b>Visiting Goalies & Saves</b>
+                </h1>
+                <div class="rosterScroll">
+                    <table class="table table-light table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Q1</th>
+                            <th>Q2</th>
+                            <th>Q3</th>
+                            <th>Q4</th>
+                            <th>OT</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in scorebook.visiting_coach.roster.player_set.all %}
+                            <tr>
+                                {% if "G" in player.position %}
+                                    <td>
+                                        {{ player.player_number }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.first_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.second_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.third_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.fourth_quarter }}
+                                    </td>
+                                    <td>
+                                        {{ player.saves.overtime }}
+                                    </td>
+                                    <td name="visitingGoalInput"><b>0</b></td>
+                                    </tr>
+                                {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+
+        $(document).ready(function () {
+            /* Ensure goal totals are updated correctly. */
+            updateGoalTotals(null, null, null, false);
+
+            /* Check all the quarter checkboxes if they're selected. */
+            let checkboxes = Array.from(document.getElementsByClassName("form-check-input"));
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = checkbox.value === "True";
+                console.log(checkbox.checked);
+            })
+        });
+
+        /* Add home goalies' totals. */
+        function updateGoalTotals(playerId, quarter, goalInput, sendToServer) {
+            let goalTotals;
+            if (!sendToServer) {
+                goalTotals = [
+                    Array.from(document.getElementsByName("homeGoalInput")),
+                    Array.from(document.getElementsByName("visitingGoalInput"))
+                ].flat();
+                console.log(goalTotals);
+            } else {
+                goalTotals = document.getElementsByName(goalInput);
+            }
+            let quarterGoalsSaved = [];
+            goalTotals.forEach((total) => {
+                let row = total.parentNode;
+                let quarters = Array.from(row.children).slice(1, -1);
+                let totalGoalsSaved = 0;
+                quarters.forEach((quarter) => {
+                    console.log(quarter.innerHTML.trim());
+                    let goalsSaved = parseInt(quarter.innerHTML.trim());
+                    totalGoalsSaved += goalsSaved;
+                    quarterGoalsSaved.push(goalsSaved);
+                })
+                total.innerHTML = "<b>" + totalGoalsSaved + "</b>";
+            });
+        }
+
+    </script>
+{% endblock %}
