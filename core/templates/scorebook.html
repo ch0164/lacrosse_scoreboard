@@ -92,24 +92,24 @@
                     <div class="btn-group mr-2" role="group" aria-label="Second group">
                         <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
                                 data-toggle="tooltip"
-                                data-html="true" title="+5s">
+                                data-html="true" title="Add 5 Seconds">
                             <span class="glyphicon glyphicon-plus"></span> 5s
                         </button>
                         <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
                                 data-toggle="tooltip"
-                                title="-5s">
+                                title="Subtract 5 Seconds">
                             <span class="glyphicon glyphicon-minus"></span> 5s
                         </button>
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="Second group">
                         <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
                                 data-toggle="tooltip"
-                                data-html="true" title="+1m">
+                                data-html="true" title="Add 1 Minute">
                             <span class="glyphicon glyphicon-plus"></span> 1m
                         </button>
                         <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
                                 data-toggle="tooltip"
-                                title="-1m">
+                                title="Subtract 1 Minute">
                             <span class="glyphicon glyphicon-minus"></span> 1m
                         </button>
                     </div>
@@ -154,10 +154,12 @@
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
                                 <td>
-                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm">
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Score">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm">
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Delete Score">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -192,10 +194,12 @@
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
                                 <td>
-                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm">
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Score" >
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm">
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Delete Score">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -255,17 +259,21 @@
                                 <td>{{ penalty.time }}</td>
                                 <td>
                                     {% if penalty.personal_foul == True %}
-                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Edit Personal Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% else %}
-                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Edit Technical Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% endif %}
@@ -298,10 +306,12 @@
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
                                 <td>
-                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm">
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Timeout">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm">
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Timeout">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -360,17 +370,21 @@
                                 <td>{{ penalty.time }}</td>
                                 <td>
                                     {% if penalty.personal_foul == True %}
-                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Edit Personal Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% else %}
-                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm">
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Edit Technical Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                        data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% endif %}
@@ -402,10 +416,12 @@
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
                                 <td>
-                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm">
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Timeout">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm">
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Delete Timeout">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -511,10 +527,12 @@
                                            placeholder="0" value="{{ player.statistics.ground_balls }}">
                                 </td>
                                 <td>
-                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Player">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm">
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Delete Player">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -695,10 +713,12 @@
                                            placeholder="0" value="{{ player.statistics.ground_balls }}">
                                 </td>
                                 <td>
-                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm">
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Edit Player">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm">
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
+                                    data-html="true" title="Delete Player">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
