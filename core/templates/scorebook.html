@@ -85,7 +85,7 @@
                             <span class="glyphicon glyphicon-pause"></span>
                         </button>
                         <button id="stopTimerButton" type="button" class="btn btn-danger btn-lg" data-toggle="tooltip"
-                                data-html="true" title="Stop Timer" onclick="pauseTimer()">
+                                data-html="true" title="Stop Timer" onclick="clearTimer()">
                             <span class="glyphicon glyphicon-stop"></span>
                         </button>
                     </div>
@@ -116,7 +116,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+        <div class = "col-md-3">
                 <h1 class="bg_black">
                     <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg btn-block">Publish
                         Scorebook
@@ -124,9 +124,11 @@
                     <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg btn-block">&ensp;Clear
                         Scorebook&ensp;
                     </button>
-                    <button id="halftimeButton" type="button" class="btn btn-primary btn-lg btn-block">Game Statistics</button>
                 </h1>
-            </div>
+                <button id="gameStatsButton" type="button" class="btn btn-primary btn-lg btn-block">Game Statistics
+                </button>
+                <button id="runtimeButton" type="button" class="btn btn-primary btn-lg btn-block">Runtime
+                </button>
         </div>
 
         <div class="row">
@@ -976,7 +978,7 @@
         </div>
     </div>
 
-    <div id="halftimeModal" class="modal">
+    <div id="gameStatsModal" class="modal">
         <div class="modal-content">
             <div class="container-fluid">
                 <div class="row">
@@ -1024,7 +1026,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input class="btn btn-danger btn-lg" type="button" name="halftimeModalCancel" value="Cancel">
+                        <input class="btn btn-danger btn-lg" type="button" name="gameStatsModalCancel" value="Cancel">
                     </div>
                 </div>
             </div>
@@ -1074,8 +1076,8 @@
         let visitingAddPlayerButton = document.getElementById("visitingAddPlayerButton");
         let visitingImportLineupButton = document.getElementById("visitingImportLineupButton");
 
-        /* Define Halftime Button. */
-        let halftimeButton = document.getElementById("halftimeButton");
+        /* Define gameStats Button. */
+        let gameStatsButton = document.getElementById("gameStatsButton");
 
         /* Assign event handlers to all main view buttons to open corresponding modal. */
         let modalButtons = [
@@ -1086,7 +1088,8 @@
             homeTimeoutButton, visitingTimeoutButton,
             homeAddPlayerButton, homeImportLineupButton,
             visitingAddPlayerButton, visitingImportLineupButton,
-            halftimeButton
+            gameStatsButton,
+            runtimeButton
         ];
         modalButtons.forEach((button) => {
             let modalId = button.id.split("Button")[0] + "Modal";
@@ -1095,7 +1098,7 @@
                 let cancelButton = document.getElementsByName(modalId + "Cancel")[0];
 
                 /* If the game statistics button is clicked, update the tables with the top three players. */
-                if (modalId.includes("halftime")) {
+                if (modalId.includes("gameStats")) {
                     updateGameStatistics();
                 }
 
@@ -1308,6 +1311,10 @@
 
         function pauseTimer() {
             clearInterval(timerID);
+        }
+
+        function clearTimer() {
+            clearTimeout(timerID);
         }
 
     </script>
