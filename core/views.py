@@ -329,11 +329,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 # Add players from the lineup to the roster.
                 # Check if empty.
                 if not scorebook.home_coach.roster:
+                    print("NEW ROSTER")
                     roster = Roster()
                     roster.save()
 
                 # Otherwise, just use the Roster that the coach has.
                 else:
+                    print(scorebook.home_coach.roster)
+                    print("REUSED ROSTER")
                     roster = scorebook.home_coach.roster
 
                 players = [
@@ -347,10 +350,13 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     lineup.defender_2,
                     lineup.defender_3,
                     lineup.goalie,
-                ]
+                ] + list(lineup.substitutes.substitute_set.all())
                 for player in players:
                     player_copy = copy_player(player)
                     player_copy.team = roster
+                    if not player.substitute:
+                        player_copy.statistics.first_quarter = True
+                        player_copy.statistics.save()
                     player_copy.save()
 
                 # Overwrite the current roster with this new roster.
@@ -412,10 +418,13 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     lineup.defender_2,
                     lineup.defender_3,
                     lineup.goalie,
-                ]
+                ] + list(lineup.substitutes.substitute_set.all())
                 for player in players:
                     player_copy = copy_player(player)
                     player_copy.team = roster
+                    if not player.substitute:
+                        player_copy.statistics.first_quarter = True
+                        player_copy.statistics.save()
                     player_copy.save()
 
                 # Overwrite the current roster with this new roster.
@@ -831,8 +840,14 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                     defender_1=form.cleaned_data["defensemen"][0],
                     defender_2=form.cleaned_data["defensemen"][1],
                     defender_3=form.cleaned_data["defensemen"][2],
-                    goalie=form.cleaned_data["goalie"],
-                )
+                    goalie=form.cleaned_data["goalie"])
+                substitutes = Substitutes()
+                substitutes.save()
+                for player in list(form.cleaned_data["substitutes"]):
+                    player.substitute = substitutes
+                    player.save()
+
+                starting_lineup.substitutes = substitutes
                 starting_lineup.save()
                 coach.starting_lineup = starting_lineup
                 coach.save()

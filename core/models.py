@@ -56,6 +56,11 @@ class PlayerSaves(models.Model):
                f"OT: {self.overtime}"
 
 
+class Substitutes(models.Model):
+    # Attributes
+    id = models.AutoField(primary_key=True)
+
+
 class Player(models.Model):
     # Attributes
     id = models.AutoField(primary_key=True)
@@ -95,6 +100,13 @@ class Player(models.Model):
                               null=True,
                               blank=True,
                               default=None)
+    # Relationships
+    substitute = models.ForeignKey(Substitutes,
+                                   related_name="substitute_set",
+                                   on_delete=models.CASCADE,
+                                   null=True,
+                                   blank=True,
+                                   default=None)
 
     def __str__(self):
         return f"{self.last_name}, {self.first_name} (#{self.player_number})"
@@ -168,6 +180,12 @@ class StartingLineup(models.Model):
                                null=True,
                                blank=True,
                                default=None)
+    substitutes = models.ForeignKey(Substitutes,
+                                    related_name="substitutes",
+                                    on_delete=models.CASCADE,
+                                    null=True,
+                                    blank=True,
+                                    default=None)
 
     def __str__(self):
         return f"Head Coach: {self.coach_last_name}, {self.coach_first_name}\n" \

@@ -97,8 +97,8 @@
                     </div>
 
                     <div class="col-lg-4">
-                        <h1 class="bg_black">Starting Lineup</h1>
                         <div class="rosterScroll">
+                            <h1 class="bg_black">Starting Lineup</h1>
                             <table class="table table-bordered table-light table-striped">
                                 <thead>
                                 <tr>
@@ -159,6 +159,28 @@
                                         <td>{{ starting_lineup.goalie.position }}</td>
                                         <td>{{ starting_lineup.goalie.player_number }}</td>
                                     </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+
+                        <h1 class="bg_black">Substitutes</h1>
+                        <table class="table table-bordered table-light table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Player #</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if starting_lineup != None %}
+                                    {% for substitute in starting_lineup.substitutes.substitute_set.all %}
+                                    <tr>
+                                        <td>{{ substitute.last_name }}, {{ substitute.first_name }}</td>
+                                        <td>{{ substitute.position }}</td>
+                                        <td>{{ substitute.player_number }}</td>
+                                    </tr>
+                                    {% endfor %}
                                 {% endif %}
                                 </tbody>
                             </table>

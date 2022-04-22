@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="3f53a422-6eb7-4f4f-8252-f2f1af6dd0a3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/roster.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/roster.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/utilities.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -130,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650604565248</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fixed starting lineups and timeouts bugs.">
+      <created>1650611926264</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1650611926264</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +165,7 @@
     <MESSAGE value="Visiting running score form and checking that goal/assist jerseys are unique" />
     <MESSAGE value="Finished validation for the remaining forms; also validating edit forms." />
     <MESSAGE value="Deleting database" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleting database" />
+    <MESSAGE value="Fixed starting lineups and timeouts bugs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed starting lineups and timeouts bugs." />
   </component>
 </project>

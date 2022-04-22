@@ -87,6 +87,7 @@ def starting_lineup_form_factory(request, default=False):
                                                     help_text="Select 3 Defensemen")
         goalie = forms.ModelChoiceField(widget=forms.Select,
                                         queryset=goalie_set)
+        forms.CharField(widget=forms.HiddenInput(), required=False)
 
         def clean_attackmen(self):
             attackmen = self.cleaned_data["attackmen"]
@@ -111,6 +112,18 @@ def starting_lineup_form_factory(request, default=False):
                     self.add_error("defensemen", forms.ValidationError(
                         "You must select exactly three defensemen."))
                 return defensemen
+
+        def clean(self):
+            # Populate the list of substitutes players with those remaining.
+            cleaned_data = super().clean()
+            attackmen = list(self.cleaned_data["attackmen"])
+            midfielders = list(self.cleaned_data["midfielders"])
+            defensemen = list(self.cleaned_data["defensemen"])
+            goalie = [self.cleaned_data["goalie"]]
+            starting_players = attackmen + midfielders + defensemen + goalie
+            cleaned_data["substitutes"] = [player for player in player_set if player not in starting_players]
+
+            return cleaned_data
 
     if default:
         form = StartingLineupForm()

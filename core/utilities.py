@@ -37,6 +37,8 @@ def copy_player(player: Player) -> Player:
     statistics.save()
     saves = PlayerSaves()
     saves.save()
+    substitutes = Substitutes()
+    substitutes.save()
     return Player(profile_image=player.profile_image,
                   player_number=player.player_number,
                   first_name=player.first_name,
@@ -50,4 +52,6 @@ def copy_player(player: Player) -> Player:
                   hometown=player.hometown,
                   team=player.team,
                   statistics=statistics,
-                  saves=saves)
+                  saves=saves,
+                  substitute=substitutes
+                  )
