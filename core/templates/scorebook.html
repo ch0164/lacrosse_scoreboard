@@ -79,7 +79,7 @@
                 <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group mr-2" role="group" aria-label="First group">
                         <button id="startTimerButton" type="button" class="btn btn-success btn-lg" data-toggle="tooltip"
-                                data-html="true" title="Start Timer">
+                                data-html="true" title="Start Timer" onclick="startButton()">
                             <span class="glyphicon glyphicon-play"></span>
                         </button>
                         <button id="pauseTimerButton" type="button" class="btn btn-primary btn-lg" data-toggle="tooltip"
@@ -93,13 +93,11 @@
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="Second group">
                         <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
-                                data-toggle="tooltip"
-                                data-html="true" title="Add 5 Seconds">
+                                data-toggle="tooltip" data-html="true" title="Add 5 Seconds" onclick="incrementTimer5s()">
                             <span class="glyphicon glyphicon-plus"></span> 5s
                         </button>
                         <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
-                                data-toggle="tooltip"
-                                title="Subtract 5 Seconds">
+                                data-toggle="tooltip" title="Subtract 5 Seconds" onclick="decrementTimer5s()">
                             <span class="glyphicon glyphicon-minus"></span> 5s
                         </button>
                     </div>
@@ -1284,7 +1282,7 @@
         //Refresh Handled Timer
         var timerID;
 
-        function startTimer(duration, display) {
+         function startTimer(duration, display) {
             var timer = duration, minutes, seconds;
             timerID = setInterval(function load() {
                 minutes = parseInt(timer / 60, 10)
@@ -1306,11 +1304,11 @@
         //onload - object has been loaded or created
         window.onload = function load() {
             let sixtyMinutes;
-            sec = parseInt(window.localStorage.getItem("seconds"))
-            min = parseInt(window.localStorage.getItem("minutes"))
+            seconds = parseInt(window.localStorage.getItem("seconds"))
+            minutes = parseInt(window.localStorage.getItem("minutes"))
 
-            if (parseInt(min * sec)) {
-                sixtyMinutes = (parseInt(min * 60) + sec);
+            if (parseInt(minutes * seconds)) {
+                sixtyMinutes = (parseInt(minutes * 60) + seconds);
             } else {
                 sixtyMinutes = 60 * 60;
             }
@@ -1324,12 +1322,62 @@
             clearInterval(timerID);
         }
 
+        function startButton() {
+            let sixtyMinutes;
+            seconds = parseInt(window.localStorage.getItem("seconds"))
+            minutes = parseInt(window.localStorage.getItem("minutes"))
+
+            if (parseInt(minutes * seconds)) {
+                sixtyMinutes = (parseInt(minutes * 60) + seconds);
+            } else {
+                sixtyMinutes = 60 * 60;
+            }
+            //var sixtyMinutes = 60 * 60;
+            let display = document.querySelector('#countdown');
+            startTimer(sixtyMinutes, display);
+        }
+
         function clearTimer() {
-            clearTimeout(timerID);
-            minutes = 0;
-            seconds = 0;
-            setInterval();
+            clearInterval(timerID);
+            localStorage.clear();
+            window.localStorage.setItem('seconds','0')
+            window.localStorage.setItem('minutes','0')
+            //seconds = parseInt(window.localStorage.getItem("seconds"))
+            //minutes = parseInt(window.localStorage.getItem("minutes"))
             
+
+        }
+
+            function incrementTimer5s() {
+            add5s = parseInt(window.localStorage.getItem("seconds")) + 5
+            window.localStorage.setItem('seconds', add5s)
+            window.localStorage.setItem('minutes','0')
+
+
+        }
+
+            function decrementTimer5s() {
+            sub5s = parseInt(window.localStorage.getItem("seconds")) - 5
+            window.localStorage.setItem('seconds', sub5s)
+            window.localStorage.setItem('minutes','0')
+
+
+        }
+
+            function incrementTimer1m() {
+            localStorage.clear();
+            window.localStorage.setItem('seconds','0')
+            window.localStorage.setItem('minutes','0')
+
+
+
+        }
+
+            function decrementTimer1m() {
+            clearInterval(timerID);
+            window.localStorage.setItem('seconds','0')
+            window.localStorage.setItem('minutes','minutes + 1')
+
 
         }
 
