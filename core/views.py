@@ -10,12 +10,6 @@ from core.utilities import copy_player
 
 scorebook_context = {
     "scorebook": None,
-    "personal_foul_form": ScorebookPersonalFoulForm(),
-    "technical_foul_form": ScorebookTechnicalFoulForm(),
-    "timeout_form": ScorebookTimeoutForm(),
-    "home_penalties_form": ScorebookPenaltyForm(),
-    "visiting_penalties_form": ScorebookPenaltyForm(),
-    "add_player_form": ScorebookPlayerForm(),
     "import_lineup_form": ScorebookImportLineup(),
 }
 
@@ -149,7 +143,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected the home team's personal fouls.
         if "homePersonalFoulModal" in str(request.POST):
-            home_personal_foul_form = ScorebookPersonalFoulForm(request.POST)
+            home_personal_foul_form = penalty_form_factory(request, scorebook,
+                                                           True)
             if home_personal_foul_form.is_valid():
                 time = datetime.timedelta(
                     minutes=home_personal_foul_form.cleaned_data["minutes"],
@@ -166,8 +161,16 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 penalty.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
-        elif "homeTechnicalFoulModal" in str(request.POST):
-            home_technical_foul_form = ScorebookPersonalFoulForm(request.POST)
+            scorebook_context[
+                "home_personal_foul_form"] = home_personal_foul_form
+        else:
+            scorebook_context[
+                "home_personal_foul_form"] = ScorebookPersonalFoulForm()
+
+        # User selected the home team's technical fouls.
+        if "homeTechnicalFoulModal" in str(request.POST):
+            home_technical_foul_form = penalty_form_factory(request, scorebook,
+                                                            False)
             if home_technical_foul_form.is_valid():
                 time = datetime.timedelta(
                     minutes=home_technical_foul_form.cleaned_data["minutes"],
@@ -184,9 +187,16 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 penalty.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
-        elif "visitingPersonalFoulModal" in str(request.POST):
-            visiting_personal_foul_form = ScorebookPersonalFoulForm(
-                request.POST)
+            scorebook_context[
+                "home_technical_foul_form"] = home_technical_foul_form
+        else:
+            scorebook_context[
+                "home_technical_foul_form"] = ScorebookTechnicalFoulForm()
+
+        # User selected the visiting team's personal fouls.
+        if "visitingPersonalFoulModal" in str(request.POST):
+            visiting_personal_foul_form = penalty_form_factory(request,
+                                                               scorebook, True)
             if visiting_personal_foul_form.is_valid():
                 time = datetime.timedelta(
                     minutes=visiting_personal_foul_form.cleaned_data["minutes"],
@@ -203,9 +213,17 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 penalty.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
-        elif "visitingTechnicalFoulModal" in str(request.POST):
-            visiting_technical_foul_form = ScorebookPersonalFoulForm(
-                request.POST)
+            scorebook_context[
+                "visiting_personal_foul_form"] = visiting_personal_foul_form
+        else:
+            scorebook_context[
+                "visiting_personal_foul_form"] = ScorebookPersonalFoulForm()
+
+        # User selected the visiting team's technical fouls.
+        if "visitingTechnicalFoulModal" in str(request.POST):
+            visiting_technical_foul_form = penalty_form_factory(request,
+                                                                scorebook,
+                                                                False)
             if visiting_technical_foul_form.is_valid():
                 time = datetime.timedelta(
                     minutes=visiting_technical_foul_form.cleaned_data[
@@ -224,9 +242,15 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 penalty.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
+            scorebook_context[
+                "visiting_technical_foul_form"] = visiting_technical_foul_form
+        else:
+            scorebook_context[
+                "visiting_technical_foul_form"] = ScorebookTechnicalFoulForm()
+
         # User selected to call a timeout for the home team.
-        elif "homeTimeoutModal" in str(request.POST):
-            home_timeout_form = ScorebookTimeoutForm(request.POST)
+        if "homeTimeoutModal" in str(request.POST):
+            home_timeout_form = timeout_form_factory(request, scorebook)
             if home_timeout_form.is_valid():
                 time = datetime.timedelta(
                     minutes=home_timeout_form.cleaned_data["minutes"],
@@ -238,9 +262,15 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 timeout.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
+            scorebook_context[
+                "home_timeout_form"] = home_timeout_form
+        else:
+            scorebook_context[
+                "home_timeout_form"] = ScorebookTimeoutForm()
+
         # User selected to call a timeout for the home team.
-        elif "visitingTimeoutModal" in str(request.POST):
-            visiting_timeout_form = ScorebookTimeoutForm(request.POST)
+        if "visitingTimeoutModal" in str(request.POST):
+            visiting_timeout_form = timeout_form_factory(request, scorebook)
             if visiting_timeout_form.is_valid():
                 time = datetime.timedelta(
                     minutes=visiting_timeout_form.cleaned_data["minutes"],
@@ -252,8 +282,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 timeout.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
-        elif "homeAddPlayerModal" in str(request.POST):
-            home_add_player_form = ScorebookPlayerForm(request.POST)
+            scorebook_context[
+                "visiting_timeout_form"] = visiting_timeout_form
+        else:
+            scorebook_context[
+                "visiting_timeout_form"] = ScorebookTimeoutForm()
+
+        if "homeAddPlayerModal" in str(request.POST):
+            home_add_player_form = player_form_factory(request, scorebook)
             if home_add_player_form.is_valid():
                 statistics = PlayerStatistics()
                 statistics.save()
@@ -275,8 +311,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
+            scorebook_context[
+                "home_add_player_form"] = home_add_player_form
+        else:
+            scorebook_context[
+                "home_add_player_form"] = ScorebookPlayerForm()
+
         # User selected a roster for the home team.
-        elif "homeImportLineupModal" in str(request.POST):
+        if "homeImportLineupModal" in str(request.POST):
             home_import_lineup_form = ScorebookImportLineup(request.POST)
             if home_import_lineup_form.is_valid():
                 lineup = home_import_lineup_form.cleaned_data["lineup"]
@@ -312,8 +354,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 scorebook.home_coach.save()
                 return HttpResponseRedirect('/edit-scorebook/')
 
-        elif "visitingAddPlayerModal" in str(request.POST):
-            visiting_add_player_form = ScorebookPlayerForm(request.POST)
+        if "visitingAddPlayerModal" in str(request.POST):
+            visiting_add_player_form = player_form_factory(request, scorebook)
             if visiting_add_player_form.is_valid():
                 statistics = PlayerStatistics()
                 statistics.save()
@@ -336,8 +378,14 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
+            scorebook_context[
+                "visiting_add_player_form"] = visiting_add_player_form
+        else:
+            scorebook_context[
+                "visiting_add_player_form"] = ScorebookPlayerForm()
+
         # User selected a lineup for the visiting team.
-        elif "visitingImportLineupModal" in str(request.POST):
+        if "visitingImportLineupModal" in str(request.POST):
             visiting_import_lineup_form = ScorebookImportLineup(request.POST)
             if visiting_import_lineup_form.is_valid():
                 lineup = visiting_import_lineup_form.cleaned_data["lineup"]
@@ -408,7 +456,23 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         scorebook_context["home_running_score_form"] = ScorebookScoreForm()
         scorebook_context["visiting_running_score_form"] = ScorebookScoreForm()
 
+        scorebook_context[
+            "home_personal_foul_form"] = ScorebookPersonalFoulForm()
+        scorebook_context[
+            "home_technical_foul_form"] = ScorebookTechnicalFoulForm()
+        scorebook_context[
+            "visiting_personal_foul_form"] = ScorebookPersonalFoulForm()
+        scorebook_context[
+            "visiting_technical_foul_form"] = ScorebookTechnicalFoulForm()
+
+        scorebook_context["home_timeout_form"] = ScorebookTimeoutForm()
+        scorebook_context["visiting_timeout_form"] = ScorebookTimeoutForm()
+
+        scorebook_context["home_add_player_form"] = ScorebookPlayerForm()
+        scorebook_context["visiting_add_player_form"] = ScorebookPlayerForm()
+
     scorebook_context["scorebook"] = scorebook
+    print(scorebook_context)
     return render(request, "scorebook.html", scorebook_context)
 
 
@@ -470,6 +534,8 @@ def update_stats(request: HttpRequest) -> HttpResponse:
 def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
     score = Score.objects.get(id=score_id)
     initial = {
+        "minutes": score.time.seconds // 60,
+        "seconds": score.time.seconds % 60,
         "quarter": score.quarter,
         "goal_jersey": score.goal_number,
         "assist_jersey": score.assist_number,
@@ -481,15 +547,19 @@ def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
 
     if score is not None:
         if request.method == "POST":
-            form = running_score_form_factory(request, scorebook)
+            form = running_score_form_factory(request, roster=roster)
             if form.is_valid():
+                time = datetime.timedelta(minutes=form.cleaned_data["minutes"],
+                                          seconds=form.cleaned_data["seconds"])
+                score.time = time
                 score.quarter = form.cleaned_data.get("quarter")
                 score.goal_number = form.cleaned_data.get("goal_jersey")
                 score.assist_number = form.cleaned_data.get("assist_jersey")
                 score.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = running_score_form_factory(request, scorebook, initial=initial)
+        form = running_score_form_factory(request, roster=roster,
+                                          initial=initial)
         return render(request, "edit_score.html",
                       {"form": form, "id": score.id})
     else:
@@ -501,22 +571,33 @@ def scorebook_edit_personal_foul(request: HttpRequest,
                                  penalty_id: int) -> HttpResponse:
     penalty = Penalty.objects.get(id=penalty_id)
     initial = {
+        "minutes": penalty.time.seconds // 60,
+        "seconds": penalty.time.seconds % 60,
         "player_number": penalty.player_number,
         "infraction": penalty.infraction,
         "quarter": penalty.quarter,
     }
+    if penalty.home_penalties:
+        roster = scorebook.home_coach.roster
+    else:
+        roster = scorebook.visiting_coach.roster
 
     if penalty is not None:
         if request.method == "POST":
-            form = ScorebookPersonalFoulForm(request.POST)
+            form = penalty_form_factory(request, is_personal=True,
+                                        roster=roster)
             if form.is_valid():
+                time = datetime.timedelta(minutes=form.cleaned_data["minutes"],
+                                          seconds=form.cleaned_data["seconds"])
+                penalty.time = time
                 penalty.player_number = form.cleaned_data.get("player_number")
                 penalty.infraction = form.cleaned_data.get("infraction")
                 penalty.quarter = form.cleaned_data.get("quarter")
                 penalty.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = ScorebookPersonalFoulForm(initial=initial)
+        form = penalty_form_factory(request, is_personal=True, roster=roster,
+                                    initial=initial)
         return render(request, "edit_personal_foul.html",
                       {"form": form, "id": penalty.id})
     else:
@@ -528,14 +609,21 @@ def scorebook_edit_technical_foul(request: HttpRequest,
                                   penalty_id: int) -> HttpResponse:
     penalty = Penalty.objects.get(id=penalty_id)
     initial = {
+        "minutes": penalty.time.seconds // 60,
+        "seconds": penalty.time.seconds % 60,
         "player_number": penalty.player_number,
         "infraction": penalty.infraction,
         "quarter": penalty.quarter,
     }
+    if penalty.home_penalties:
+        roster = scorebook.home_coach.roster
+    else:
+        roster = scorebook.visiting_coach.roster
 
     if penalty is not None:
         if request.method == "POST":
-            form = ScorebookTechnicalFoulForm(request.POST)
+            form = penalty_form_factory(request, is_personal=False,
+                                        roster=roster)
             if form.is_valid():
                 penalty.player_number = form.cleaned_data.get("player_number")
                 penalty.infraction = form.cleaned_data.get("infraction")
@@ -543,7 +631,8 @@ def scorebook_edit_technical_foul(request: HttpRequest,
                 penalty.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = ScorebookTechnicalFoulForm(initial=initial)
+        form = penalty_form_factory(request, is_personal=False, roster=roster,
+                                    initial=initial)
         return render(request, "edit_technical_foul.html",
                       {"form": form, "id": penalty.id})
     else:
@@ -555,18 +644,23 @@ def scorebook_edit_timeout(request: HttpRequest,
                            timeout_id: int) -> HttpResponse:
     timeout = Timeout.objects.get(id=timeout_id)
     initial = {
+        "minutes": timeout.time.seconds // 60,
+        "seconds": timeout.time.seconds % 60,
         "quarter": timeout.quarter,
     }
 
     if timeout is not None:
         if request.method == "POST":
-            form = ScorebookTimeoutForm(request.POST)
+            form = timeout_form_factory(request, scorebook=scorebook)
             if form.is_valid():
+                time = datetime.timedelta(minutes=form.cleaned_data["minutes"],
+                                          seconds=form.cleaned_data["seconds"])
+                timeout.time = time
                 timeout.quarter = form.cleaned_data.get("quarter")
                 timeout.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = ScorebookTimeoutForm(initial=initial)
+        form = timeout_form_factory(request, scorebook=scorebook, initial=initial)
         return render(request, "edit_timeout.html",
                       {"form": form, "id": timeout.id})
     else:
@@ -582,10 +676,11 @@ def scorebook_edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
         "last_name": player.last_name,
         "position": player.position,
     }
+    roster = player.team
 
     if player is not None:
         if request.method == "POST":
-            form = ScorebookPlayerForm(request.POST)
+            form = player_form_factory(request, roster=roster)
             if form.is_valid():
                 player.player_number = form.cleaned_data.get("player_number")
                 player.first_name = form.cleaned_data.get("first_name")
@@ -594,7 +689,7 @@ def scorebook_edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
                 player.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = ScorebookPlayerForm(initial=initial)
+        form = player_form_factory(request, roster=roster, initial=initial)
         return render(request, "edit_scorebook_player.html",
                       {"form": form, "id": player.id})
     else:
