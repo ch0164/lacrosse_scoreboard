@@ -1314,7 +1314,7 @@
             }
             //var sixtyMinutes = 60 * 60;
             display = document.querySelector('#countdown');
-            startTimer(sixtyMinutes, display);
+            startTimer(0, display);
         };
 
 
@@ -1334,14 +1334,14 @@
             }
             //var sixtyMinutes = 60 * 60;
             let display = document.querySelector('#countdown');
-            startTimer(sixtyMinutes, display);
+            startTimer(0, display);
         }
 
         function clearTimer() {
             clearInterval(timerID);
             localStorage.clear();
-            window.localStorage.setItem('seconds','0')
-            window.localStorage.setItem('minutes','0')
+            //window.localStorage.setItem('seconds','0')
+            //window.localStorage.setItem('minutes','0')
             //seconds = parseInt(window.localStorage.getItem("seconds"))
             //minutes = parseInt(window.localStorage.getItem("minutes"))
             
@@ -1349,8 +1349,9 @@
         }
 
             function incrementTimer5s() {
-            add5s = parseInt(window.localStorage.getItem("seconds")) + 5
-            window.localStorage.setItem('seconds', add5s)
+            secs = parseInt(window.localStorage.getItem("seconds"))
+            add5s = secs + 5
+            window.localStorage.setItem('seconds', 'add5s')
             window.localStorage.setItem('minutes','0')
 
 
@@ -1365,7 +1366,6 @@
         }
 
             function incrementTimer1m() {
-            localStorage.clear();
             window.localStorage.setItem('seconds','0')
             window.localStorage.setItem('minutes','0')
 
@@ -1374,7 +1374,6 @@
         }
 
             function decrementTimer1m() {
-            clearInterval(timerID);
             window.localStorage.setItem('seconds','0')
             window.localStorage.setItem('minutes','minutes + 1')
 
