@@ -28,7 +28,7 @@ def login(request: HttpRequest) -> HttpResponse:
 # Registration view is defined in user_registration/views.py.
 
 def view_scorebook(request: HttpRequest, scorebook_id: int) -> HttpResponse:
-    scorebook = Scorebook.objects.filter(id=scorebook_id)[0]
+    scorebook = Scorebook.objects.filter(id=scorebook_id).first()
     if scorebook is not None:
         return render(request, "view_scorebook.html", {"scorebook": scorebook})
     else:
@@ -250,7 +250,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected to call a timeout for the home team.
         if "homeTimeoutModal" in str(request.POST):
-            home_timeout_form = timeout_form_factory(request, scorebook)
+            home_timeout_form = timeout_form_factory(request, scorebook=scorebook)
             if home_timeout_form.is_valid():
                 time = datetime.timedelta(
                     minutes=home_timeout_form.cleaned_data["minutes"],
@@ -270,7 +270,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected to call a timeout for the home team.
         if "visitingTimeoutModal" in str(request.POST):
-            visiting_timeout_form = timeout_form_factory(request, scorebook)
+            visiting_timeout_form = timeout_form_factory(request, scorebook=scorebook)
             if visiting_timeout_form.is_valid():
                 time = datetime.timedelta(
                     minutes=visiting_timeout_form.cleaned_data["minutes"],
@@ -482,7 +482,7 @@ def update_stats(request: HttpRequest) -> HttpResponse:
     stat_type = str(request.GET["stat_type"])
 
     # Get player.
-    player = Player.objects.filter(id=player_id)[0]
+    player = Player.objects.filter(id=player_id).first()
 
     # Update corresponding statistic.
     if stat_type in "player_statistics":
@@ -648,10 +648,14 @@ def scorebook_edit_timeout(request: HttpRequest,
         "seconds": timeout.time.seconds % 60,
         "quarter": timeout.quarter,
     }
+    if timeout.home_timeouts:
+        timeouts = timeout.home_timeouts.home
+    else:
+        timeouts = timeout.visiting_timeouts.visiting
 
     if timeout is not None:
         if request.method == "POST":
-            form = timeout_form_factory(request, scorebook=scorebook)
+            form = timeout_form_factory(request, timeouts=timeouts)
             if form.is_valid():
                 time = datetime.timedelta(minutes=form.cleaned_data["minutes"],
                                           seconds=form.cleaned_data["seconds"])
@@ -660,7 +664,7 @@ def scorebook_edit_timeout(request: HttpRequest,
                 timeout.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = timeout_form_factory(request, scorebook=scorebook, initial=initial)
+        form = timeout_form_factory(request, timeouts=timeouts, initial=initial)
         return render(request, "edit_timeout.html",
                       {"form": form, "id": timeout.id})
     else:
@@ -698,7 +702,7 @@ def scorebook_edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
 
 @login_required
 def scorebook_delete_score(request: HttpRequest, score_id: int) -> HttpResponse:
-    score = Score.objects.filter(id=score_id)[0]
+    score = Score.objects.filter(id=score_id).first()
     if score is not None:
         score.delete()
         return HttpResponseRedirect("/edit-scorebook/")
@@ -709,7 +713,7 @@ def scorebook_delete_score(request: HttpRequest, score_id: int) -> HttpResponse:
 @login_required
 def scorebook_delete_penalty(request: HttpRequest,
                              penalty_id: int) -> HttpResponse:
-    penalty = Penalty.objects.filter(id=penalty_id)[0]
+    penalty = Penalty.objects.filter(id=penalty_id).first()
     if penalty is not None:
         penalty.delete()
         return HttpResponseRedirect("/edit-scorebook/")
@@ -720,7 +724,7 @@ def scorebook_delete_penalty(request: HttpRequest,
 @login_required
 def scorebook_delete_timeout(request: HttpRequest,
                              timeout_id: int) -> HttpResponse:
-    timeout = Timeout.objects.filter(id=timeout_id)[0]
+    timeout = Timeout.objects.filter(id=timeout_id).first()
     if timeout is not None:
         timeout.delete()
         return HttpResponseRedirect("/edit-scorebook/")
@@ -731,7 +735,7 @@ def scorebook_delete_timeout(request: HttpRequest,
 @login_required
 def scorebook_delete_player(request: HttpRequest,
                             player_id: int) -> HttpResponse:
-    player = Player.objects.filter(id=player_id)[0]
+    player = Player.objects.filter(id=player_id).first()
     if player is not None:
         player.delete()
         return HttpResponseRedirect("/edit-scorebook/")
@@ -745,7 +749,7 @@ def view_roster(request: HttpRequest) -> HttpResponse:
     is_error = False
 
     # Since usernames are unique, find the coach's data from the QuerySet.
-    coach = Coach.objects.filter(user=request.user)[0]
+    coach = Coach.objects.filter(user=request.user).first()
     # If the Coach is a new account with no established Roster, have them fill out some info first.
     if coach.roster is None:
         if request.method == "GET":
@@ -898,7 +902,7 @@ def edit_player(request: HttpRequest, player_id: int) -> HttpResponse:
 
 @login_required
 def delete_player(request: HttpRequest, player_id: int) -> HttpResponse:
-    player = Player.objects.filter(id=player_id)[0]
+    player = Player.objects.filter(id=player_id).first()
     if player is not None:
         player.delete()
         return HttpResponseRedirect("/roster/")
