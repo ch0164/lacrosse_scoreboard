@@ -1,7 +1,7 @@
 from django import forms
 
 from core.constants import *
-from core.models import Coach, Roster, StartingLineup
+from core.models import Coach, StartingLineup
 from core.utilities import populate_quarter
 
 
@@ -29,7 +29,7 @@ class RosterEntryForm(forms.Form):
 # the coach's roster.
 def starting_lineup_form_factory(request):
     # Get this coach user's roster.
-    coach = Coach.objects.filter(user=request.user)[0]
+    coach = Coach.objects.filter(user=request.user).first()
     roster = coach.roster
     player_set = roster.player_set.all()
 
@@ -136,15 +136,12 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
     class __ScorebookScoreForm(ScorebookScoreForm):
         def clean_goal_jersey(self):
             if self.cleaned_data["goal_jersey"] not in player_numbers:
-                print("GOAL JERSEY ERROR")
                 self.add_error("goal_jersey", forms.ValidationError(
                     "Goal jersey is not in the selected roster!"))
 
             if "goal_jersey" in self.cleaned_data:
                 player = roster.player_set.filter(
-                    player_number=self.cleaned_data["goal_jersey"])[0]
-                print("PLAYER STATS IS NONE", player.statistics is None)
-                print(player.statistics)
+                    player_number=self.cleaned_data["goal_jersey"]).first()
                 player.statistics.shots += 1
                 player.statistics.goals += 1
                 player.statistics.save()
@@ -157,14 +154,12 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
                 return
             else:
                 if self.cleaned_data["assist_jersey"] not in player_numbers:
-                    print(self.cleaned_data["assist_jersey"])
-                    print("ASSIST JERSEY ERROR")
                     self.add_error("assist_jersey", forms.ValidationError(
                         "Assist jersey is not in the selected roster!"))
 
                 if "assist_jersey" in self.cleaned_data:
                     player = roster.player_set.filter(
-                        player_number=self.cleaned_data["assist_jersey"])[0]
+                        player_number=self.cleaned_data["assist_jersey"]).first()
                     player.statistics.assists += 1
                     player.statistics.save()
                     return self.cleaned_data["assist_jersey"]
@@ -173,34 +168,32 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
 
         def clean(self):
             cleaned_data = super().clean()
-            print("CHILD CLEANED DATA", cleaned_data)
             if "goal_jersey" in cleaned_data and "assist_jersey" in cleaned_data:
                 if cleaned_data["assist_jersey"] == cleaned_data[
-                    "goal_jersey"] != None:
-                    print(cleaned_data["assist_jersey"],
-                          cleaned_data["goal_jersey"])
+                    "goal_jersey"] is not None:
                     self.add_error("assist_jersey", forms.ValidationError(
                         "The same player cannot be marked as the goal and assist jersey!"))
 
                 # Set quarter played.
                 players = [
                     roster.player_set.filter(
-                        player_number=self.cleaned_data["goal_jersey"])[0],
+                        player_number=self.cleaned_data["goal_jersey"]).first(),
                     roster.player_set.filter(
-                        player_number=self.cleaned_data["assist_jersey"])[0]
+                        player_number=self.cleaned_data["assist_jersey"]).first()
                 ]
                 for player in players:
-                    if cleaned_data["quarter"] == "I":
-                        player.statistics.first_quarter = True
-                    elif cleaned_data["quarter"] == "II":
-                        player.statistics.second_quarter = True
-                    elif cleaned_data["quarter"] == "III":
-                        player.statistics.third_quarter = True
-                    elif cleaned_data["quarter"] == "IV":
-                        player.statistics.fourth_quarter = True
-                    elif cleaned_data["quarter"] == "OT":
-                        player.statistics.overtime = True
-                    player.statistics.save()
+                    if player:
+                        if cleaned_data["quarter"] == "I":
+                            player.statistics.first_quarter = True
+                        elif cleaned_data["quarter"] == "II":
+                            player.statistics.second_quarter = True
+                        elif cleaned_data["quarter"] == "III":
+                            player.statistics.third_quarter = True
+                        elif cleaned_data["quarter"] == "IV":
+                            player.statistics.fourth_quarter = True
+                        elif cleaned_data["quarter"] == "OT":
+                            player.statistics.overtime = True
+                        player.statistics.save()
 
     # Return with the new form and pass it the POST request.
     return __ScorebookScoreForm(request.POST, **kwargs)
@@ -278,29 +271,26 @@ class ScorebookTimeoutForm(forms.Form):
     quarter = forms.CharField(widget=forms.HiddenInput(), required=False)
 
 
-def timeout_form_factory(request, scorebook=None, **kwargs):
+def timeout_form_factory(request, scorebook=None, timeouts=None, **kwargs):
     # If the user just lands on the page with a GET request, return an empty form.
     if request.method == "GET":
         return ScorebookTimeoutForm(**kwargs)
 
     # Parse the POST request to see if the home/visiting timeouts should be used.
-    if "home" in str(request.POST).lower():
-        timeouts = scorebook.timeouts.home
+    if timeouts:
+        timeouts = timeouts.iterator()
+    elif "home" in str(request.POST).lower():
+        timeouts = scorebook.timeouts.home.iterator()
     else:
-        timeouts = scorebook.timeouts.visiting
+        timeouts = scorebook.timeouts.visiting.iterator()
 
     # Determine how many timeouts have been made each half.
-    first_half = len([timeout for timeout in timeouts.iterator()
+    first_half = len([timeout for timeout in timeouts
                       if timeout.quarter == "I" or timeout.quarter == "II"])
-    second_half = len([timeout for timeout in timeouts.iterator()
+    second_half = len([timeout for timeout in timeouts
                        if timeout.quarter == "III" or timeout.quarter == "IV"])
-    overtime = len([timeout for timeout in timeouts.iterator()
+    overtime = len([timeout for timeout in timeouts
                     if timeout.quarter == "OT"])
-
-    print("HALVES")
-    print(first_half)
-    print(second_half)
-    print(overtime)
 
     class __ScorebookTimeoutForm(ScorebookTimeoutForm):
         def clean(self):
@@ -308,9 +298,7 @@ def timeout_form_factory(request, scorebook=None, **kwargs):
 
             cleaned_data = populate_quarter(cleaned_data)
 
-            print("QUARTER VALIDITY")
-            quarter = self.cleaned_data["quarter"]
-            print(quarter)
+            quarter = cleaned_data["quarter"]
 
             if quarter in ["I", "II"] and first_half >= 2:
                 self.add_error("minutes", forms.ValidationError(
