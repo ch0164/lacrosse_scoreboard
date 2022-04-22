@@ -79,11 +79,11 @@ def starting_lineup_form_factory(request, default=False):
     # A lacrosse team can only have ten players on the field.
     class StartingLineupForm(forms.Form):
         attackmen = forms.ModelMultipleChoiceField(queryset=attack_set,
-                                                   help_text="Select 3 Attackmen")
+                                                   help_text="Ctrl Click - Select 3 Attackmen")
         midfielders = forms.ModelMultipleChoiceField(queryset=mid_set,
-                                                     help_text="Select 3 Midfielders")
+                                                     help_text="Ctrl Click - Select 3 Midfielders")
         defensemen = forms.ModelMultipleChoiceField(queryset=defend_set,
-                                                    help_text="Select 3 Defensemen")
+                                                    help_text="Ctrl Click - Select 3 Defensemen")
         goalie = forms.ModelChoiceField(widget=forms.Select,
                                         queryset=goalie_set)
         forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -157,7 +157,6 @@ class ScorebookScoreForm(forms.Form):
 
 
 def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
-    print("Initial initial", *kwargs.values())
     # If the user just lands on the page with a GET request, return an empty form.
     if request.method == "GET":
         return ScorebookScoreForm(**kwargs)
@@ -345,8 +344,6 @@ def timeout_form_factory(request, scorebook=None, timeouts=None, **kwargs):
             cleaned_data = populate_quarter(cleaned_data)
 
             quarter = cleaned_data["quarter"]
-            print(quarter)
-            print("TIMEOUTS", first_half, second_half, overtime)
 
             if quarter in ["I", "II"] and first_half >= 2:
                 self.add_error("minutes", forms.ValidationError(
