@@ -101,7 +101,6 @@ class CreateScorebookForm(forms.Form):
     # time_created = forms.TimeField()
 
 
-
 class ScorebookScoreForm(forms.Form):
     minutes = forms.IntegerField(min_value=0, max_value=90)
     seconds = forms.IntegerField(min_value=0, max_value=59)
@@ -111,6 +110,7 @@ class ScorebookScoreForm(forms.Form):
 
     def clean(self):
         cleaned_data = super(ScorebookScoreForm, self).clean()
+        print("BASE CLEAN DATA", cleaned_data)
 
         if "minutes" not in cleaned_data:
             return cleaned_data
@@ -184,9 +184,17 @@ def running_score_form_factory(request, scorebook, **kwargs):
                 else:
                     return
 
+        def clean(self):
+            cleaned_data = super().clean()
+            print("CHILD CLEANED DATA", cleaned_data)
+            if "goal_jersey" in cleaned_data and "assist_jersey" in cleaned_data:
+                if cleaned_data["assist_jersey"] == cleaned_data["goal_jersey"] != None:
+                    print(cleaned_data["assist_jersey"], cleaned_data["goal_jersey"])
+                    self.add_error("assist_jersey", forms.ValidationError(
+                        "The same player cannot be marked as the goal and assist jersey!"))
+
     # Return with the new form and pass it the POST request.
     return __ScorebookScoreForm(request.POST, **kwargs)
-
 
 
 # Abstract Penalty Form.

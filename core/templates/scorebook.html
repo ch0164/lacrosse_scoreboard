@@ -832,7 +832,7 @@
             <h1 class="bg_black">Add Score</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {{ running_score_form|crispy }}
+                {{ visiting_running_score_form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" name="visitingScoreModalConfirm" value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="visitingScoreModalCancel" value="Cancel">
             </form>
@@ -1026,6 +1026,14 @@
     <div id="errorMessages">
         {% if home_running_score_form.errors %}
             {% for field in home_running_score_form %}
+                {% for error in field.errors %}
+                    <p>{{ error|escape }}</p>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+    {% if visiting_running_score_form.errors %}
+            {% for field in visiting_running_score_form %}
                 {% for error in field.errors %}
                     <p>{{ error|escape }}</p>
                 {% endfor %}
