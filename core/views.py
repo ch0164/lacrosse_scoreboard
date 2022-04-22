@@ -13,6 +13,8 @@ scorebook_context = {
     "import_lineup_form": ScorebookImportLineup(),
 }
 
+roster_context = {"has_roster": True, "player_entry_form": PlayerEntryForm()}
+
 scorebook = None
 
 
@@ -250,7 +252,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected to call a timeout for the home team.
         if "homeTimeoutModal" in str(request.POST):
-            home_timeout_form = timeout_form_factory(request, scorebook=scorebook)
+            home_timeout_form = timeout_form_factory(request,
+                                                     scorebook=scorebook)
             if home_timeout_form.is_valid():
                 time = datetime.timedelta(
                     minutes=home_timeout_form.cleaned_data["minutes"],
@@ -270,7 +273,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected to call a timeout for the home team.
         if "visitingTimeoutModal" in str(request.POST):
-            visiting_timeout_form = timeout_form_factory(request, scorebook=scorebook)
+            visiting_timeout_form = timeout_form_factory(request,
+                                                         scorebook=scorebook)
             if visiting_timeout_form.is_valid():
                 time = datetime.timedelta(
                     minutes=visiting_timeout_form.cleaned_data["minutes"],
@@ -472,7 +476,6 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         scorebook_context["visiting_add_player_form"] = ScorebookPlayerForm()
 
     scorebook_context["scorebook"] = scorebook
-    print(scorebook_context)
     return render(request, "scorebook.html", scorebook_context)
 
 
@@ -745,9 +748,6 @@ def scorebook_delete_player(request: HttpRequest,
 
 @login_required
 def view_roster(request: HttpRequest) -> HttpResponse:
-    # If an error is thrown, set this flag to True.
-    is_error = False
-
     # Since usernames are unique, find the coach's data from the QuerySet.
     coach = Coach.objects.filter(user=request.user).first()
     # If the Coach is a new account with no established Roster, have them fill out some info first.
@@ -766,7 +766,7 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                 return render(request, "roster.html",
                               {"player_entry_form": PlayerEntryForm(),
                                "starting_lineup_form": starting_lineup_form_factory(
-                                   request),
+                                   request, default=True),
                                "has_roster": True,
                                "roster": roster})
 
@@ -777,43 +777,46 @@ def view_roster(request: HttpRequest) -> HttpResponse:
     else:
         # When the coach enters the player data, handle it here.
         if request.method == "POST":
-            form = PlayerEntryForm(request.POST, request.FILES)
-            if form.is_valid():
-                statistics = PlayerStatistics()
-                statistics.save()
-                saves = PlayerSaves()
-                saves.save()
+            if "addPlayer" in str(request.POST):
+                form = roster_player_form_factory(request, roster=coach.roster)
+                if form.is_valid():
+                    statistics = PlayerStatistics()
+                    statistics.save()
+                    saves = PlayerSaves()
+                    saves.save()
 
-                if form.cleaned_data["profile_image"]:
-                    profile_image = form.cleaned_data["profile_image"]
-                else:
-                    profile_image = "profile_pictures/default.jpg"
+                    if form.cleaned_data["profile_image"]:
+                        profile_image = form.cleaned_data["profile_image"]
+                    else:
+                        profile_image = "profile_pictures/default.jpg"
 
-                player = Player(
-                    profile_image=profile_image,
-                    player_number=form.cleaned_data.get("player_number"),
-                    first_name=form.cleaned_data.get("first_name"),
-                    last_name=form.cleaned_data.get("last_name"),
-                    position=form.cleaned_data.get("position"),
-                    class_standing=form.cleaned_data.get("class_standing"),
-                    weight_pounds=form.cleaned_data.get("weight_pounds"),
-                    height_feet=form.cleaned_data.get("height_feet"),
-                    height_inches=form.cleaned_data.get("height_inches"),
-                    major=form.cleaned_data.get("major"),
-                    hometown=form.cleaned_data.get("hometown"),
-                    team=coach.roster,
-                    statistics=statistics,
-                    saves=saves
-                )
-                player.save()
+                    player = Player(
+                        profile_image=profile_image,
+                        player_number=form.cleaned_data.get("player_number"),
+                        first_name=form.cleaned_data.get("first_name"),
+                        last_name=form.cleaned_data.get("last_name"),
+                        position=form.cleaned_data.get("position"),
+                        class_standing=form.cleaned_data.get("class_standing"),
+                        weight_pounds=form.cleaned_data.get("weight_pounds"),
+                        height_feet=form.cleaned_data.get("height_feet"),
+                        height_inches=form.cleaned_data.get("height_inches"),
+                        major=form.cleaned_data.get("major"),
+                        hometown=form.cleaned_data.get("hometown"),
+                        team=coach.roster,
+                        statistics=statistics,
+                        saves=saves
+                    )
+                    player.save()
 
-                # Redirect to the root roster page so that the GET request isn't sent again upon refreshing the page.
-                return HttpResponseRedirect("/roster/")
+                    # Redirect to the root roster page so that the GET request isn't sent again upon refreshing the page.
+                    return HttpResponseRedirect("/roster/")
+                roster_context["player_entry_form"] = form
+            else:
+                roster_context["player_entry_form"] = PlayerEntryForm()
 
-        elif request.method == "GET":
+        if "startingLineup" in str(request.POST):
             form = starting_lineup_form_factory(request)
             if form.is_valid():
-                is_error = False
                 starting_lineup = StartingLineup(
                     school=coach.roster.school,
                     team_name=coach.roster.team_name,
@@ -835,21 +838,16 @@ def view_roster(request: HttpRequest) -> HttpResponse:
                 coach.save()
 
                 return HttpResponseRedirect("/roster/")
-            else:
-                # Todo: this is just weird
-                is_error = False
 
-        player_entry_form = PlayerEntryForm()
-        starting_lineup_form = starting_lineup_form_factory(request)
-        players = coach.roster.player_set.all()
-        return render(request, "roster.html",
-                      {"player_entry_form": player_entry_form,
-                       "starting_lineup_form": starting_lineup_form,
-                       "has_roster": True,
-                       "players": players,
-                       "roster": coach.roster,
-                       "starting_lineup": coach.starting_lineup,
-                       "is_error": is_error})
+            roster_context["starting_lineup_form"] = form
+        else:
+            roster_context["starting_lineup_form"] = starting_lineup_form_factory(request, default=True)
+
+        roster_context["players"] = coach.roster.player_set.all()
+        roster_context["roster"] = coach.roster
+        roster_context["starting_lineup"] = coach.starting_lineup
+
+        return render(request, "roster.html", roster_context)
 
 
 @login_required

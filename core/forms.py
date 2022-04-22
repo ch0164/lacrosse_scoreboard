@@ -7,7 +7,7 @@ from core.utilities import populate_quarter
 
 class PlayerEntryForm(forms.Form):
     profile_image = forms.ImageField(required=False)
-    player_number = forms.IntegerField(min_value=0)
+    player_number = forms.IntegerField(min_value=0, max_value=99)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     position = forms.CharField(widget=forms.Select(choices=POSITION_CHOICES))
@@ -20,6 +20,31 @@ class PlayerEntryForm(forms.Form):
     hometown = forms.CharField(max_length=100, required=False)
 
 
+def roster_player_form_factory(request, roster=None, **kwargs):
+    # If the user just lands on the page with a GET request, return an empty form.
+    if request.method == "GET":
+        return PlayerEntryForm(**kwargs)
+
+
+    # Determine all the valid player numbers for the roster.
+    player_numbers = [player.player_number for player in
+                      roster.player_set.iterator()]
+
+    class __PlayerEntryForm(PlayerEntryForm):
+        def clean_player_number(self):
+            if self.cleaned_data["player_number"] in player_numbers:
+                self.add_error("player_number", forms.ValidationError(
+                    "Added player is already in the selected roster!"))
+
+            if "player_number" in self.cleaned_data:
+                return self.cleaned_data["player_number"]
+            else:
+                return
+
+    # Return with the new form and pass it the POST request.
+    return __PlayerEntryForm(request.POST, **kwargs)
+
+
 class RosterEntryForm(forms.Form):
     school = forms.CharField(max_length=100)
     team_name = forms.CharField(max_length=50)
@@ -27,7 +52,7 @@ class RosterEntryForm(forms.Form):
 
 # Create a form that restricts available players to those within
 # the coach's roster.
-def starting_lineup_form_factory(request):
+def starting_lineup_form_factory(request, default=False):
     # Get this coach user's roster.
     coach = Coach.objects.filter(user=request.user).first()
     roster = coach.roster
@@ -65,29 +90,32 @@ def starting_lineup_form_factory(request):
 
         def clean_attackmen(self):
             attackmen = self.cleaned_data["attackmen"]
-            if len(attackmen) < 3 or len(attackmen) > 3:
-                self.add_error("attackmen", forms.ValidationError(
-                    "You must select exactly three attackmen."))
+            if not default:
+                if len(attackmen) < 3 or len(attackmen) > 3:
+                    self.add_error("attackmen", forms.ValidationError(
+                        "You must select exactly three attackmen."))
             return attackmen
 
         def clean_midfielders(self):
             midfielders = self.cleaned_data["midfielders"]
-            if len(midfielders) < 3 or len(midfielders) > 3:
-                self.add_error("midfielders", forms.ValidationError(
-                    "You must select exactly three midfielders."))
+            if not default:
+                if len(midfielders) < 3 or len(midfielders) > 3:
+                    self.add_error("midfielders", forms.ValidationError(
+                        "You must select exactly three midfielders."))
             return midfielders
 
         def clean_defensemen(self):
             defensemen = self.cleaned_data["defensemen"]
-            if len(defensemen) < 3 or len(defensemen) > 3:
-                self.add_error("defensemen", forms.ValidationError(
-                    "You must select exactly three defensemen."))
-            return defensemen
+            if not default:
+                if len(defensemen) < 3 or len(defensemen) > 3:
+                    self.add_error("defensemen", forms.ValidationError(
+                        "You must select exactly three defensemen."))
+                return defensemen
 
-    if request.method == "GET":
-        form = StartingLineupForm(request.GET)
-    else:
+    if default:
         form = StartingLineupForm()
+    else:
+        form = StartingLineupForm(request.POST)
 
     return form
 
@@ -285,12 +313,10 @@ def timeout_form_factory(request, scorebook=None, timeouts=None, **kwargs):
         timeouts = scorebook.timeouts.visiting.iterator()
 
     # Determine how many timeouts have been made each half.
-    first_half = len([timeout for timeout in timeouts
-                      if timeout.quarter == "I" or timeout.quarter == "II"])
-    second_half = len([timeout for timeout in timeouts
-                       if timeout.quarter == "III" or timeout.quarter == "IV"])
-    overtime = len([timeout for timeout in timeouts
-                    if timeout.quarter == "OT"])
+    quarters = [timeout.quarter for timeout in timeouts]
+    first_half = quarters.count("I") + quarters.count("II")
+    second_half = quarters.count("III") + quarters.count("IV")
+    overtime = quarters.count("OT")
 
     class __ScorebookTimeoutForm(ScorebookTimeoutForm):
         def clean(self):
@@ -299,11 +325,13 @@ def timeout_form_factory(request, scorebook=None, timeouts=None, **kwargs):
             cleaned_data = populate_quarter(cleaned_data)
 
             quarter = cleaned_data["quarter"]
+            print(quarter)
+            print("TIMEOUTS", first_half, second_half, overtime)
 
             if quarter in ["I", "II"] and first_half >= 2:
                 self.add_error("minutes", forms.ValidationError(
                     "Team cannot have more than two timeouts in the first half!"))
-            if quarter in ["II", "IV"] and second_half >= 2:
+            if quarter in ["III", "IV"] and second_half >= 2:
                 self.add_error("minutes", forms.ValidationError(
                     "Team cannot have more than two timeouts in the second half!"))
             if quarter in "OT" and overtime >= 1:
