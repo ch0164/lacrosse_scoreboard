@@ -10,7 +10,8 @@ from core.utilities import copy_player
 
 scorebook_context = {
     "scorebook": None,
-    "running_score_form": ScorebookScoreForm(),
+    "running_score_form": None,
+    "home_running_score_form": None,
     "personal_foul_form": ScorebookPersonalFoulForm(),
     "technical_foul_form": ScorebookTechnicalFoulForm(),
     "timeout_form": ScorebookTimeoutForm(),
@@ -100,7 +101,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         # User selected the home team's running score.
         if "homeScoreModal" in str(request.POST):
-            home_score_form = ScorebookScoreForm(request.POST)
+            home_score_form = running_score_form_factory(request, scorebook)
             if home_score_form.is_valid():
                 time = datetime.timedelta(minutes=home_score_form.cleaned_data["minutes"],
                                          seconds=home_score_form.cleaned_data["seconds"])
@@ -115,7 +116,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
 
         # User selected the visiting team's running score.
         elif "visitingScoreModal" in str(request.POST):
-            visiting_score_form = ScorebookScoreForm(request.POST)
+            visiting_score_form = running_score_form_factory(request, scorebook)
             if visiting_score_form.is_valid():
                 time = datetime.timedelta(minutes=visiting_score_form.cleaned_data["minutes"],
                                           seconds=visiting_score_form.cleaned_data["seconds"])
@@ -361,6 +362,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 return HttpResponseRedirect('/create-scorebook/')
 
     scorebook_context["scorebook"] = scorebook
+    scorebook_context["home_running_score_form"] = running_score_form_factory(request, scorebook)
     return render(request, "scorebook.html", scorebook_context)
 
 
@@ -433,7 +435,7 @@ def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
 
     if score is not None:
         if request.method == "POST":
-            form = ScorebookScoreForm(request.POST)
+            form = running_score_form_factory(request, scorebook)
             if form.is_valid():
                 score.quarter = form.cleaned_data.get("quarter")
                 score.goal_number = form.cleaned_data.get("goal_jersey")
@@ -441,7 +443,7 @@ def scorebook_edit_score(request: HttpRequest, score_id: int) -> HttpResponse:
                 score.save()
                 return HttpResponseRedirect("/edit-scorebook/")
 
-        form = ScorebookScoreForm(request, initial=initial)
+        form = running_score_form_factory(request, scorebook, initial=initial)
         return render(request, "edit_score.html",
                       {"form": form, "id": score.id})
     else:

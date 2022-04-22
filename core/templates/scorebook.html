@@ -31,6 +31,16 @@
 
 {% block content %}
     <div class="container-fluid">
+        {#        <div class="row">#}
+        {#            <div class="col-md-6">#}
+        {#                {% if home_running_score_form.errors %}#}
+        {#                {% for error in home_running_score_form.errors %}#}
+        {#                    {{ error }}#}
+        {#                {% endfor %}#}
+        {#            {% endif %}#}
+        {#            </div>#}
+        {#        </div>#}
+
         <div class="row">
             <div class="col-md-5">
                 <h1 class="bg_black">Game Information</h1>
@@ -124,7 +134,8 @@
                     <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg btn-block">&ensp;Clear
                         Scorebook&ensp;
                     </button>
-                    <button id="halftimeButton" type="button" class="btn btn-primary btn-lg btn-block">Half Time</button>
+                    <button id="halftimeButton" type="button" class="btn btn-primary btn-lg btn-block">Half Time
+                    </button>
                 </h1>
             </div>
         </div>
@@ -809,7 +820,7 @@
             <h1 class="bg_black">Add Score</h1>
             <form action="" method="POST">
                 {% csrf_token %}
-                {{ running_score_form|crispy }}
+                {{ home_running_score_form|crispy }}
                 <input class="btn btn-primary btn-lg" type="submit" name="homeScoreModalConfirm" value="Confirm">
                 <input class="btn btn-danger btn-lg" type="button" name="homeScoreModalCancel" value="Cancel">
             </form>
@@ -1012,6 +1023,15 @@
     </div>
 
 
+    <div id="errorMessages">
+        {% if home_running_score_form.errors %}
+            {% for field in home_running_score_form %}
+                {% for error in field.errors %}
+                    <p>{{ error|escape }}</p>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    </div>
 
 {% endblock %}
 
@@ -1028,6 +1048,20 @@
             checkboxes.forEach((checkbox) => {
                 checkbox.checked = checkbox.value === "True";
             })
+
+            /* Check for any input errors. */
+            let errorDiv = document.getElementById("errorMessages");
+            let errors = Array.from(errorDiv.children);
+
+            /* If there are errors, alert the user with their description and clear the error div. */
+            if (errors.length > 0) {
+                let alertMessage = "Input rejected due to the following errors: \n";
+                errors.forEach((error) => {
+                    alertMessage += error.innerHTML + "\n";
+                })
+                alert(alertMessage);
+                errorDiv.innerHTML = "";
+            }
         });
 
         /* Get publish/clear scorebook buttons. */

@@ -101,6 +101,7 @@ class CreateScorebookForm(forms.Form):
     # time_created = forms.TimeField()
 
 
+
 class ScorebookScoreForm(forms.Form):
     minutes = forms.IntegerField(min_value=0, max_value=90)
     seconds = forms.IntegerField(min_value=0, max_value=59)
@@ -108,63 +109,84 @@ class ScorebookScoreForm(forms.Form):
     goal_jersey = forms.IntegerField(min_value=0)
     assist_jersey = forms.IntegerField(min_value=0, required=False)
 
-    def clean_quarter(self):
-        if self.cleaned_data["minutes"] < 15:
-            return "I"
-        elif self.cleaned_data["minutes"] < 30:
-            return "II"
-        elif self.cleaned_data["minutes"] < 45:
-            return "II"
-        elif self.cleaned_data["minutes"] < 60:
-            return "IV"
+    def clean(self):
+        cleaned_data = super(ScorebookScoreForm, self).clean()
+
+        if "minutes" not in cleaned_data:
+            return cleaned_data
+        elif cleaned_data["minutes"] < 15:
+            cleaned_data["quarter"] = "I"
+        elif cleaned_data["minutes"] < 30:
+            cleaned_data["quarter"] = "II"
+        elif cleaned_data["minutes"] < 45:
+            cleaned_data["quarter"] = "III"
+        elif cleaned_data["minutes"] < 60:
+            cleaned_data["quarter"] = "IV"
         else:
-            return "OT"
+            cleaned_data["quarter"] = "OT"
+        return cleaned_data
+
+    # def clean_quarter(self):
+    #     self.is_valid()
+    #     print(self)
+    #     if self.cleaned_data["minutes"] < 15:
+    #         return "I"
+    #     elif self.cleaned_data["minutes"] < 30:
+    #         return "II"
+    #     elif self.cleaned_data["minutes"] < 45:
+    #         return "II"
+    #     elif self.cleaned_data["minutes"] < 60:
+    #         return "IV"
+    #     else:
+    #         return "OT"
 
 
-def running_score_form_factory(request, roster, **kwargs):
+def running_score_form_factory(request, scorebook, **kwargs):
+    # If the user just lands on the page with a GET request, return an empty form.
+    if request.method == "GET":
+        return ScorebookScoreForm()
+
+    # Parse the POST request to see if the home/visiting roster should be used.
+    if "home" in str(request.POST).lower():
+        roster = scorebook.home_coach.roster
+    else:
+        roster = scorebook.visiting_coach.roster
+
+    # Determine all the valid player numbers for the roster.
     player_numbers = [player.player_number for player in
                       roster.player_set.iterator()]
 
+    # Define a child of the ScoreForm which validates the player numbers.
     class __ScorebookScoreForm(ScorebookScoreForm):
-        def clean_quarter(self):
-            if self.cleaned_data:
-                if self.cleaned_data["minutes"] < 15:
-                    self.quarter = "I"
-                elif self.cleaned_data["minutes"] < 30:
-                    self.quarter = "II"
-                elif self.cleaned_data["minutes"] < 45:
-                    self.quarter = "II"
-                elif self.cleaned_data["minutes"] < 60:
-                    self.quarter = "IV"
-                else:
-                    self.quarter = "OT"
-
         def clean_goal_jersey(self):
             if self.cleaned_data["goal_jersey"] not in player_numbers:
                 print("GOAL JERSEY ERROR")
                 self.add_error("goal_jersey", forms.ValidationError(
                     "Goal jersey is not in the selected roster!"))
 
+            if "goal_jersey" in self.cleaned_data:
+                return self.cleaned_data["goal_jersey"]
+            else:
+                return
+
         def clean_assist_jersey(self):
-            print(self.cleaned_data["assist_jersey"])
-            print(player_numbers)
-            if self.cleaned_data["assist_jersey"] is not None:
-                print("NOT NONE")
+            if self.cleaned_data["assist_jersey"] is None:
+                return
+            else:
                 if self.cleaned_data["assist_jersey"] not in player_numbers:
+                    print(self.cleaned_data["assist_jersey"])
                     print("ASSIST JERSEY ERROR")
                     self.add_error("assist_jersey", forms.ValidationError(
                         "Assist jersey is not in the selected roster!"))
 
-    if request.method == "POST":
-        print("POST")
-        print(request.POST)
-        return __ScorebookScoreForm(request.POST, **kwargs)
-    elif request.method == "GET":
-        print("GET")
-        return __ScorebookScoreForm(request.GET, **kwargs)
-    else:
-        print("FORM")
-        return __ScorebookScoreForm(**kwargs)
+                if "assist_jersey" in self.cleaned_data:
+                    return self.cleaned_data["assist_jersey"]
+                else:
+                    return
+
+    # Return with the new form and pass it the POST request.
+    return __ScorebookScoreForm(request.POST, **kwargs)
+
 
 
 # Abstract Penalty Form.
