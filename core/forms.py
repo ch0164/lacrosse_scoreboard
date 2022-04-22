@@ -141,6 +141,13 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
                     "Goal jersey is not in the selected roster!"))
 
             if "goal_jersey" in self.cleaned_data:
+                player = roster.player_set.filter(
+                    player_number=self.cleaned_data["goal_jersey"])[0]
+                print("PLAYER STATS IS NONE", player.statistics is None)
+                print(player.statistics)
+                player.statistics.shots += 1
+                player.statistics.goals += 1
+                player.statistics.save()
                 return self.cleaned_data["goal_jersey"]
             else:
                 return
@@ -156,6 +163,10 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
                         "Assist jersey is not in the selected roster!"))
 
                 if "assist_jersey" in self.cleaned_data:
+                    player = roster.player_set.filter(
+                        player_number=self.cleaned_data["assist_jersey"])[0]
+                    player.statistics.assists += 1
+                    player.statistics.save()
                     return self.cleaned_data["assist_jersey"]
                 else:
                     return
@@ -170,6 +181,26 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
                           cleaned_data["goal_jersey"])
                     self.add_error("assist_jersey", forms.ValidationError(
                         "The same player cannot be marked as the goal and assist jersey!"))
+
+                # Set quarter played.
+                players = [
+                    roster.player_set.filter(
+                        player_number=self.cleaned_data["goal_jersey"])[0],
+                    roster.player_set.filter(
+                        player_number=self.cleaned_data["assist_jersey"])[0]
+                ]
+                for player in players:
+                    if cleaned_data["quarter"] == "I":
+                        player.statistics.first_quarter = True
+                    elif cleaned_data["quarter"] == "II":
+                        player.statistics.second_quarter = True
+                    elif cleaned_data["quarter"] == "III":
+                        player.statistics.third_quarter = True
+                    elif cleaned_data["quarter"] == "IV":
+                        player.statistics.fourth_quarter = True
+                    elif cleaned_data["quarter"] == "OT":
+                        player.statistics.overtime = True
+                    player.statistics.save()
 
     # Return with the new form and pass it the POST request.
     return __ScorebookScoreForm(request.POST, **kwargs)
@@ -199,7 +230,8 @@ class ScorebookTechnicalFoulForm(ScorebookPenaltyForm):
     infraction = forms.CharField(widget=forms.Select(choices=TECHNICAL_FOULS))
 
 
-def penalty_form_factory(request, scorebook=None, is_personal=True, roster=None, **kwargs):
+def penalty_form_factory(request, scorebook=None, is_personal=True, roster=None,
+                         **kwargs):
     # If the user just lands on the page with a GET request, return an empty form.
     if request.method == "GET":
         if is_personal:
@@ -224,6 +256,7 @@ def penalty_form_factory(request, scorebook=None, is_personal=True, roster=None,
         form = ScorebookPersonalFoulForm
     else:
         form = ScorebookTechnicalFoulForm
+
     class __ScorebookPenaltyForm(form):
         def clean_player_number(self):
             if self.cleaned_data["player_number"] not in player_numbers:
@@ -258,17 +291,16 @@ def timeout_form_factory(request, scorebook=None, **kwargs):
 
     # Determine how many timeouts have been made each half.
     first_half = len([timeout for timeout in timeouts.iterator()
-                  if timeout.quarter == "I" or timeout.quarter == "II"])
+                      if timeout.quarter == "I" or timeout.quarter == "II"])
     second_half = len([timeout for timeout in timeouts.iterator()
-                      if timeout.quarter == "III" or timeout.quarter == "IV"])
+                       if timeout.quarter == "III" or timeout.quarter == "IV"])
     overtime = len([timeout for timeout in timeouts.iterator()
-                      if timeout.quarter == "OT"])
+                    if timeout.quarter == "OT"])
 
     print("HALVES")
     print(first_half)
     print(second_half)
     print(overtime)
-
 
     class __ScorebookTimeoutForm(ScorebookTimeoutForm):
         def clean(self):
@@ -317,7 +349,6 @@ def player_form_factory(request, scorebook=None, roster=None, **kwargs):
     # Determine all the valid player numbers for the roster.
     player_numbers = [player.player_number for player in
                       roster.player_set.iterator()]
-
 
     class __ScorebookPlayerForm(ScorebookPlayerForm):
         def clean_player_number(self):

@@ -4,9 +4,6 @@
     <list default="true" id="3f53a422-6eb7-4f4f-8252-f2f1af6dd0a3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/utilities.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650592807936</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Finished validation for the remaining forms; also validating edit forms.">
+      <created>1650599659592</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1650599659592</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,6 +144,7 @@
     <MESSAGE value="Got halftime modal to display with player statistics. Fixed some formatting and added exit button" />
     <MESSAGE value="Home running score validation is in progress -- now for the rest" />
     <MESSAGE value="Visiting running score form and checking that goal/assist jerseys are unique" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visiting running score form and checking that goal/assist jerseys are unique" />
+    <MESSAGE value="Finished validation for the remaining forms; also validating edit forms." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished validation for the remaining forms; also validating edit forms." />
   </component>
 </project>

@@ -987,6 +987,7 @@
                                             <th>Position</th>
                                             <th>Goals</th>
                                             <th>Assists</th>
+                                            <th>Ground Balls</th>
                                         </tr>
                                         </thead>
                                         <tbody id="homeGameStatistics">
@@ -1007,6 +1008,7 @@
                                             <th>Position</th>
                                             <th>Goals</th>
                                             <th>Assists</th>
+                                            <th>Ground Balls</th>
                                         </tr>
                                         </thead>
                                         <tbody id="visitingGameStatistics">
@@ -1200,8 +1202,10 @@
                 let player2Goals = player2.children[5].children[0].value;
                 let player1Assists = player1.children[6].children[0].value;
                 let player2Assists = player2.children[6].children[0].value;
+                let player1GroundBalls = player1.children[7].children[0].value;
+                let player2GroundBalls = player2.children[7].children[0].value;
 
-                return (player2Goals + 0.5 * player2Assists) - (player1Goals + 0.5 * player1Assists);
+                return (player2Goals + 0.5 * player2Assists + 0.75 * player2GroundBalls) - (player1Goals + 0.5 * player1Assists + 0.75 * player1GroundBalls);
             }
 
             function getStatsBody(teamPlayers) {
@@ -1212,6 +1216,7 @@
                     let playerPosition = player.children[1].innerHTML;
                     let playerGoals = player.children[5].children[0].value;
                     let playerAssists = player.children[6].children[0].value;
+                    let playerGroundBalls = player.children[7].children[0].value;
 
                     teamStatsBody += "<tr>" +
                         `<td>${index + 1}</td>` +
@@ -1220,6 +1225,7 @@
                         `<td>${playerPosition}</td>` +
                         `<td>${playerGoals}</td>` +
                         `<td>${playerAssists}</td>` +
+                        `<td>${playerGroundBalls}</td>` +
                         "</tr>"
                 })
                 return teamStatsBody;
