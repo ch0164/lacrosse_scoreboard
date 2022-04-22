@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load scorebook_extras %}
 
 {% block title %}Scorebook{% endblock %}
 
@@ -16,6 +17,13 @@
             width: 100%;
             overflow-y: scroll;
         }
+
+        p {
+            text-align: center;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: 0;
+        }
     </style>
 {% endblock custom_css %}
 
@@ -23,7 +31,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="bg_black">Game Information</h1>
+                <h1 class="bg_black"><b>Game Information</b></h1>
                 <ul class="list-group" style="font-size: 30px;">
                     <li class="list-group-item"><b>Home
                         Team</b>: {{ scorebook.home_coach.roster.school }} {{ scorebook.home_coach.roster.team_name }}
@@ -60,6 +68,11 @@
                     </li>
                 </ul>
             </div>
+
+        <div class="col-md-6">
+            <h1 class="bg_black"><b>Total Game Time</b></h1>
+            <p>{{ scorebook.time_elapsed|duration }}/60:00</p>
+        </div>
         </div>
 
         <div class="row">

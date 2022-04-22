@@ -5,7 +5,6 @@ register = template.Library()
 
 @register.filter
 def duration(td: datetime.timedelta) -> str:
-    print("Timedelta", td, type(td))
     total_seconds = int(td.total_seconds())
     minutes = total_seconds // 60
     seconds = total_seconds % 60

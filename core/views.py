@@ -357,14 +357,11 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                 # Add players from the lineup to the roster.
                 # Check if empty.
                 if not scorebook.home_coach.roster:
-                    print("NEW ROSTER")
                     roster = Roster()
                     roster.save()
 
                 # Otherwise, just use the Roster that the coach has.
                 else:
-                    print(scorebook.home_coach.roster)
-                    print("REUSED ROSTER")
                     roster = scorebook.home_coach.roster
 
                 players = [
@@ -478,6 +475,8 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     player.team = scorebook.visiting_coach.roster
                     player.save()
 
+                scorebook_ = Scorebook.objects.filter(id=scorebook.id).first()
+                scorebook.time_elapsed = scorebook_.time_elapsed
                 scorebook.save()
                 scorebook = None
                 scorebook_context["scorebook"] = None
@@ -573,7 +572,6 @@ def update_stats(request: HttpRequest) -> HttpResponse:
 def update_timer(request: HttpRequest) -> HttpResponse:
     # Parse GET request.
     global scorebook_context, total_seconds
-    #print(request.POST)
     scorebook_id = request.POST["id"]
     total_seconds = int(str(request.POST["seconds"]))
 
@@ -581,9 +579,9 @@ def update_timer(request: HttpRequest) -> HttpResponse:
     scorebook = Scorebook.objects.filter(id=scorebook_id).first()
     scorebook.time_elapsed = datetime.timedelta(minutes=total_seconds // 60,
                                                  seconds=total_seconds % 60)
+
+
     scorebook.save()
-    scorebook_context["scorebook"] = scorebook
-    scorebook_context["time"] = scorebook.time_elapsed
 
     return render(request, "edit_scorebook.html", scorebook_context)
 

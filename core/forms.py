@@ -157,7 +157,6 @@ class ScorebookScoreForm(forms.Form):
 
 
 def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
-    print("Initial initial", *kwargs.values())
     # If the user just lands on the page with a GET request, return an empty form.
     if request.method == "GET":
         return ScorebookScoreForm(**kwargs)
@@ -345,8 +344,6 @@ def timeout_form_factory(request, scorebook=None, timeouts=None, **kwargs):
             cleaned_data = populate_quarter(cleaned_data)
 
             quarter = cleaned_data["quarter"]
-            print(quarter)
-            print("TIMEOUTS", first_half, second_half, overtime)
 
             if quarter in ["I", "II"] and first_half >= 2:
                 self.add_error("minutes", forms.ValidationError(
