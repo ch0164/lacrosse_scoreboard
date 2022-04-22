@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3f53a422-6eb7-4f4f-8252-f2f1af6dd0a3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/templates/view_scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/view_scorebook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650639486909</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Final touch ups">
+      <created>1650643355995</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1650643355995</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,6 +206,7 @@
     <MESSAGE value="Timer done" />
     <MESSAGE value="Javascript solution -- added the run time mode with updating timer fields." />
     <MESSAGE value="Added timer to view only scorebook" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added timer to view only scorebook" />
+    <MESSAGE value="Final touch ups" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final touch ups" />
   </component>
 </project>
