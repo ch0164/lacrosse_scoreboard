@@ -18,7 +18,7 @@
     <div class="container-fluid">
         <div class="custom-block col-md-12 col-sm-12">
             <h1 class="bg_black">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}'s Roster</h1>
-            {% if has_roster is False %}
+            {% if has_roster == False %}
                 <p>No roster has been established yet. Click below to establish a roster.</p>
                 <!-- Roster Modal -->
                 <button id="buttonElement" class="btn btn-primary btn-lg">Establish Roster</button>
@@ -67,22 +67,22 @@
                                         <td class="editable" data-id="{{ player.id }}"
                                             data-type="position">{{ player.position }}</td>
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="class_standing">{{ player.class_standing|default:"N/A"}}</td>
+                                            data-type="class_standing">{{ player.class_standing|default:"N/A" }}</td>
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="weight_pounds">{{ player.weight_pounds|default:"N/A"}}</td>
+                                            data-type="weight_pounds">{{ player.weight_pounds|default:"N/A" }}</td>
                                         {% if player.height_feet == None or player.height_inches == None %}
-                                        <td class="editable" data-id="{{ player.id }}"
-                                            data-type="height">N/A
-                                        </td>
+                                            <td class="editable" data-id="{{ player.id }}"
+                                                data-type="height">N/A
+                                            </td>
                                         {% else %}
-                                        <td class="editable" data-id="{{ player.id }}"
-                                            data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
-                                        </td>
+                                            <td class="editable" data-id="{{ player.id }}"
+                                                data-type="height">{{ player.height_feet }}' {{ player.height_inches }}"
+                                            </td>
                                         {% endif %}
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="major">{{ player.major|default:"N/A"}}</td>
+                                            data-type="major">{{ player.major|default:"N/A" }}</td>
                                         <td class="editable" data-id="{{ player.id }}"
-                                            data-type="hometown">{{ player.hometown|default:"N/A"}}</td>
+                                            data-type="hometown">{{ player.hometown|default:"N/A" }}</td>
                                         <td>
                                             <a href="/edit-player/{{ player.id }}" class="btn btn-success btn-sm"><span
                                                     class="glyphicon glyphicon-pencil"></span></a>
@@ -97,8 +97,8 @@
                     </div>
 
                     <div class="col-lg-4">
-                        <h1 class="bg_black">Starting Lineup</h1>
                         <div class="rosterScroll">
+                            <h1 class="bg_black">Starting Lineup</h1>
                             <table class="table table-bordered table-light table-striped">
                                 <thead>
                                 <tr>
@@ -162,13 +162,29 @@
                                 {% endif %}
                                 </tbody>
                             </table>
+
+                        <h1 class="bg_black">Substitutes</h1>
+                        <table class="table table-bordered table-light table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Player #</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if starting_lineup != None %}
+                                    {% for substitute in starting_lineup.substitutes.substitute_set.all %}
+                                    <tr>
+                                        <td>{{ substitute.last_name }}, {{ substitute.first_name }}</td>
+                                        <td>{{ substitute.position }}</td>
+                                        <td>{{ substitute.player_number }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                </tbody>
+                            </table>
                         </div>
-                        {% if is_error == True %}
-                            <p style="color: red; font-size: 20px;">
-                                Could not edit starting lineup: invalid amount of players selected.
-                                Please try again.
-                            </p>
-                        {% endif %}
                         <button class="btn btn-primary btn-lg" onclick="editStartingLineup()">Edit Starting Lineup
                         </button>
                     </div>
@@ -183,7 +199,7 @@
                         <form action="" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ player_entry_form|crispy }}
-                            <input class="btn btn-primary btn-lg" type="submit" id="" value="Add">
+                            <input class="btn btn-primary btn-lg" name="addPlayer" type="submit" id="" value="Add">
                             <input class="btn btn-danger btn-lg" type="button" id="cancelButton" value="Cancel">
                         </form>
                     </div>
@@ -194,13 +210,32 @@
                         <div class="modal-header">
                             <h2 style="text-align: center;">Starting Lineup</h2>
                         </div>
-                        <form action="" method="GET">
+                        <form action="" method="POST">
+                            {% csrf_token %}
                             {{ starting_lineup_form|crispy }}
-                            <input class="btn btn-primary btn-lg" type="submit" id="" value="Edit">
+                            <input class="btn btn-primary btn-lg" type="submit" name="startingLineup" id="" value="Edit">
                             <input class="btn btn-danger btn-lg" onclick="cancelStartingLineup()" type="button" id=""
                                    value="Cancel">
                         </form>
                     </div>
+                </div>
+
+                <div id="errorMessages">
+                    {% if player_entry_form.errors %}
+                        {% for field in player_entry_form %}
+                            {% for error in field.errors %}
+                                <p>{{ error|escape }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if starting_lineup_form.errors %}
+                        {% for field in starting_lineup_form %}
+                            {% for error in field.errors %}
+                                <p>{{ error|escape }}</p>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             {% endif %}
 {% endblock %}
@@ -208,6 +243,23 @@
 
 {% block custom_js %}
     <script>
+        /* Initialize the page with JavaScript before loading it using jQuery ready event. */
+        $(document).ready(function () {
+            /* Check for any input errors. */
+            let errorDiv = document.getElementById("errorMessages");
+            let errors = Array.from(errorDiv.children);
+
+            /* If there are errors, alert the user with their description and clear the error div. */
+            if (errors.length > 0) {
+                let alertMessage = "Input rejected due to the following errors: \n";
+                errors.forEach((error) => {
+                    alertMessage += error.innerHTML + "\n";
+                })
+                alert(alertMessage);
+                errorDiv.innerHTML = "";
+            }
+        });
+
         /* Modal Dialogue */
         var modalElement = document.getElementById("modalElement");
         var buttonElement = document.getElementById("buttonElement");

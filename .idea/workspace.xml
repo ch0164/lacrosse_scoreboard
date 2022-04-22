@@ -3,8 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="3f53a422-6eb7-4f4f-8252-f2f1af6dd0a3" name="Changes" comment="Added functionality to stop and reset timer buttons. Timer still starts at 60 mins but should be able to be changed after testing is done.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/templates/scorebook.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/scorebook.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates/roster.html" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates/roster.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/utilities.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/utilities.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="validation" />
+        <entry key="$PROJECT_DIR$" value="alisa" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -101,21 +105,42 @@
       <option name="project" value="LOCAL" />
       <updated>1650340579965</updated>
     </task>
-    <task id="LOCAL-00004" summary="dummy commit">
-      <created>1650581978190</created>
+    <task id="LOCAL-00004" summary="Home running score validation is in progress -- now for the rest">
+      <created>1650589278319</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1650581978190</updated>
+      <updated>1650589278319</updated>
     </task>
-    <task id="LOCAL-00005" summary="Added functionality to stop and reset timer buttons. Timer still starts at 60 mins but should be able to be changed after testing is done.">
-      <created>1650608704446</created>
+    <task id="LOCAL-00005" summary="Visiting running score form and checking that goal/assist jerseys are unique">
+      <created>1650592807936</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1650608704446</updated>
+      <updated>1650592807936</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Finished validation for the remaining forms; also validating edit forms.">
+      <created>1650599659592</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1650599659592</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Deleting database">
+      <created>1650604565248</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1650604565248</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fixed starting lineups and timeouts bugs.">
+      <created>1650611926264</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1650611926264</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -136,8 +161,11 @@
     <MESSAGE value="Created half-time function with two tables for home and away teams. Styling needs work" />
     <MESSAGE value="Fixed some styling with the tables. Styling still needs work" />
     <MESSAGE value="Got halftime modal to display with player statistics. Fixed some formatting and added exit button" />
-    <MESSAGE value="dummy commit" />
-    <MESSAGE value="Added functionality to stop and reset timer buttons. Timer still starts at 60 mins but should be able to be changed after testing is done." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added functionality to stop and reset timer buttons. Timer still starts at 60 mins but should be able to be changed after testing is done." />
+    <MESSAGE value="Home running score validation is in progress -- now for the rest" />
+    <MESSAGE value="Visiting running score form and checking that goal/assist jerseys are unique" />
+    <MESSAGE value="Finished validation for the remaining forms; also validating edit forms." />
+    <MESSAGE value="Deleting database" />
+    <MESSAGE value="Fixed starting lineups and timeouts bugs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed starting lineups and timeouts bugs." />
   </component>
 </project>

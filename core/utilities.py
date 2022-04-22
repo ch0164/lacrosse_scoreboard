@@ -16,11 +16,29 @@ def get_top_three(roster):
         return None
 
 
+def populate_quarter(cleaned_data):
+    if "minutes" not in cleaned_data:
+        return cleaned_data
+    elif cleaned_data["minutes"] < 15:
+        cleaned_data["quarter"] = "I"
+    elif cleaned_data["minutes"] < 30:
+        cleaned_data["quarter"] = "II"
+    elif cleaned_data["minutes"] < 45:
+        cleaned_data["quarter"] = "III"
+    elif cleaned_data["minutes"] < 60:
+        cleaned_data["quarter"] = "IV"
+    else:
+        cleaned_data["quarter"] = "OT"
+    return cleaned_data
+
+
 def copy_player(player: Player) -> Player:
     statistics = PlayerStatistics()
     statistics.save()
     saves = PlayerSaves()
     saves.save()
+    substitutes = Substitutes()
+    substitutes.save()
     return Player(profile_image=player.profile_image,
                   player_number=player.player_number,
                   first_name=player.first_name,
@@ -34,4 +52,6 @@ def copy_player(player: Player) -> Player:
                   hometown=player.hometown,
                   team=player.team,
                   statistics=statistics,
-                  saves=saves)
+                  saves=saves,
+                  substitute=substitutes
+                  )
