@@ -25,7 +25,6 @@ def roster_player_form_factory(request, roster=None, **kwargs):
     if request.method == "GET":
         return PlayerEntryForm(**kwargs)
 
-
     # Determine all the valid player numbers for the roster.
     player_numbers = [player.player_number for player in
                       roster.player_set.iterator()]
@@ -121,7 +120,8 @@ def starting_lineup_form_factory(request, default=False):
             defensemen = list(self.cleaned_data["defensemen"])
             goalie = [self.cleaned_data["goalie"]]
             starting_players = attackmen + midfielders + defensemen + goalie
-            cleaned_data["substitutes"] = [player for player in player_set if player not in starting_players]
+            cleaned_data["substitutes"] = [player for player in player_set if
+                                           player not in starting_players]
 
             return cleaned_data
 
@@ -157,6 +157,7 @@ class ScorebookScoreForm(forms.Form):
 
 
 def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
+    print("Initial initial", *kwargs.values())
     # If the user just lands on the page with a GET request, return an empty form.
     if request.method == "GET":
         return ScorebookScoreForm(**kwargs)
@@ -181,11 +182,6 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
                     "Goal jersey is not in the selected roster!"))
 
             if "goal_jersey" in self.cleaned_data:
-                player = roster.player_set.filter(
-                    player_number=self.cleaned_data["goal_jersey"]).first()
-                player.statistics.shots += 1
-                player.statistics.goals += 1
-                player.statistics.save()
                 return self.cleaned_data["goal_jersey"]
             else:
                 return
@@ -193,19 +189,14 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
         def clean_assist_jersey(self):
             if self.cleaned_data["assist_jersey"] is None:
                 return
-            else:
-                if self.cleaned_data["assist_jersey"] not in player_numbers:
-                    self.add_error("assist_jersey", forms.ValidationError(
-                        "Assist jersey is not in the selected roster!"))
+            elif self.cleaned_data["assist_jersey"] not in player_numbers:
+                self.add_error("assist_jersey", forms.ValidationError(
+                    "Assist jersey is not in the selected roster!"))
 
-                if "assist_jersey" in self.cleaned_data:
-                    player = roster.player_set.filter(
-                        player_number=self.cleaned_data["assist_jersey"]).first()
-                    player.statistics.assists += 1
-                    player.statistics.save()
-                    return self.cleaned_data["assist_jersey"]
-                else:
-                    return
+            if "assist_jersey" in self.cleaned_data:
+                return self.cleaned_data["assist_jersey"]
+            else:
+                return
 
         def clean(self):
             cleaned_data = super().clean()
@@ -215,12 +206,28 @@ def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
                     self.add_error("assist_jersey", forms.ValidationError(
                         "The same player cannot be marked as the goal and assist jersey!"))
 
+            if not self.errors:
+                if cleaned_data["goal_jersey"]:
+                    player = roster.player_set.filter(
+                        player_number=self.cleaned_data[
+                            "goal_jersey"]).first()
+                    player.statistics.shots += 1
+                    player.statistics.goals += 1
+                    player.statistics.save()
+                if cleaned_data["assist_jersey"]:
+                    player = roster.player_set.filter(
+                        player_number=self.cleaned_data[
+                            "assist_jersey"]).first()
+                    player.statistics.assists += 1
+                    player.statistics.save()
+
                 # Set quarter played.
                 players = [
                     roster.player_set.filter(
                         player_number=self.cleaned_data["goal_jersey"]).first(),
                     roster.player_set.filter(
-                        player_number=self.cleaned_data["assist_jersey"]).first()
+                        player_number=self.cleaned_data[
+                            "assist_jersey"]).first()
                 ]
                 for player in players:
                     if player:

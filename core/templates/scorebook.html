@@ -59,7 +59,7 @@
                         <span style="color:green;">
                                         <b>{{ scorebook.running_score.home.count }}</b>
                                     </span>
-                        ---
+                        :
                         <span style="color:red;">
                                         <b>{{ scorebook.running_score.visiting.count }}</b>
                                     </span>
@@ -67,7 +67,7 @@
                         <span style="color:red;">
                                         <b>{{ scorebook.running_score.home.count }}</b>
                                     </span>
-                        ---
+                        :
                         <span style="color:green;">
                                         <b>{{ scorebook.running_score.visiting.count }}</b>
                                     </span>
@@ -75,7 +75,7 @@
                         <span style="color:orange;">
                                         <b>{{ scorebook.running_score.home.count }}</b>
                                     </span>
-                        ---
+                        :
                         <span style="color:orange;">
                                         <b>{{ scorebook.running_score.visiting.count }}</b>
                                     </span>
@@ -141,9 +141,12 @@
                 </button>
                 <button id="gameStatsButton" type="button" class="btn btn-primary btn-lg btn-block">Game Statistics
                 </button>
-                <button id="runTimeModeButton" type="button" class="btn btn-secondary btn-lg btn-block">Run Time Mode
+                <button id="runTimeModeButton" name="runTimeMode" type="button" onclick="toggleRunTime()"
+                        class="btn btn-secondary btn-lg btn-block">Run Time
+                    Mode
                 </button>
             </h1>
+            <p id="runTimeStatus">Run Time Mode: Disabled</p>
         </div>
 
         <div class="row">
@@ -1169,6 +1172,7 @@
         let scorebookId = document.getElementById("scorebookId");
         let minutesLabel = document.getElementById("minutes");
         let secondsLabel = document.getElementById("seconds");
+        let runTime = false;
 
         function pad(time) {
             let timeString = time + "";
@@ -1406,11 +1410,60 @@
         /* Define the timer and handle its related events. */
         /* totalSeconds is defined above. */
         let timerId = null;
+        let minutesInputs = Array.from(document.getElementsByName("minutes"));
+        let secondsInputs = Array.from(document.getElementsByName("seconds"));
+
+        function toggleRunTime() {
+            let runTimeStatus = document.getElementById("runTimeStatus");
+            runTime = !runTime;
+            if (runTime) {
+                runTimeStatus.innerHTML = "Run Time Mode: Enabled";
+            } else {
+                runTimeStatus.innerHTML = "Run Time Mode: Disabled";
+            }
+            updateForms();
+        }
+
+        function sendTimerToServer() {
+            $.ajax({
+                url: "http://127.0.0.1:8000/update-timer/",
+                type: "POST",
+                async: true,
+                data: {
+                    "id": scorebookId.innerHTML,
+                    "seconds": totalSeconds
+                }
+            }).done(function (response) {
+            })
+                .fail(function () {
+                    alert("Error Occurred");
+                });
+        }
+
+        function updateForms() {
+            if (runTime) {
+                secondsInputs.forEach((input) => {
+                    input.value = totalSeconds % 60;
+                })
+                minutesInputs.forEach((input) => {
+                    input.value = Math.floor(totalSeconds / 60);
+                })
+            } else {
+                secondsInputs.forEach((input) => {
+                    input.value = "";
+                })
+                minutesInputs.forEach((input) => {
+                    input.value = "";
+                })
+            }
+        }
 
         function setTime() {
             ++totalSeconds;
             secondsLabel.innerHTML = pad(totalSeconds % 60);
             minutesLabel.innerHTML = pad(Math.floor(totalSeconds / 60));
+            sendTimerToServer();
+            updateForms();
         }
 
         function startTimer() {
@@ -1418,6 +1471,7 @@
             if (!timerId) {
                 timerId = setInterval(setTime, 1000);
             }
+            updateForms();
         }
 
         function pauseTimer() {
@@ -1435,6 +1489,8 @@
             totalSeconds = 0;
             secondsLabel.innerHTML = "00";
             minutesLabel.innerHTML = "00";
+            updateForms();
+            sendTimerToServer();
         }
 
         /* Increment/Decrement buttons. */
@@ -1447,43 +1503,34 @@
                     secondsLabel.innerHTML = pad(totalSeconds % 60);
                     minutesLabel.innerHTML = pad(Math.floor(totalSeconds / 60));
                 }
-                console.log(totalSeconds);
+                sendTimerToServer();
+                updateForms();
             })
         });
 
-        let runTimeModeButton = document.getElementById("runTimeModeButton");
+        /* Toggle run time mode. */
+        /*    let runTimeModeButton = document.getElementById("runTimeModeButton");
+            runTimeModeButton.addEventListener("click", (function () {
+                $.ajax({
+                    url: "http://127.0.0.1:8000/update-timer/",
+                    type: "GET",
+                    async: true,
+                    data: {
+                        "id": scorebookId.innerHTML,
+                        "seconds": totalSeconds
+                    }
+                }).done(function (response) {
+                })
+                    .fail(function () {
+                        alert("Error Occurred");
+                    });
+            }));
 
-        runTimeModeButton.addEventListener("click", (function () {
-            $.ajax({
-                url: "http://127.0.0.1:8000/update-timer/",
-                type: "GET",
-                async: true,
-                data: {
-                    "id": scorebookId.innerHTML,
-                    "seconds": totalSeconds
-                }
-            }).done(function (response) {
-            })
-                .fail(function () {
-                    alert("Error Occurred");
-                });
-        }));
+         */
 
         $(window).on("beforeunload", (function () {
             localStorage.setItem("totalSeconds", totalSeconds);
-            $.ajax({
-                url: "http://127.0.0.1:8000/update-timer/",
-                type: "POST",
-                async: true,
-                data: {
-                    "id": scorebookId.innerHTML,
-                    "seconds": totalSeconds
-                }
-            }).done(function (response) {
-            })
-                .fail(function () {
-                    alert("Error Occurred");
-                });
+            sendTimerToServer();
         }));
 
 
