@@ -2,6 +2,7 @@ from django import forms
 
 from core.constants import *
 from core.models import Coach, Roster, StartingLineup
+from core.utilities import populate_quarter
 
 
 class PlayerEntryForm(forms.Form):
@@ -53,9 +54,12 @@ def starting_lineup_form_factory(request):
     # Create the form using the created querysets.
     # A lacrosse team can only have ten players on the field.
     class StartingLineupForm(forms.Form):
-        attackmen = forms.ModelMultipleChoiceField(queryset=attack_set, help_text="Select 3 Attackmen")
-        midfielders = forms.ModelMultipleChoiceField(queryset=mid_set, help_text="Select 3 Midfielders")
-        defensemen = forms.ModelMultipleChoiceField(queryset=defend_set, help_text="Select 3 Defensemen")
+        attackmen = forms.ModelMultipleChoiceField(queryset=attack_set,
+                                                   help_text="Select 3 Attackmen")
+        midfielders = forms.ModelMultipleChoiceField(queryset=mid_set,
+                                                     help_text="Select 3 Midfielders")
+        defensemen = forms.ModelMultipleChoiceField(queryset=defend_set,
+                                                    help_text="Select 3 Defensemen")
         goalie = forms.ModelChoiceField(widget=forms.Select,
                                         queryset=goalie_set)
 
@@ -94,22 +98,126 @@ class CreateScorebookForm(forms.Form):
     home_team_name = forms.CharField(max_length=50)
     visiting_school = forms.CharField(max_length=100)
     visiting_team_name = forms.CharField(max_length=50)
+
     # time_created = forms.TimeField()
 
 
 class ScorebookScoreForm(forms.Form):
-    # time = forms.TimeField()
-    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
+    minutes = forms.IntegerField(min_value=0, max_value=90)
+    seconds = forms.IntegerField(min_value=0, max_value=59)
+    quarter = forms.CharField(widget=forms.HiddenInput(), required=False)
     goal_jersey = forms.IntegerField(min_value=0)
     assist_jersey = forms.IntegerField(min_value=0, required=False)
+
+    def clean(self):
+        cleaned_data = super(ScorebookScoreForm, self).clean()
+
+        return populate_quarter(cleaned_data)
+
+
+def running_score_form_factory(request, scorebook=None, roster=None, **kwargs):
+    # If the user just lands on the page with a GET request, return an empty form.
+    if request.method == "GET":
+        return ScorebookScoreForm(**kwargs)
+
+    # Parse the POST request to see if the home/visiting roster should be used.
+    if roster:
+        roster = roster
+    elif "home" in str(request.POST).lower():
+        roster = scorebook.home_coach.roster
+    else:
+        roster = scorebook.visiting_coach.roster
+
+    # Determine all the valid player numbers for the roster.
+    player_numbers = [player.player_number for player in
+                      roster.player_set.iterator()]
+
+    # Define a child of the ScoreForm which validates the player numbers.
+    class __ScorebookScoreForm(ScorebookScoreForm):
+        def clean_goal_jersey(self):
+            if self.cleaned_data["goal_jersey"] not in player_numbers:
+                print("GOAL JERSEY ERROR")
+                self.add_error("goal_jersey", forms.ValidationError(
+                    "Goal jersey is not in the selected roster!"))
+
+            if "goal_jersey" in self.cleaned_data:
+                player = roster.player_set.filter(
+                    player_number=self.cleaned_data["goal_jersey"])[0]
+                print("PLAYER STATS IS NONE", player.statistics is None)
+                print(player.statistics)
+                player.statistics.shots += 1
+                player.statistics.goals += 1
+                player.statistics.save()
+                return self.cleaned_data["goal_jersey"]
+            else:
+                return
+
+        def clean_assist_jersey(self):
+            if self.cleaned_data["assist_jersey"] is None:
+                return
+            else:
+                if self.cleaned_data["assist_jersey"] not in player_numbers:
+                    print(self.cleaned_data["assist_jersey"])
+                    print("ASSIST JERSEY ERROR")
+                    self.add_error("assist_jersey", forms.ValidationError(
+                        "Assist jersey is not in the selected roster!"))
+
+                if "assist_jersey" in self.cleaned_data:
+                    player = roster.player_set.filter(
+                        player_number=self.cleaned_data["assist_jersey"])[0]
+                    player.statistics.assists += 1
+                    player.statistics.save()
+                    return self.cleaned_data["assist_jersey"]
+                else:
+                    return
+
+        def clean(self):
+            cleaned_data = super().clean()
+            print("CHILD CLEANED DATA", cleaned_data)
+            if "goal_jersey" in cleaned_data and "assist_jersey" in cleaned_data:
+                if cleaned_data["assist_jersey"] == cleaned_data[
+                    "goal_jersey"] != None:
+                    print(cleaned_data["assist_jersey"],
+                          cleaned_data["goal_jersey"])
+                    self.add_error("assist_jersey", forms.ValidationError(
+                        "The same player cannot be marked as the goal and assist jersey!"))
+
+                # Set quarter played.
+                players = [
+                    roster.player_set.filter(
+                        player_number=self.cleaned_data["goal_jersey"])[0],
+                    roster.player_set.filter(
+                        player_number=self.cleaned_data["assist_jersey"])[0]
+                ]
+                for player in players:
+                    if cleaned_data["quarter"] == "I":
+                        player.statistics.first_quarter = True
+                    elif cleaned_data["quarter"] == "II":
+                        player.statistics.second_quarter = True
+                    elif cleaned_data["quarter"] == "III":
+                        player.statistics.third_quarter = True
+                    elif cleaned_data["quarter"] == "IV":
+                        player.statistics.fourth_quarter = True
+                    elif cleaned_data["quarter"] == "OT":
+                        player.statistics.overtime = True
+                    player.statistics.save()
+
+    # Return with the new form and pass it the POST request.
+    return __ScorebookScoreForm(request.POST, **kwargs)
 
 
 # Abstract Penalty Form.
 class ScorebookPenaltyForm(forms.Form):
+    minutes = forms.IntegerField(min_value=0, max_value=90)
+    seconds = forms.IntegerField(min_value=0, max_value=59)
+    quarter = forms.CharField(widget=forms.HiddenInput(), required=False)
     player_number = forms.IntegerField(min_value=0)
-    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
-    # time = forms.TimeField()
     infraction = forms.CharField()
+
+    def clean(self):
+        cleaned_data = super(ScorebookPenaltyForm, self).clean()
+
+        return populate_quarter(cleaned_data)
 
 
 # Personal Foul Penalty Form.
@@ -122,16 +230,100 @@ class ScorebookTechnicalFoulForm(ScorebookPenaltyForm):
     infraction = forms.CharField(widget=forms.Select(choices=TECHNICAL_FOULS))
 
 
+def penalty_form_factory(request, scorebook=None, is_personal=True, roster=None,
+                         **kwargs):
+    # If the user just lands on the page with a GET request, return an empty form.
+    if request.method == "GET":
+        if is_personal:
+            return ScorebookPersonalFoulForm(**kwargs)
+        else:
+            return ScorebookTechnicalFoulForm(**kwargs)
+
+    # Parse the POST request to see if the home/visiting roster should be used.
+    if roster:
+        roster = roster
+    elif "home" in str(request.POST).lower():
+        roster = scorebook.home_coach.roster
+    else:
+        roster = scorebook.visiting_coach.roster
+
+    # Determine all the valid player numbers for the roster.
+    player_numbers = [player.player_number for player in
+                      roster.player_set.iterator()]
+
+    # Define a child of the PenaltyForm which validates the player numbers.
+    if is_personal:
+        form = ScorebookPersonalFoulForm
+    else:
+        form = ScorebookTechnicalFoulForm
+
+    class __ScorebookPenaltyForm(form):
+        def clean_player_number(self):
+            if self.cleaned_data["player_number"] not in player_numbers:
+                self.add_error("player_number", forms.ValidationError(
+                    "Penalized player is not in the selected roster!"))
+
+            if "player_number" in self.cleaned_data:
+                return self.cleaned_data["player_number"]
+            else:
+                return
+
+    # Return with the new form and pass it the POST request.
+    return __ScorebookPenaltyForm(request.POST, **kwargs)
+
+
 class ScorebookTimeoutForm(forms.Form):
-    # time = forms.TimeField()
-    quarter = forms.CharField(widget=forms.Select(choices=QUARTERS))
+    minutes = forms.IntegerField(min_value=0, max_value=90)
+    seconds = forms.IntegerField(min_value=0, max_value=59)
+    quarter = forms.CharField(widget=forms.HiddenInput(), required=False)
 
 
-# class ScorebookPenaltyHome(forms.Form):
-# penalties = forms.CharField(widget=forms.Select(choices=Penalties_Home))
+def timeout_form_factory(request, scorebook=None, **kwargs):
+    # If the user just lands on the page with a GET request, return an empty form.
+    if request.method == "GET":
+        return ScorebookTimeoutForm(**kwargs)
 
-# class ScorebookPenaltyVisiting(forms.Form):
-# penalties = forms.CharField(widget=forms.Select(choices=Penalties_Away))
+    # Parse the POST request to see if the home/visiting timeouts should be used.
+    if "home" in str(request.POST).lower():
+        timeouts = scorebook.timeouts.home
+    else:
+        timeouts = scorebook.timeouts.visiting
+
+    # Determine how many timeouts have been made each half.
+    first_half = len([timeout for timeout in timeouts.iterator()
+                      if timeout.quarter == "I" or timeout.quarter == "II"])
+    second_half = len([timeout for timeout in timeouts.iterator()
+                       if timeout.quarter == "III" or timeout.quarter == "IV"])
+    overtime = len([timeout for timeout in timeouts.iterator()
+                    if timeout.quarter == "OT"])
+
+    print("HALVES")
+    print(first_half)
+    print(second_half)
+    print(overtime)
+
+    class __ScorebookTimeoutForm(ScorebookTimeoutForm):
+        def clean(self):
+            cleaned_data = super().clean()
+
+            cleaned_data = populate_quarter(cleaned_data)
+
+            print("QUARTER VALIDITY")
+            quarter = self.cleaned_data["quarter"]
+            print(quarter)
+
+            if quarter in ["I", "II"] and first_half >= 2:
+                self.add_error("minutes", forms.ValidationError(
+                    "Team cannot have more than two timeouts in the first half!"))
+            if quarter in ["II", "IV"] and second_half >= 2:
+                self.add_error("minutes", forms.ValidationError(
+                    "Team cannot have more than two timeouts in the second half!"))
+            if quarter in "OT" and overtime >= 1:
+                self.add_error("minutes", forms.ValidationError(
+                    "Team cannot have more than one timeout in overtime!"))
+
+    # Return with the new form and pass it the POST request.
+    return __ScorebookTimeoutForm(request.POST, **kwargs)
 
 
 class ScorebookPlayerForm(forms.Form):
@@ -139,6 +331,38 @@ class ScorebookPlayerForm(forms.Form):
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     position = forms.CharField(widget=forms.Select(choices=POSITION_CHOICES))
+
+
+def player_form_factory(request, scorebook=None, roster=None, **kwargs):
+    # If the user just lands on the page with a GET request, return an empty form.
+    if request.method == "GET":
+        return ScorebookPlayerForm(**kwargs)
+
+    # Parse the POST request to see if the home/visiting roster should be used.
+    if roster:
+        roster = roster
+    elif "home" in str(request.POST).lower():
+        roster = scorebook.home_coach.roster
+    else:
+        roster = scorebook.visiting_coach.roster
+
+    # Determine all the valid player numbers for the roster.
+    player_numbers = [player.player_number for player in
+                      roster.player_set.iterator()]
+
+    class __ScorebookPlayerForm(ScorebookPlayerForm):
+        def clean_player_number(self):
+            if self.cleaned_data["player_number"] in player_numbers:
+                self.add_error("player_number", forms.ValidationError(
+                    "Added player is already in the selected roster!"))
+
+            if "player_number" in self.cleaned_data:
+                return self.cleaned_data["player_number"]
+            else:
+                return
+
+    # Return with the new form and pass it the POST request.
+    return __ScorebookPlayerForm(request.POST, **kwargs)
 
 
 class ScorebookImportLineup(forms.Form):
