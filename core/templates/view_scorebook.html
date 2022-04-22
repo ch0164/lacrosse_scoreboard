@@ -347,7 +347,7 @@
                         </thead>
                         <tbody>
                         {% for player in scorebook.home_coach.roster.player_set.all %}
-                            {% if "G" in player.position %}
+                            {% if "G" == player.position %}
                                 <tr>
                                     <td>
                                         {{ player.player_number }}
@@ -478,7 +478,7 @@
                         <tbody>
                         {% for player in scorebook.visiting_coach.roster.player_set.all %}
                             <tr>
-                                {% if "G" in player.position %}
+                                {% if "G" == player.position %}
                                     <td>
                                         {{ player.player_number }}
                                     </td>

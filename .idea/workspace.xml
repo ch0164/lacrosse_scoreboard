@@ -50,7 +50,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\youar\PycharmProjects\lacrosse_scoreboard" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="lacrosse_scoreboard" type="Python.DjangoServer" factoryName="Django server">
@@ -158,7 +164,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650631091008</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added timer to view only scorebook">
+      <created>1650639486909</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1650639486909</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,6 +199,7 @@
     <MESSAGE value="Fixed starting lineups and timeouts bugs." />
     <MESSAGE value="Timer done" />
     <MESSAGE value="Javascript solution -- added the run time mode with updating timer fields." />
-    <option name="LAST_COMMIT_MESSAGE" value="Javascript solution -- added the run time mode with updating timer fields." />
+    <MESSAGE value="Added timer to view only scorebook" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added timer to view only scorebook" />
   </component>
 </project>
