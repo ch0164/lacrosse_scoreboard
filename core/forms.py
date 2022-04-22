@@ -79,11 +79,11 @@ def starting_lineup_form_factory(request, default=False):
     # A lacrosse team can only have ten players on the field.
     class StartingLineupForm(forms.Form):
         attackmen = forms.ModelMultipleChoiceField(queryset=attack_set,
-                                                   help_text="Select 3 Attackmen")
+                                                   help_text="Ctrl Click - Select 3 Attackmen")
         midfielders = forms.ModelMultipleChoiceField(queryset=mid_set,
-                                                     help_text="Select 3 Midfielders")
+                                                     help_text="Ctrl Click - Select 3 Midfielders")
         defensemen = forms.ModelMultipleChoiceField(queryset=defend_set,
-                                                    help_text="Select 3 Defensemen")
+                                                    help_text="Ctrl Click - Select 3 Defensemen")
         goalie = forms.ModelChoiceField(widget=forms.Select,
                                         queryset=goalie_set)
         forms.CharField(widget=forms.HiddenInput(), required=False)
