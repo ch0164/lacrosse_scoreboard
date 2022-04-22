@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest, JsonResponse, \
     HttpResponseRedirect
@@ -16,7 +18,6 @@ scorebook_context = {
 roster_context = {"has_roster": True, "player_entry_form": PlayerEntryForm()}
 
 scorebook = None
-
 
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html",
@@ -76,7 +77,9 @@ def create_scorebook(request: HttpRequest) -> HttpResponse:
                                   visiting_coach=visiting_coach,
                                   running_score=running_score,
                                   timeouts=timeouts,
-                                  penalties=penalties)
+                                  penalties=penalties,
+                                  time_elapsed=datetime.timedelta(minutes=0,
+                                                                  seconds=0))
             scorebook.save()
 
             # Save scorebook to context.
@@ -340,17 +343,17 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     roster = scorebook.home_coach.roster
 
                 players = [
-                    lineup.attacker_1,
-                    lineup.attacker_2,
-                    lineup.attacker_3,
-                    lineup.midfielder_1,
-                    lineup.midfielder_2,
-                    lineup.midfielder_3,
-                    lineup.defender_1,
-                    lineup.defender_2,
-                    lineup.defender_3,
-                    lineup.goalie,
-                ] + list(lineup.substitutes.substitute_set.all())
+                              lineup.attacker_1,
+                              lineup.attacker_2,
+                              lineup.attacker_3,
+                              lineup.midfielder_1,
+                              lineup.midfielder_2,
+                              lineup.midfielder_3,
+                              lineup.defender_1,
+                              lineup.defender_2,
+                              lineup.defender_3,
+                              lineup.goalie,
+                          ] + list(lineup.substitutes.substitute_set.all())
                 for player in players:
                     player_copy = copy_player(player)
                     player_copy.team = roster
@@ -408,17 +411,17 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
                     roster = scorebook.visiting_coach.roster
 
                 players = [
-                    lineup.attacker_1,
-                    lineup.attacker_2,
-                    lineup.attacker_3,
-                    lineup.midfielder_1,
-                    lineup.midfielder_2,
-                    lineup.midfielder_3,
-                    lineup.defender_1,
-                    lineup.defender_2,
-                    lineup.defender_3,
-                    lineup.goalie,
-                ] + list(lineup.substitutes.substitute_set.all())
+                              lineup.attacker_1,
+                              lineup.attacker_2,
+                              lineup.attacker_3,
+                              lineup.midfielder_1,
+                              lineup.midfielder_2,
+                              lineup.midfielder_3,
+                              lineup.defender_1,
+                              lineup.defender_2,
+                              lineup.defender_3,
+                              lineup.goalie,
+                          ] + list(lineup.substitutes.substitute_set.all())
                 for player in players:
                     player_copy = copy_player(player)
                     player_copy.team = roster
@@ -485,6 +488,7 @@ def edit_scorebook(request: HttpRequest) -> HttpResponse:
         scorebook_context["visiting_add_player_form"] = ScorebookPlayerForm()
 
     scorebook_context["scorebook"] = scorebook
+    print("Elapsed time", scorebook.time_elapsed)
     return render(request, "scorebook.html", scorebook_context)
 
 
@@ -540,6 +544,26 @@ def update_stats(request: HttpRequest) -> HttpResponse:
         player.saves.save()
 
     return redirect(edit_scorebook)
+
+@csrf_exempt
+def update_timer(request: HttpRequest) -> HttpResponse:
+    # Parse GET request.
+    global scorebook_context
+    print(request.POST)
+    scorebook_id = request.POST["id"]
+    total_seconds = int(str(request.POST["seconds"]))
+
+    # Get player.
+    scorebook = Scorebook.objects.filter(id=scorebook_id).first()
+    scorebook.time_elapsed = datetime.timedelta(minutes=total_seconds // 60,
+                                                 seconds=total_seconds % 60)
+    scorebook.save()
+    scorebook_context["scorebook"] = scorebook
+    scorebook_context["time"] = scorebook.time_elapsed
+
+    print(scorebook_context)
+
+    return render(request, "edit_scorebook.html", scorebook_context)
 
 
 @login_required
@@ -856,7 +880,9 @@ def view_roster(request: HttpRequest) -> HttpResponse:
 
             roster_context["starting_lineup_form"] = form
         else:
-            roster_context["starting_lineup_form"] = starting_lineup_form_factory(request, default=True)
+            roster_context[
+                "starting_lineup_form"] = starting_lineup_form_factory(request,
+                                                                       default=True)
 
         roster_context["players"] = coach.roster.player_set.all()
         roster_context["roster"] = coach.roster

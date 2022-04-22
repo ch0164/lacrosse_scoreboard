@@ -1,0 +1,98 @@
+{# function startTimer(duration, display) {#}
+        {#    var timer = duration, minutes, seconds;#}
+        {#    timerID = setInterval(function load() {#}
+        {#        minutes = parseInt(timer / 60, 10)#}
+        {#        seconds = parseInt(timer % 60, 10);#}
+        {##}
+        {#        minutes = minutes < 10 ? "0" + minutes : minutes;#}
+        {#        seconds = seconds < 10 ? "0" + seconds : seconds;#}
+        {##}
+        {#        display.textContent = `${minutes}:${seconds}` + "/60:00";#}
+        {#        if (++timer < 0) {#}
+        {#            timer = duration;#}
+        {#        }#}
+        {#        //console.log(parseInt(seconds))#}
+        {#        window.localStorage.setItem("seconds", seconds)#}
+        {#        window.localStorage.setItem("minutes", minutes)#}
+        {#    }, 1000);#}
+        {#}#}
+            {##}
+            {#//onload - object has been loaded or created#}
+            {#window.onload = function () {#}
+            {#    let sixtyMinutes;#}
+            {#    seconds = parseInt(window.localStorage.getItem("seconds"))#}
+            {#    minutes = parseInt(window.localStorage.getItem("minutes"))#}
+            {##}
+            {#    if (parseInt(minutes * seconds)) {#}
+            {#        sixtyMinutes = (parseInt(minutes * 60) + seconds);#}
+            {#    } else {#}
+            {#        sixtyMinutes = 60 * 60;#}
+            {#    }#}
+            {#    //var sixtyMinutes = 60 * 60;#}
+            {#    display = document.querySelector('#countdown');#}
+            {#    startTimer(0, display);#}
+            {
+                #};
+                #}
+                {##}
+                {##}
+                {#function pauseTimer() {#}
+                {#    clearInterval(timerID);#}
+                {#}#}
+                    {##}
+                    {#function startButton() {#}
+                    {#    let sixtyMinutes;#}
+                    {#    seconds = parseInt(window.localStorage.getItem("seconds"))#}
+                    {#    minutes = parseInt(window.localStorage.getItem("minutes"))#}
+                    {##}
+                    {#    if (parseInt(minutes * seconds)) {#}
+                    {#        sixtyMinutes = (parseInt(minutes * 60) + seconds);#}
+                    {#    } else {#}
+                    {#        sixtyMinutes = 60 * 60;#}
+                    {#    }#}
+                    {#    //var sixtyMinutes = 60 * 60;#}
+                    {#    let display = document.querySelector('#countdown');#}
+                    {#    startTimer(0, display);#}
+                    {#}#}
+                        {##}
+                        {#function clearTimer() {#}
+                        {#    clearInterval(timerID);#}
+                        {#    localStorage.clear();#}
+                        {#    //window.localStorage.setItem('seconds','0')#}
+                        {#    //window.localStorage.setItem('minutes','0')#}
+                        {#    //seconds = parseInt(window.localStorage.getItem("seconds"))#}
+                        {#    //minutes = parseInt(window.localStorage.getItem("minutes"))#}
+                        {#    #}
+                        {##}
+                        {#}#}
+                            {##}
+                            {#    function incrementTimer5s() {#}
+                            {#    secs = parseInt(window.localStorage.getItem("seconds"))#}
+                            {#    add5s = secs + 5#}
+                            {#    window.localStorage.setItem('seconds', 'add5s')#}
+                            {#    window.localStorage.setItem('minutes','0')#}
+                            {##}
+                            {##}
+                            {#}#}
+                                {##}
+                                {#    function decrementTimer5s() {#}
+                                {#    sub5s = parseInt(window.localStorage.getItem("seconds")) - 5#}
+                                {#    window.localStorage.setItem('seconds', sub5s)#}
+                                {#    window.localStorage.setItem('minutes','0')#}
+                                {##}
+                                {##}
+                                {#}#}
+                                    {##}
+                                    {#    function incrementTimer1m() {#}
+                                    {#    window.localStorage.setItem('seconds','0')#}
+                                    {#    window.localStorage.setItem('minutes','0')#}
+                                    {##}
+                                    {##}
+                                    {##}
+                                    {#}#}
+                                        {##}
+                                        {#    function decrementTimer1m() {#}
+                                        {#    window.localStorage.setItem('seconds','0')#}
+                                        {#    window.localStorage.setItem('minutes','minutes + 1')#}
+                                        {
+        #}#}

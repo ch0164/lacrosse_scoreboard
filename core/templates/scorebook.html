@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load scorebook_extras %}
 
 {% block title %}Scorebook{% endblock %}
 
@@ -33,114 +34,116 @@
 
 {% block content %}
     <div class="container-fluid">
-        {#        <div class="row">#}
-        {#            <div class="col-md-6">#}
-        {#                {% if home_running_score_form.errors %}#}
-        {#                {% for error in home_running_score_form.errors %}#}
-        {#                    {{ error }}#}
-        {#                {% endfor %}#}
-        {#            {% endif %}#}
-        {#            </div>#}
-        {#        </div>#}
+    {#        <div class="row">#}
+    {#            <div class="col-md-6">#}
+    {#                {% if home_running_score_form.errors %}#}
+    {#                {% for error in home_running_score_form.errors %}#}
+    {#                    {{ error }}#}
+    {#                {% endfor %}#}
+    {#            {% endif %}#}
+    {#            </div>#}
+    {#        </div>#}
 
-        <div class="row">
-            <div class="col-md-5">
-                <h1 class="bg_black">Game Information</h1>
-                <ul class="list-group" style="font-size: 30px;">
-                    <li class="list-group-item"><b>Home
-                        Team</b>: {{ scorebook.home_coach.roster.school }} {{ scorebook.home_coach.roster.team_name }}
-                    </li>
-                    <li class="list-group-item"><b>Visiting
-                        Team</b>: {{ scorebook.visiting_coach.roster.school }} {{ scorebook.visiting_coach.roster.team_name }}
-                    </li>
-                    <li class="list-group-item"><b>Current Score</b>:
-                        {% if scorebook.running_score.home.count > scorebook.running_score.visiting.count %}
-                            <span style="color:green;">
+    <div class="row">
+        <div class="col-md-5">
+            <h1 class="bg_black">Game Information</h1>
+            <ul class="list-group" style="font-size: 30px;">
+                <li class="list-group-item"><b>Home
+                    Team</b>: {{ scorebook.home_coach.roster.school }} {{ scorebook.home_coach.roster.team_name }}
+                </li>
+                <li class="list-group-item"><b>Visiting
+                    Team</b>: {{ scorebook.visiting_coach.roster.school }} {{ scorebook.visiting_coach.roster.team_name }}
+                </li>
+                <li class="list-group-item"><b>Current Score</b>:
+                    {% if scorebook.running_score.home.count > scorebook.running_score.visiting.count %}
+                        <span style="color:green;">
                                         <b>{{ scorebook.running_score.home.count }}</b>
                                     </span>
-                            ---
-                            <span style="color:red;">
+                        ---
+                        <span style="color:red;">
                                         <b>{{ scorebook.running_score.visiting.count }}</b>
                                     </span>
-                        {% elif scorebook.running_score.home.count < scorebook.running_score.visiting.count %}
-                            <span style="color:red;">
+                    {% elif scorebook.running_score.home.count < scorebook.running_score.visiting.count %}
+                        <span style="color:red;">
                                         <b>{{ scorebook.running_score.home.count }}</b>
                                     </span>
-                            ---
-                            <span style="color:green;">
+                        ---
+                        <span style="color:green;">
                                         <b>{{ scorebook.running_score.visiting.count }}</b>
                                     </span>
-                        {% else %}
-                            <span style="color:orange;">
+                    {% else %}
+                        <span style="color:orange;">
                                         <b>{{ scorebook.running_score.home.count }}</b>
                                     </span>
-                            ---
-                            <span style="color:orange;">
+                        ---
+                        <span style="color:orange;">
                                         <b>{{ scorebook.running_score.visiting.count }}</b>
                                     </span>
-                        {% endif %}
-                    </li>
-                </ul>
-            </div>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
 
-            <div class="col-md-4">
-                <h1 class="bg_black"><b>Game Timer</b></h1>
-                <p id="countdown">/60:00</p>
-                <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                    <div class="btn-group mr-2" role="group" aria-label="First group">
-                        <button id="startTimerButton" type="button" class="btn btn-success btn-lg" data-toggle="tooltip"
-                                data-html="true" title="Start Timer" onclick="startButton()">
-                            <span class="glyphicon glyphicon-play"></span>
-                        </button>
-                        <button id="pauseTimerButton" type="button" class="btn btn-primary btn-lg" data-toggle="tooltip"
-                                data-html="true" title="Pause Timer" onclick="pauseTimer()">
-                            <span class="glyphicon glyphicon-pause"></span>
-                        </button>
-                        <button id="stopTimerButton" type="button" class="btn btn-danger btn-lg" data-toggle="tooltip"
-                                data-html="true" title="Stop Timer" onclick="clearTimer()">
-                            <span class="glyphicon glyphicon-stop"></span>
-                        </button>
-                    </div>
-                    <div class="btn-group mr-2" role="group" aria-label="Second group">
-                        <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
-                                data-toggle="tooltip" data-html="true" title="Add 5 Seconds" onclick="incrementTimer5s()">
-                            <span class="glyphicon glyphicon-plus"></span> 5s
-                        </button>
-                        <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
-                                data-toggle="tooltip" title="Subtract 5 Seconds" onclick="decrementTimer5s()">
-                            <span class="glyphicon glyphicon-minus"></span> 5s
-                        </button>
-                    </div>
-                    <div class="btn-group mr-2" role="group" aria-label="Second group">
-                        <button id="incrementTimerButton" type="button" class="btn btn-secondary btn-lg"
-                                data-toggle="tooltip"
-                                data-html="true" title="Add 1 Minute">
-                            <span class="glyphicon glyphicon-plus"></span> 1m
-                        </button>
-                        <button id="decrementTimerButton" type="button" class="btn btn-secondary btn-lg"
-                                data-toggle="tooltip"
-                                title="Subtract 1 Minute">
-                            <span class="glyphicon glyphicon-minus"></span> 1m
-                        </button>
-                    </div>
+        <div class="col-md-4">
+            <h1 class="bg_black"><b>Game Timer</b></h1>
+            <p><label id="minutes">00</label>:<label id="seconds">00</label>/60:00</p>
+            <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button id="startTimerButton" type="button" class="btn btn-success btn-lg" data-toggle="tooltip"
+                            data-html="true" title="Start Timer" onclick="startTimer()">
+                        <span class="glyphicon glyphicon-play"></span>
+                    </button>
+                    <button id="pauseTimerButton" type="button" class="btn btn-primary btn-lg" data-toggle="tooltip"
+                            data-html="true" title="Pause Timer" onclick="pauseTimer()">
+                        <span class="glyphicon glyphicon-pause"></span>
+                    </button>
+                    <button id="stopTimerButton" type="button" class="btn btn-danger btn-lg" data-toggle="tooltip"
+                            data-html="true" title="Stop Timer" onclick="stopTimer()">
+                        <span class="glyphicon glyphicon-stop"></span>
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button id="incrementSecondsButton" name="timerAdjustButtons" value="5" type="button"
+                            class="btn btn-secondary btn-lg"
+                            data-toggle="tooltip" data-html="true" title="Add 5 Seconds">
+                        <span class="glyphicon glyphicon-plus"></span> 5s
+                    </button>
+                    <button id="decrementSecondsButton" name="timerAdjustButtons" value="-5" type="button"
+                            class="btn btn-secondary btn-lg"
+                            data-toggle="tooltip" title="Subtract 5 Seconds">
+                        <span class="glyphicon glyphicon-minus"></span> 5s
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button id="incrementMinuteButton" name="timerAdjustButtons" value="60" type="button"
+                            class="btn btn-secondary btn-lg"
+                            data-toggle="tooltip"
+                            data-html="true" title="Add 1 Minute">
+                        <span class="glyphicon glyphicon-plus"></span> 1m
+                    </button>
+                    <button id="decrementMinuteButton" name="timerAdjustButtons" value="-60" type="button"
+                            class="btn btn-secondary btn-lg"
+                            data-toggle="tooltip"
+                            title="Subtract 1 Minute">
+                        <span class="glyphicon glyphicon-minus"></span> 1m
+                    </button>
                 </div>
             </div>
+        </div>
 
-        <div class = "col-md-3">
-                <h1 class="bg_black">
-                    <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg btn-block">Publish
-                        Scorebook
-                    </button>
-                    <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg btn-block">&ensp;Clear
-                        Scorebook&ensp;
-                    </button>
-                    <button id="halftimeButton" type="button" class="btn btn-primary btn-lg btn-block">Half Time
-                    </button>
-                </h1>
+        <div class="col-md-3">
+            <h1 class="bg_black">
+                <button id="publishScorebookButton" type="button" class="btn btn-success btn-lg btn-block">Publish
+                    Scorebook
+                </button>
+                <button id="clearScorebookButton" type="button" class="btn btn-danger btn-lg btn-block">&ensp;Clear
+                    Scorebook&ensp;
+                </button>
                 <button id="gameStatsButton" type="button" class="btn btn-primary btn-lg btn-block">Game Statistics
                 </button>
-                <button id="runtimeButton" type="button" class="btn btn-primary btn-lg btn-block">Runtime
+                <button id="runTimeModeButton" type="button" class="btn btn-secondary btn-lg btn-block">Run Time Mode
                 </button>
+            </h1>
         </div>
 
         <div class="row">
@@ -168,12 +171,14 @@
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
                                 <td>
-                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Score">
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Score">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Delete Score">
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Delete Score">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -208,12 +213,14 @@
                                 <td>{{ score.goal_number }}</td>
                                 <td>{{ score.assist_number }}</td>
                                 <td>
-                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Score" >
+                                    <a href="/edit-score/{{ score.id }}" class="btn btn-success btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Score">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Delete Score">
+                                    <a href="/delete-score/{{ score.id }}" class="btn btn-danger btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Delete Score">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -273,21 +280,25 @@
                                 <td>{{ penalty.time }}</td>
                                 <td>
                                     {% if penalty.personal_foul == True %}
-                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Edit Personal Foul">
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Edit Personal Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Delete Penalty">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% else %}
-                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Edit Technical Foul">
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Edit Technical Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Delete Penalty">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% endif %}
@@ -320,12 +331,14 @@
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
                                 <td>
-                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Timeout">
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Timeout">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Timeout">
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Timeout">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -384,21 +397,25 @@
                                 <td>{{ penalty.time }}</td>
                                 <td>
                                     {% if penalty.personal_foul == True %}
-                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Edit Personal Foul">
+                                        <a href="/edit-personal-foul/{{ penalty.id }}" class="btn btn-success btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Edit Personal Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Delete Penalty">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% else %}
-                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Edit Technical Foul">
+                                        <a href="/edit-technical-foul/{{ penalty.id }}" class="btn btn-success btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Edit Technical Foul">
                                             <span class="glyphicon glyphicon-pencil"></span>
                                         </a>
-                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                        data-html="true" title="Delete Penalty">
+                                        <a href="/delete-penalty/{{ penalty.id }}" class="btn btn-danger btn-sm"
+                                           data-toggle="tooltip"
+                                           data-html="true" title="Delete Penalty">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     {% endif %}
@@ -430,12 +447,14 @@
                                 <td>{{ timeout.time }}</td>
                                 <td>{{ timeout.quarter }}</td>
                                 <td>
-                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Timeout">
+                                    <a href="/edit-timeout/{{ timeout.id }}" class="btn btn-success btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Timeout">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Delete Timeout">
+                                    <a href="/delete-timeout/{{ timeout.id }}" class="btn btn-danger btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Delete Timeout">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -541,12 +560,14 @@
                                            placeholder="0" value="{{ player.statistics.ground_balls }}">
                                 </td>
                                 <td>
-                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Player">
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Player">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Delete Player">
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Delete Player">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -727,12 +748,14 @@
                                            placeholder="0" value="{{ player.statistics.ground_balls }}">
                                 </td>
                                 <td>
-                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Edit Player">
+                                    <a href="/edit-scorebook-player/{{ player.id }}" class="btn btn-success btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Edit Player">
                                         <span class="glyphicon glyphicon-pencil"></span>
                                     </a>
-                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm" data-toggle="tooltip"
-                                    data-html="true" title="Delete Player">
+                                    <a href="/delete-scorebook-player/{{ player.id }}" class="btn btn-danger btn-sm"
+                                       data-toggle="tooltip"
+                                       data-html="true" title="Delete Player">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
@@ -821,7 +844,7 @@
                 {% csrf_token %}
                 <p>Are you sure?</p>
                 <input class="btn btn-primary btn-lg" type="submit" name="publishScorebookModalConfirm" value="Confirm">
-                <input class="btn btn-danger btn-lg" type="button" name="publishScorebookModalCancel" value="Cancel">   
+                <input class="btn btn-danger btn-lg" type="button" name="publishScorebookModalCancel" value="Cancel">
             </form>
         </div>
     </div>
@@ -1131,10 +1154,30 @@
 
     </div>
 
+    <label id="scorebookId" hidden>{{ scorebook.id }}</label>
+    {% if scorebook.elapsed_time == None %}
+
+        <div>YO</div>
+    {% endif %}
+    <label id="scorebookTime">{{ scorebook.elapsed_time }}</label>
+
 {% endblock %}
 
 {% block custom_js %}
     <script type="text/javascript">
+        let totalSeconds = 0;
+        let scorebookId = document.getElementById("scorebookId");
+        let minutesLabel = document.getElementById("minutes");
+        let secondsLabel = document.getElementById("seconds");
+
+        function pad(time) {
+            let timeString = time + "";
+            if (timeString.length < 2) {
+                return "0" + timeString;
+            } else {
+                return timeString;
+            }
+        }
 
         /* Initialize the page with JavaScript before loading it using jQuery ready event. */
         $(document).ready(function () {
@@ -1160,20 +1203,20 @@
                 alert(alertMessage);
                 errorDiv.innerHTML = "";
             }
+
+            /* Get the time of the scorebook object. */
+            //let scorebookTime = document.getElementById("scorebookTime");
+            //.log(scorebookTime);
+            if ("totalSeconds" in localStorage) {
+                totalSeconds = parseInt(localStorage.getItem("totalSeconds"));
+                secondsLabel.innerHTML = pad(totalSeconds % 60);
+                minutesLabel.innerHTML = pad(Math.floor(totalSeconds / 60));
+            }
         });
 
         /* Get publish/clear scorebook buttons. */
         let publishScorebookButton = document.getElementById("publishScorebookButton");
         let clearScorebookButton = document.getElementById("clearScorebookButton");
-
-        /* Adjust Buttons */
-        let adjustButtons = document.getElementsByName("timerAdjustButtons");
-
-        adjustButtons.forEach((button) => {
-            let adjustValue = button.value;
-            button.addEventListener("click", function() {
-            })
-        });
 
         /* Get running score buttons. */
         let homeScoreButton = document.getElementById("homeScoreButton");
@@ -1208,7 +1251,6 @@
             homeAddPlayerButton, homeImportLineupButton,
             visitingAddPlayerButton, visitingImportLineupButton,
             gameStatsButton,
-            runtimeButton
         ];
         modalButtons.forEach((button) => {
             let modalId = button.id.split("Button")[0] + "Modal";
@@ -1360,139 +1402,90 @@
                 });
         }
 
-        // window.onload = () => {
-        // let hour = 0;
-        // let minute = 0;
-        // let seconds = 0;
-        // let totalSeconds = 3600;
-        // let intervalId = null;
 
-        // function startTimer() {
-        //     ++totalSeconds;
-        //     minute = Math.floor((totalSeconds - hour*3600)/60);
-        //     seconds = totalSeconds - (hour*3600 + minute*60);
+        /* Define the timer and handle its related events. */
+        /* totalSeconds is defined above. */
+        let timerId = null;
 
-
-        //     document.getElementById("minute").innerHTML =minute;
-        //     document.getElementById("seconds").innerHTML =seconds;
-
-        //     display.textContent = `${minutes}:${seconds}` + "/60:00";
-        //     display = document.querySelector('#countdown');
-
-        // }
-
-        // document.getElementById('start-btn').addEventListener('click', () => {
-        //     intervalId = setInterval(startTimer, 1000);
-        // })
-
-
-        // document.getElementById('stop-btn').addEventListener('click', () => {
-        //     if (intervalId)
-        //     clearInterval(intervalId);
-        // });
-
-        // }
-
-        //Refresh Handled Timer
-        var timerID;
-
-         function startTimer(duration, display) {
-            var timer = duration, minutes, seconds;
-            timerID = setInterval(function load() {
-                minutes = parseInt(timer / 60, 10)
-                seconds = parseInt(timer % 60, 10);
-
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                display.textContent = `${minutes}:${seconds}` + "/60:00";
-                if (++timer < 0) {
-                    timer = duration;
-                }
-                //console.log(parseInt(seconds))
-                window.localStorage.setItem("seconds", seconds)
-                window.localStorage.setItem("minutes", minutes)
-            }, 1000);
+        function setTime() {
+            ++totalSeconds;
+            secondsLabel.innerHTML = pad(totalSeconds % 60);
+            minutesLabel.innerHTML = pad(Math.floor(totalSeconds / 60));
         }
 
-        //onload - object has been loaded or created
-        window.onload = function load() {
-            let sixtyMinutes;
-            seconds = parseInt(window.localStorage.getItem("seconds"))
-            minutes = parseInt(window.localStorage.getItem("minutes"))
-
-            if (parseInt(minutes * seconds)) {
-                sixtyMinutes = (parseInt(minutes * 60) + seconds);
-            } else {
-                sixtyMinutes = 60 * 60;
+        function startTimer() {
+            console.log("WORKING");
+            if (!timerId) {
+                timerId = setInterval(setTime, 1000);
             }
-            //var sixtyMinutes = 60 * 60;
-            display = document.querySelector('#countdown');
-            startTimer(0, display);
-        };
-
+        }
 
         function pauseTimer() {
-            clearInterval(timerID);
-        }
-
-        function startButton() {
-            let sixtyMinutes;
-            seconds = parseInt(window.localStorage.getItem("seconds"))
-            minutes = parseInt(window.localStorage.getItem("minutes"))
-
-            if (parseInt(minutes * seconds)) {
-                sixtyMinutes = (parseInt(minutes * 60) + seconds);
-            } else {
-                sixtyMinutes = 60 * 60;
+            if (timerId) {
+                clearInterval(timerId);
+                timerId = null;
             }
-            //var sixtyMinutes = 60 * 60;
-            let display = document.querySelector('#countdown');
-            startTimer(0, display);
         }
 
-        function clearTimer() {
-            clearInterval(timerID);
-            localStorage.clear();
-            //window.localStorage.setItem('seconds','0')
-            //window.localStorage.setItem('minutes','0')
-            //seconds = parseInt(window.localStorage.getItem("seconds"))
-            //minutes = parseInt(window.localStorage.getItem("minutes"))
-            
-
+        function stopTimer() {
+            if (timerId) {
+                clearInterval(timerId);
+                timerId = null;
+            }
+            totalSeconds = 0;
+            secondsLabel.innerHTML = "00";
+            minutesLabel.innerHTML = "00";
         }
 
-            function incrementTimer5s() {
-            secs = parseInt(window.localStorage.getItem("seconds"))
-            add5s = secs + 5
-            window.localStorage.setItem('seconds', 'add5s')
-            window.localStorage.setItem('minutes','0')
+        /* Increment/Decrement buttons. */
+        let adjustButtons = document.getElementsByName("timerAdjustButtons");
+        adjustButtons.forEach((button) => {
+            let adjustValue = parseInt(button.value);
+            button.addEventListener("click", function () {
+                if (totalSeconds + adjustValue >= 0) {
+                    totalSeconds += adjustValue;
+                    secondsLabel.innerHTML = pad(totalSeconds % 60);
+                    minutesLabel.innerHTML = pad(Math.floor(totalSeconds / 60));
+                }
+                console.log(totalSeconds);
+            })
+        });
 
+        let runTimeModeButton = document.getElementById("runTimeModeButton");
 
-        }
+        runTimeModeButton.addEventListener("click", (function () {
+            $.ajax({
+                url: "http://127.0.0.1:8000/update-timer/",
+                type: "GET",
+                async: true,
+                data: {
+                    "id": scorebookId.innerHTML,
+                    "seconds": totalSeconds
+                }
+            }).done(function (response) {
+            })
+                .fail(function () {
+                    alert("Error Occurred");
+                });
+        }));
 
-            function decrementTimer5s() {
-            sub5s = parseInt(window.localStorage.getItem("seconds")) - 5
-            window.localStorage.setItem('seconds', sub5s)
-            window.localStorage.setItem('minutes','0')
+        $(window).on("beforeunload", (function () {
+            localStorage.setItem("totalSeconds", totalSeconds);
+            $.ajax({
+                url: "http://127.0.0.1:8000/update-timer/",
+                type: "POST",
+                async: true,
+                data: {
+                    "id": scorebookId.innerHTML,
+                    "seconds": totalSeconds
+                }
+            }).done(function (response) {
+            })
+                .fail(function () {
+                    alert("Error Occurred");
+                });
+        }));
 
-
-        }
-
-            function incrementTimer1m() {
-            window.localStorage.setItem('seconds','0')
-            window.localStorage.setItem('minutes','0')
-
-
-
-        }
-
-            function decrementTimer1m() {
-            window.localStorage.setItem('seconds','0')
-            window.localStorage.setItem('minutes','minutes + 1')
-
-
-        }
 
     </script>
 {% endblock %}
